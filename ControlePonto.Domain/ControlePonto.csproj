@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C030D311-BF7A-4AFC-ABC2-CDCFD0B0A006}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ControlePonto</RootNamespace>
+    <AssemblyName>ControlePonto</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\Entity.cs" />
+    <Compile Include="Domain\factories\RepositorioFactory.cs" />
+    <Compile Include="Domain\factories\services\LoginServiceFactory.cs" />
+    <Compile Include="Domain\framework\specification\AndSpecification.cs" />
+    <Compile Include="Domain\framework\specification\CompositeSpecification.cs" />
+    <Compile Include="Domain\framework\specification\ISpecification.cs" />
+    <Compile Include="Domain\framework\specification\NotSpecification.cs" />
+    <Compile Include="Domain\framework\specification\OrSpecification.cs" />
+    <Compile Include="Domain\services\login\ILoginService.cs" />
+    <Compile Include="Domain\services\login\LoginService.cs" />
+    <Compile Include="Domain\services\login\SessaoLogin.cs" />
+    <Compile Include="Domain\services\login\SessaoNaoEncerradaException.cs" />
+    <Compile Include="Domain\usuario\funcionario\Funcionario.cs" />
+    <Compile Include="Domain\usuario\IUsuarioRepositorio.cs" />
+    <Compile Include="Domain\usuario\LoginInvalidoException.cs" />
+    <Compile Include="Domain\usuario\LoginJaExisteException.cs" />
+    <Compile Include="Domain\usuario\LoginJaExisteSpecification.cs" />
+    <Compile Include="Domain\usuario\LoginValidoSpecification.cs" />
+    <Compile Include="Domain\usuario\SenhaValidaSpecification.cs" />
+    <Compile Include="Domain\usuario\Usuario.cs" />
+    <Compile Include="Domain\usuario\UsuarioFactory.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\FuncionarioMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\UsuarioMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\NHibernateHelper.cs" />
+    <Compile Include="Infrastructure\utils\DesignByContract.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

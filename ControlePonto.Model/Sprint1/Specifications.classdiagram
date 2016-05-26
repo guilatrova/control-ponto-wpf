@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/UseCaseModel" dslVersion="1.0.0.0" Id="44956dbf-43c3-4a58-943e-183d54cc3ed3" name="Specification" linkedPackageId="8415731e-8a20-4d52-8b8f-a35679298080" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="4d509e6e-9790-4bdd-bb4b-f99c8b9dddc5">
+      <profileInstance Id="99af1f13-9692-460f-8831-4085b166d7ef" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="136e22f6-7276-42dd-a4e8-be5ad5afa530">
+      <profileInstance Id="a923918f-66ef-4d48-99ef-6dcdd30f45c5" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="5f25823f-83f1-428b-acdd-721c8253deae" name="AlgumPontoAbertoSpecification" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="93d68e7f-cf0f-4697-8768-9a8b1e322580" />
+        <ownedAttributesInternal>
+          <property Id="3dd0617b-5593-470d-892e-62d51845eb7d" name="Data" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="faafd35e-976b-484b-b8b1-816f71ff60f0" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="502382cc-be12-42c8-916e-c45f348184e0" LastKnownName="Date" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="9a0849f3-e9f2-4976-a42b-ace9441f68c3" name="isSatisfiedBy" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="89759881-a878-4dac-a55a-ae8279cb176b" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="e2e86f82-24f4-41dc-87d0-df4fd618d88d" name="Funcionario" direction="In" isUnique="false">
+                  <elementDefinition Id="c4e3b73c-fee7-4c6c-91cb-4d0751043bce" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="ae2be228-d3f3-47aa-830c-c3dc237a66de" name="AlgumIntervaloAbertoSpecification" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e3f16b35-5285-4fd3-8b20-0c49f74a5810" />
+        <ownedAttributesInternal>
+          <property Id="cb780350-3b9e-4a70-9ab0-0223e158328a" name="Intervalo" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="1482a3d7-a9a6-4d17-add7-0807ba40310a" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="7771d9c2-761a-4c93-a4fb-afcedd4b00a4" LastKnownName="string" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="8c6a8ca3-4ba0-453f-9dab-eb530279036a" name="isSatisfiedBy" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="c196f9be-789f-4659-91b8-1ed967f741e0" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="bae52965-85b7-4180-b26b-b5fa2af34260" name="Funcionario" direction="In" isUnique="false">
+                  <elementDefinition Id="c9d9e546-e12b-448c-af42-e926f0e72b39" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="74cc5e84-d8da-4833-8826-ab0338c3fe6a" name="PontoHojeFechado" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="449efa3c-b3e5-47e2-b8f4-894477a9b97a" />
+        <ownedAttributesInternal>
+          <property Id="a42ee4a2-08da-4bc6-b52a-7cffdeaa2fbd" name="Saida" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="4cbeed30-8426-4702-93a1-615205bb794f" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="9b76ced5-7ac1-4cbe-bace-3b2b728956af" LastKnownName="Time" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="a7ecbbc1-b57b-4295-8c60-f8abdd9bdb78" name="isSatisfiedBy" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="a9ede58d-5fdd-4156-bc36-4035ef827d82" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="20b01c9d-ba34-4f99-9e8d-63f52771d4ce" name="Funcionario" direction="In" isUnique="false">
+                  <elementDefinition Id="f81c297c-ae33-463d-97a7-1ef98f6b10a1" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="9b76ced5-7ac1-4cbe-bace-3b2b728956af" name="Time" isAbstract="false" isLeaf="false" cachedFullName="Time">
+        <elementDefinition Id="e9141d20-78c4-4aa2-a018-79fc05c7bb3b" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="502382cc-be12-42c8-916e-c45f348184e0" name="Date" isAbstract="false" isLeaf="false" cachedFullName="Date">
+        <elementDefinition Id="9e7bc917-7e69-416a-a1da-beaa5bff7659" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="7771d9c2-761a-4c93-a4fb-afcedd4b00a4" name="string" isAbstract="false" isLeaf="false" cachedFullName="string">
+        <elementDefinition Id="a7a15471-36b9-4fa8-97ce-5dc7c2e5cf08" />
+      </referencedType>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="8415731e-8a20-4d52-8b8f-a35679298080" name="ControlePonto.Model">
+    <elementDefinition Id="cd4a5682-54e6-4c65-a502-7c4e80604186" />
+  </package>
+</logicalClassDesignerModel>
