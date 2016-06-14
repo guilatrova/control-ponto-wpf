@@ -3,7 +3,9 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:base="clr-namespace:ControlePonto.WPF.window"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:frmwrk="clr-namespace:ControlePonto.WPF.framework"
                  Title="{DynamicResource strTitulo}" 
+                 frmwrk:DialogCloser.DialogResult="{Binding DialogResult, UpdateSourceTrigger=PropertyChanged}"
                  SizeToContent="WidthAndHeight">
 
     <Window.Resources>

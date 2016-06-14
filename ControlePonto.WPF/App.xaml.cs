@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlePonto.WPF.window.usuario;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,9 @@ namespace ControlePonto.WPF
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            UsuarioWindowFactory.criarLoginWindow().Show();
+        }
     }
 }

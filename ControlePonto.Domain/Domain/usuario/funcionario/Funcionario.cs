@@ -8,8 +8,8 @@ namespace ControlePonto.Domain.usuario.funcionario
 {
     public class Funcionario : Usuario
     {
-        public string CPF { get; private set; }
-        public string RG { get; private set; }
+        public virtual string CPF { get; protected set; }
+        public virtual string RG { get; protected set; }
 
         protected Funcionario() { }
 

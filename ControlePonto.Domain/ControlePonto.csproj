@@ -36,6 +36,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
@@ -56,11 +59,27 @@
     <Compile Include="Domain\framework\specification\ISpecification.cs" />
     <Compile Include="Domain\framework\specification\NotSpecification.cs" />
     <Compile Include="Domain\framework\specification\OrSpecification.cs" />
+    <Compile Include="Domain\intervalo\Intervalo.cs" />
+    <Compile Include="Domain\intervalo\ITipoIntervaloRepositorio.cs" />
+    <Compile Include="Domain\intervalo\TipoIntervalo.cs" />
+    <Compile Include="Domain\ponto\DiaEmAbertoException.cs" />
+    <Compile Include="Domain\ponto\FuncionarioJaTrabalhouHojeSpecification.cs" />
+    <Compile Include="Domain\ponto\FuncionarioPossuiPontoAbertoSpecification.cs" />
+    <Compile Include="Domain\ponto\IDataHoraStrategy.cs" />
+    <Compile Include="Domain\ponto\IntervaloJaRegistradoException.cs" />
+    <Compile Include="Domain\ponto\IPontoDiaRepository.cs" />
+    <Compile Include="Domain\ponto\PontoDia.cs" />
+    <Compile Include="Domain\ponto\IntervaloEmAbertoException.cs" />
+    <Compile Include="Domain\ponto\PontoDiaJaExisteException.cs" />
+    <Compile Include="Domain\ponto\PontoFactory.cs" />
     <Compile Include="Domain\services\login\ILoginService.cs" />
     <Compile Include="Domain\services\login\LoginService.cs" />
     <Compile Include="Domain\services\login\SessaoLogin.cs" />
     <Compile Include="Domain\services\login\SessaoNaoEncerradaException.cs" />
+    <Compile Include="Domain\services\ponto\PontoService.cs" />
     <Compile Include="Domain\usuario\funcionario\Funcionario.cs" />
+    <Compile Include="Domain\usuario\funcionario\FuncionarioFactory.cs" />
+    <Compile Include="Domain\usuario\funcionario\CPFInvalidoException.cs" />
     <Compile Include="Domain\usuario\IUsuarioRepositorio.cs" />
     <Compile Include="Domain\usuario\LoginInvalidoException.cs" />
     <Compile Include="Domain\usuario\LoginJaExisteException.cs" />
@@ -70,13 +89,18 @@
     <Compile Include="Domain\usuario\Usuario.cs" />
     <Compile Include="Domain\usuario\UsuarioFactory.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\FuncionarioMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\TipoIntervaloMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\UsuarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\NHibernateHelper.cs" />
+    <Compile Include="Infrastructure\repositorio\TipoIntervaloHibernateRepositorio.cs" />
+    <Compile Include="Infrastructure\repositorio\UsuarioHibernateRepositorio.cs" />
     <Compile Include="Infrastructure\utils\DesignByContract.cs" />
+    <Compile Include="Infrastructure\utils\Validacao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

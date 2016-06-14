@@ -16,18 +16,13 @@ namespace ControlePonto.WPF.window.usuario
         private ILoginService loginService;
         private IUsuarioRepositorio usuarioRepositorio;
 
-        private ICommand _verificarExisteUsuarioJaCadastradoCommand;
-        private ICommand _logarCommand;
-
-        public const int VIEW_CADASTRAR_USUARIO = 1;
-        public const int VIEW_CRIAR_SENHA = 2;
+        private ICommand _logarCommand;        
 
         public LoginViewModel(ILoginService loginService, IUsuarioRepositorio usuarioRepositorio)
         {
             this.loginService = loginService;
             this.usuarioRepositorio = usuarioRepositorio;
 
-            _verificarExisteUsuarioJaCadastradoCommand = new RelayCommand(verificarExisteUsuarioJaCadastrado);
             _logarCommand = new RelayParameterCommand<System.Windows.Controls.PasswordBox>(logar, base.isModelValid);
         }
 
@@ -40,19 +35,16 @@ namespace ControlePonto.WPF.window.usuario
             set { SetField(ref _login, value); }
         }
 
-        public ICommand VerificarExisteUsuarioJaCadastradoCommand { get { return _verificarExisteUsuarioJaCadastradoCommand; } }
+        private bool? _dialogResult;
+        public bool? DialogResult
+        {
+            get { return _dialogResult; }
+            set { SetField(ref _dialogResult, value); }
+        }
 
         public ICommand LogarCommand { get { return _logarCommand; } }
         
-        #endregion
-        
-        private void verificarExisteUsuarioJaCadastrado()
-        {
-            if (!alguemJaCadastrou())
-            {
-                requestView(VIEW_CADASTRAR_USUARIO);
-            }
-        }
+        #endregion       
 
         private void logar(System.Windows.Controls.PasswordBox pbox)
         {
@@ -60,10 +52,7 @@ namespace ControlePonto.WPF.window.usuario
             {
                 string senha = pbox.Password;
                 Usuario usuario = loginService.Logar(Login, senha);
-                if (precisaCriarSenha(usuario))
-                {
-                    requestView(VIEW_CRIAR_SENHA);
-                }
+                DialogResult = true;
             }
             catch (LoginInvalidoException)
             {

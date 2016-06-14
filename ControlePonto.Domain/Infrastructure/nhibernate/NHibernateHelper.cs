@@ -13,7 +13,7 @@ namespace ControlePonto.Infrastructure.nhibernate
 {
     public class NHibernateHelper
     {
-        private const string connectionString = "Server=localhost;Database=db_vendas_sion;User ID=root;Password=ews6001110;";
+        private const string connectionString = "Server=localhost;Database=db_ponto_artplas;User ID=root;Password=;";
                 
         private static FluentConfiguration _fluentConfiguration;
         private static ISessionFactory _sessionFactory;        

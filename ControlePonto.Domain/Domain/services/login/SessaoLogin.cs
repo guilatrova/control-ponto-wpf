@@ -9,11 +9,11 @@ namespace ControlePonto.Domain.services.login
 {
     public class SessaoLogin
     {
-        public Usuario UsuarioLogado { get; private set; }
+        public Usuario UsuarioLogado { get; protected set; }
 
         private static SessaoLogin _sessaoAtual;
 
-        private SessaoLogin() { }
+        protected SessaoLogin() { }
 
         public static SessaoLogin getSessao()
         {

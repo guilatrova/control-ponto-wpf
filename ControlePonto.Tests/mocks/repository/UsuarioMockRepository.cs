@@ -45,7 +45,7 @@ namespace ControlePonto.Tests.mocks
             return usuarioList.Count();
         }
 
-        public int save(Usuario usuario)
+        public uint save(Usuario usuario)
         {
             usuarioList.Add(usuario);
             return 1;

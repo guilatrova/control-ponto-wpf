@@ -4,6 +4,7 @@ using ControlePonto.Domain.usuario;
 using ControlePonto.Tests.mocks;
 using ControlePonto.Domain.framework;
 using ControlePonto.Infrastructure.utils;
+using ControlePonto.Domain.usuario.funcionario;
 
 namespace ControlePonto.Tests
 {
@@ -11,22 +12,24 @@ namespace ControlePonto.Tests
     public class UsuarioTests
     {
         IUsuarioRepositorio usuarioRepositorio;
-        UsuarioFactory factory;
+        UsuarioFactory usuarioFactory;
+        FuncionarioFactory funcionarioFactory;
 
         [TestInitialize]
         public void SetupTest()
         {
             usuarioRepositorio = new UsuarioMockRepositorio();
-            factory = new UsuarioFactory(new LoginJaExisteSpecification(usuarioRepositorio), new LoginValidoSpecification(), new SenhaValidaSpecification());
+            usuarioFactory = new UsuarioFactory(new LoginJaExisteSpecification(usuarioRepositorio), new LoginValidoSpecification(), new SenhaValidaSpecification());
+            funcionarioFactory = new FuncionarioFactory();
 
-            usuarioRepositorio.save(factory.criarUsuario("João", "joaozinho", "123456"));
+            usuarioRepositorio.save(usuarioFactory.criarUsuario("João", "joaozinho", "123456"));
         }
 
         [TestMethod]
         public void testCriarUsuario()
         {
             usuarioRepositorio.save(
-                factory.criarUsuario("Guilherme", "guilherme_latrova", "latrova123")
+                usuarioFactory.criarUsuario("Guilherme", "guilherme_latrova", "latrova123")
             );
 
             Assert.IsNotNull(usuarioRepositorio.findByLogin("guilherme_latrova"));
@@ -36,49 +39,49 @@ namespace ControlePonto.Tests
         [ExpectedException(typeof(PreconditionException))]
         public void testLoginInvalido()
         {
-            factory.criarUsuario("Guilherme", "guilherme#latrova@!-", "123123");
+            usuarioFactory.criarUsuario("Guilherme", "guilherme#latrova@!-", "123123");
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void testSenhaInvalida()
         {
-            factory.criarUsuario("Guilherme", "latrova", "123_123");
+            usuarioFactory.criarUsuario("Guilherme", "latrova", "123_123");
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(LoginJaExisteException))]
         public void testLoginEmUso()
         {
-            factory.criarUsuario("Mario", "joaozinho", "111111");
+            usuarioFactory.criarUsuario("Mario", "joaozinho", "111111");
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void testUsuarioSemNome()
         {
-            factory.criarUsuario("", "joaozinho", "123123");
+            usuarioFactory.criarUsuario("", "joaozinho", "123123");
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void testUsuarioSemLogin()
         {
-            factory.criarUsuario("Mario", "", "123123");
+            usuarioFactory.criarUsuario("Mario", "", "123123");
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void testUsuarioSemSenha()
         {
-            factory.criarUsuario("Mario", "joaozinho", "");
+            usuarioFactory.criarUsuario("Mario", "joaozinho", "");
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void testCriarUsuarioExcedeuNome()
         {
-            factory.criarUsuario(
+            usuarioFactory.criarUsuario(
                 new string('a', Usuario.MAX_NOME_LENGTH + 1),
                 new string('b', Usuario.MAX_LOGIN_LENGTH),
                 new string('c', Usuario.MAX_SENHA_LENGTH));
@@ -88,7 +91,7 @@ namespace ControlePonto.Tests
         [ExpectedException(typeof(PreconditionException))]
         public void testCriarUsuarioExcedeuLogin()
         {
-            factory.criarUsuario(
+            usuarioFactory.criarUsuario(
                 new string('a', Usuario.MAX_NOME_LENGTH),
                 new string('b', Usuario.MAX_LOGIN_LENGTH + 1),
                 new string('c', Usuario.MAX_SENHA_LENGTH));
@@ -98,7 +101,7 @@ namespace ControlePonto.Tests
         [ExpectedException(typeof(PreconditionException))]
         public void testCriarUsuarioExcedeuSenha()
         {
-            factory.criarUsuario(
+            usuarioFactory.criarUsuario(
                 new string('a', Usuario.MAX_NOME_LENGTH),
                 new string('b', Usuario.MAX_LOGIN_LENGTH),
                 new string('c', Usuario.MAX_SENHA_LENGTH + 1));
@@ -108,7 +111,7 @@ namespace ControlePonto.Tests
         [ExpectedException(typeof(PreconditionException))]
         public void testCriarUsuarioNomePequeno()
         {
-            factory.criarUsuario(
+            usuarioFactory.criarUsuario(
                 new string('a', Usuario.MIN_NOME_LENGTH - 1),
                 new string('b', Usuario.MIN_LOGIN_LENGTH),
                 new string('c', Usuario.MIN_SENHA_LENGTH));
@@ -118,7 +121,7 @@ namespace ControlePonto.Tests
         [ExpectedException(typeof(PreconditionException))]
         public void testCriarUsuarioLoginPequeno()
         {
-            factory.criarUsuario(
+            usuarioFactory.criarUsuario(
                 new string('a', Usuario.MIN_NOME_LENGTH),
                 new string('b', Usuario.MIN_LOGIN_LENGTH - 1),
                 new string('c', Usuario.MIN_SENHA_LENGTH));
@@ -126,9 +129,9 @@ namespace ControlePonto.Tests
 
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
-        public void testCriarUsuarioSenhaPequena()
+        public void testCriarUsuarioSenhaPequenaNaoPermitido()
         {
-            factory.criarUsuario(
+            usuarioFactory.criarUsuario(
                 new string('a', Usuario.MIN_NOME_LENGTH),
                 new string('b', Usuario.MIN_LOGIN_LENGTH),
                 new string('c', Usuario.MIN_SENHA_LENGTH - 1));
@@ -141,5 +144,24 @@ namespace ControlePonto.Tests
             Usuario u = new Usuario(new String('a', 100), new String('a', 100), new String('a', 100));
         }
 
+        [TestMethod, TestCategory("Construtor")]
+        [ExpectedException(typeof(PreconditionException))]
+        public void criarFuncionarioSomenteNaFactory()
+        {
+            Funcionario f = new Funcionario(new String('a', 100), new String('a', 100), new String('a', 100));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CPFInvalidoException))]
+        public void criarFuncionarioComCPFInvalidoNaoPossivel()
+        {
+            funcionarioFactory.criarFuncionario("Guilherme", "gui", "123456", "456364596", "41617099865");
+        }
+
+        [TestMethod]
+        public void criarFuncionarioCorretamente()
+        {
+            funcionarioFactory.criarFuncionario("Guilherme", "gui", "123456", "456364596", "41617099864");
+        }
     }
 }

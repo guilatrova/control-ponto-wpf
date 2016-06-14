@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.usuario;
+using ControlePonto.Infrastructure.repositorio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,7 @@ namespace ControlePonto.Domain.factories
     {
         public static IUsuarioRepositorio criarUsuarioRepositorio()
         {
-            //return new UsuarioHibernateRepositorio();
-            throw new NotImplementedException();
+            return new UsuarioHibernateRepositorio();
         }
     }
 }

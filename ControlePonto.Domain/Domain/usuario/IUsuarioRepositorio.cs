@@ -12,6 +12,6 @@ namespace ControlePonto.Domain.usuario
         Usuario findByLogin(string login);
         bool loginExiste(string login);
         int getCount();
-        int save(Usuario usuario);
+        uint save(Usuario usuario);
     }
 }

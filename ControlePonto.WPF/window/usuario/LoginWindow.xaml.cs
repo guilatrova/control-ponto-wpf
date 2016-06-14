@@ -22,12 +22,5 @@ namespace ControlePonto.WPF.window.usuario
         {
             InitializeComponent();
         }
-
-        protected override void OnContentRendered(EventArgs e)
-        {
-            base.OnContentRendered(e);
-
-            (ViewModel as LoginViewModel).VerificarExisteUsuarioJaCadastradoCommand.Execute(null);
-        }
     }
 }
