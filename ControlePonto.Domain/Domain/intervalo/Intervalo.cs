@@ -9,8 +9,28 @@ namespace ControlePonto.Domain.intervalo
     public class Intervalo : Entity<ulong>
     {
         public virtual TimeSpan Entrada { get; protected set; }
-        public virtual TimeSpan? Saida { get; set; }
-        public virtual bool Fechado { get; protected set; }
+
+        private TimeSpan? _saida;
+        public virtual TimeSpan? Saida 
+        {
+            get
+            {
+                return _saida;
+            }
+            set
+            {
+                if (_saida.HasValue)
+                    throw new InvalidOperationException("Não é possível alterar o horário de saída de um intervalo");
+                _saida = value;
+            }
+        }
+        public virtual bool isFechado
+        {
+            get
+            {
+                return Saida.HasValue;
+            }
+        }
         public virtual TipoIntervalo TipoIntervalo { get; protected set; }
 
         public Intervalo(TipoIntervalo tipo, TimeSpan entrada)
@@ -18,7 +38,6 @@ namespace ControlePonto.Domain.intervalo
             TipoIntervalo = tipo;
             Entrada = entrada;
             Saida = null;
-            Fechado = false;
         }
     }
 }

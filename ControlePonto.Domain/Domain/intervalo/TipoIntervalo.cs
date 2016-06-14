@@ -14,6 +14,8 @@ namespace ControlePonto.Domain.intervalo
 
         public TipoIntervalo(string nome)
         {
+            base.checkPreConstructor();
+
             Nome = nome;
         }
     }

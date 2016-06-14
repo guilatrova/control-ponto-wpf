@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControlePonto.Infrastructure.repositorio
+namespace ControlePonto.Infrastructure.repository
 {
-    public class TipoIntervaloHibernateRepositorio : ITipoIntervaloRepositorio
+    public class TipoIntervaloHibernateRepositorio : ITipoIntervaloRepository
     {
         public List<TipoIntervalo> findAll()
         {
@@ -18,6 +18,17 @@ namespace ControlePonto.Infrastructure.repositorio
                 return
                     session.CreateCriteria<TipoIntervalo>().List<TipoIntervalo>().ToList();
             }
+        }
+
+        public TipoIntervalo findByName(string nome)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public uint save(TipoIntervalo tipoIntervalo)
+        {            
+            throw new NotImplementedException();
         }
     }
 }

@@ -68,12 +68,14 @@
     <Compile Include="mocks\DataHoraMockListStrategy.cs" />
     <Compile Include="mocks\DataHoraMockStrategy.cs" />
     <Compile Include="mocks\repository\PontoDiaMockRepository.cs" />
+    <Compile Include="mocks\repository\TipoIntervaloMockRepository.cs" />
     <Compile Include="mocks\SessaoLoginMock.cs" />
     <Compile Include="PontoTests.cs" />
     <Compile Include="LoginTests.cs" />
     <Compile Include="mocks\repository\UsuarioMockRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HibernateTests.cs" />
+    <Compile Include="IntervaloTests.cs" />
     <Compile Include="UsuarioTests.cs" />
   </ItemGroup>
   <ItemGroup>

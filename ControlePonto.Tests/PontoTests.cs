@@ -19,6 +19,8 @@ namespace ControlePonto.Tests
     public class PontoTests
     {
         private PontoFactory factory;
+        private TipoIntervaloFactory tipoIntervaloFactory;
+        private TipoIntervalo tipoAlmoco;
         private SessaoLogin sessaoLogin;
         private Funcionario funcionario;
 
@@ -26,8 +28,10 @@ namespace ControlePonto.Tests
         public void setUp()
         {
             funcionario = new FuncionarioFactory().criarFuncionario("Jhon Doe", "doe", "123456", "", "41617099864");
-            sessaoLogin = new SessaoLoginMock(funcionario);
+            sessaoLogin = new SessaoLoginMock(funcionario);            
             factory = new PontoFactory();
+            tipoIntervaloFactory = new TipoIntervaloFactory(new NomeIntervaloJaExisteSpecification(new TipoIntervaloMockRepository()));
+            tipoAlmoco = tipoIntervaloFactory.criarTipoIntervalo("ALMOÇO");
         }
 
         private PontoDia criarPontoDoDia(int dia, int mes, int ano, int hora = 9, int minuto = 0)
@@ -98,9 +102,8 @@ namespace ControlePonto.Tests
             var entradaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
             var saidaAlmoco = new DateTime(2014, 8, 22, 13, 30, 0);
             var entradaLanche = new DateTime(2014, 8, 22, 16, 0, 0);
-            var saidaLanche = new DateTime(2014, 8, 22, 16, 15, 0);
-            var tipoAlmoco = new TipoIntervalo("ALMOÇO");
-            var tipoLanche = new TipoIntervalo("LANCHE");
+            var saidaLanche = new DateTime(2014, 8, 22, 16, 15, 0);            
+            var tipoLanche = tipoIntervaloFactory.criarTipoIntervalo("LANCHE");
             var dtMock = new DataHoraMockListStrategy(
                     new DateTime(2014, 8, 22, 9, 0, 0),
                     entradaAlmoco,
@@ -128,8 +131,7 @@ namespace ControlePonto.Tests
             var inicioDia = new DateTime(2014, 8, 22, 9, 0, 0);
             var entradaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
             var encerramentoDia = new DateTime(2014, 8, 22, 15, 0, 0);
-
-            var tipoAlmoco = new TipoIntervalo("ALMOÇO");
+            
             var dtMock = new DataHoraMockListStrategy(
                     inicioDia,
                     entradaAlmoco,
@@ -211,12 +213,43 @@ namespace ControlePonto.Tests
                 new DateTime(2014, 8, 22, 17, 00, 0) //Horário de saída/erro
             );
             var service = criarService(horarios);
-            var tipoAlmoco = new TipoIntervalo("ALMOÇO");
 
             var ponto = service.iniciarDia();
             ponto.registrarIntervalo(tipoAlmoco, horarios);
             ponto.registrarIntervalo(tipoAlmoco, horarios);
             ponto.registrarIntervalo(tipoAlmoco, horarios);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IntervaloNaoRegistradoException))]
+        public void pontoDeveAlertarIntervalosNaoRegistradosQuandoForSolicitadoPeloIntervalo()
+        {
+            var service = criarService(new DataHoraMockStrategy(22, 8, 2014));
+            var ponto = service.iniciarDia();
+
+            ponto.getIntervalo(tipoAlmoco);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void saidaDoIntervaloNaoDeveSerAlterado()
+        {
+            var entradaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
+            var saidaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
+            var horarios = new DataHoraMockListStrategy(
+                new DateTime(2014, 8, 22, 9, 0, 0), //Inicio do dia
+                entradaAlmoco,
+                saidaAlmoco,
+                new DateTime(2014, 8, 22, 17, 00, 0) //Horário de saída/erro
+            );
+            var service = criarService(horarios);
+
+            var ponto = service.iniciarDia();
+            ponto.registrarIntervalo(tipoAlmoco, horarios);
+            ponto.registrarIntervalo(tipoAlmoco, horarios);
+
+            var intervalo = ponto.getIntervalo(tipoAlmoco);
+            intervalo.Saida = entradaAlmoco.TimeOfDay;
         }
     }
 }

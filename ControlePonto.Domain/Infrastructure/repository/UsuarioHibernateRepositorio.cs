@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControlePonto.Infrastructure.repositorio
+namespace ControlePonto.Infrastructure.repository
 {
     public class UsuarioHibernateRepositorio : IUsuarioRepositorio
     {

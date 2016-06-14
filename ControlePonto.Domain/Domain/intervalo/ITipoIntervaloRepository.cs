@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.intervalo
 {
-    public interface ITipoIntervaloRepositorio
+    public interface ITipoIntervaloRepository
     {
         List<TipoIntervalo> findAll();
+        TipoIntervalo findByName(string nome);
+        uint save(TipoIntervalo tipoIntervalo);
     }
 }

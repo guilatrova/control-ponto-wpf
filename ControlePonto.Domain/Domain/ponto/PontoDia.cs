@@ -34,7 +34,7 @@ namespace ControlePonto.Domain.ponto
         public bool isFeriado { get; private set; }
         public bool isAberto { get; private set; }
 
-        protected List<Intervalo> Intervalos { get; set; }
+        public List<Intervalo> Intervalos { get; set; }
 
         public PontoDia(DateTime data, TimeSpan inicio, Usuario usuario)
         {
@@ -49,7 +49,14 @@ namespace ControlePonto.Domain.ponto
 
         public Intervalo getIntervalo(TipoIntervalo tipoIntervalo)
         {
-            return Intervalos.Single(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
+            try
+            {
+                return Intervalos.Single(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
+            }
+            catch (InvalidOperationException)
+            {
+                throw new IntervaloNaoRegistradoException(tipoIntervalo);
+            }
         }
 
         public void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)

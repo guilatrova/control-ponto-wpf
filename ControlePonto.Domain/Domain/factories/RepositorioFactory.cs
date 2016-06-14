@@ -1,5 +1,5 @@
 ﻿using ControlePonto.Domain.usuario;
-using ControlePonto.Infrastructure.repositorio;
+using ControlePonto.Infrastructure.repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
