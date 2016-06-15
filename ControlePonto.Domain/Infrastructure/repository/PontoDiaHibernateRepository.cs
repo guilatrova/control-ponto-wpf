@@ -19,6 +19,7 @@ namespace ControlePonto.Infrastructure.repository
             using (ISession session = NHibernateHelper.openSession())
             {
                 session.SaveOrUpdate(ponto);
+                session.Flush();
                 return ponto.Id;
             }
         }
@@ -58,6 +59,8 @@ namespace ControlePonto.Infrastructure.repository
                     .Add(Restrictions.Eq("isAberto", true))
                     .Add(Restrictions.Eq("Usuario", funcionario))
                     .Add(Restrictions.Eq("Data", date.Date))
+                    .SetFetchMode("Intervalos", FetchMode.Eager)
+                    .SetFetchMode("Intervalos.TipoIntervalo", FetchMode.Eager)
                     .UniqueResult<PontoDia>();
             }
         }

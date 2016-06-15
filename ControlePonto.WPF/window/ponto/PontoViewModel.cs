@@ -24,24 +24,16 @@ namespace ControlePonto.WPF.window.ponto
         private ICommand _entrarIntervaloCommand;
         private ICommand _sairIntervaloCommand;
 
-        public PontoViewModel(Funcionario funcionario, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
+        public PontoViewModel(Funcionario funcionario, PontoDia ponto, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
         {
             this.funcionario = funcionario;
+            this.ponto = ponto;
             this.pontoService = pontoService;
-            this.tipoIntervaloRepository = tipoRepository;
-
-            setPontoDia();
+            this.tipoIntervaloRepository = tipoRepository;            
 
             _encerrarDiaCommand = new RelayCommand(confirmarEncerrarDia);
             _entrarIntervaloCommand = new RelayParameterEvaluatorCommand<TipoIntervalo>(registrarIntervalo, podeEntrarIntervalo);
             _sairIntervaloCommand = new RelayParameterEvaluatorCommand<TipoIntervalo>(registrarIntervalo, podeSairIntervalo);
-        }
-
-        private void setPontoDia()
-        {
-            ponto = pontoService.recuperarPontoAbertoFuncionario(funcionario);
-            if (ponto == null)
-                ponto = pontoService.iniciarDia();
         }
 
         #region Propriedades
@@ -125,7 +117,7 @@ namespace ControlePonto.WPF.window.ponto
                 try
                 {
                     pontoService.encerrarDia(ponto);
-                    //TODO fechar janela
+                    //TODO fechar window
                 }
                 catch (Exception e)
                 {

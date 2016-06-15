@@ -14,8 +14,8 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
         {
             Id(x => x.Id).GeneratedBy.Identity();
 
-            Map(x => x.Entrada).CustomType("TimeAsTimeSpan").Not.Nullable();
-            Map(x => x.Saida).CustomType("TimeAsTimeSpan");
+            Map(x => x.Entrada).CustomType(typeof(TimeAsTimeSpanTypeClone)).Not.Nullable();
+            Map(x => x.Saida).CustomType(typeof(TimeAsTimeSpanTypeClone));
 
             References(x => x.TipoIntervalo);                
         }

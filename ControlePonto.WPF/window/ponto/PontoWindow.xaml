@@ -4,13 +4,14 @@
                  xmlns:base="clr-namespace:ControlePonto.WPF.window"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:frmwrk="clr-namespace:ControlePonto.WPF.framework"
-                 Title="PontoWindow"
+                 Title="{Binding Titulo}"
                  Width="400"
                  SizeToContent="Height">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         
         <Style TargetType="Button">
@@ -53,16 +54,18 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Content="Entrar"
-                                Command="{Binding EntrarIntervaloCommand}"
-                                CommandParameter="{Binding}"/>
-                        
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                        AncestorType={x:Type Window}}, Path=DataContext.EntrarIntervaloCommand}"
+                                CommandParameter="{Binding .}"/>                        
+
                         <Label Grid.Column="1" 
                                Content="{Binding Nome}" />
 
                         <Button Grid.Column="2" 
                                 Content="Sair"
-                                Command="{Binding SairIntervaloCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                        AncestorType={x:Type Window}}, Path=DataContext.SairIntervaloCommand}"
+                                CommandParameter="{Binding .}"/>
 
                     </Grid>
                 </DataTemplate>

@@ -14,24 +14,13 @@ namespace ControlePonto.WPF.window.ponto
 {
     public class PontoWindowFactory
     {
-        public static PontoWindow criarPontoWindow()
+        public static PontoWindow criarPontoWindow(PontoDia ponto, PontoService pontoService)
         {
             return new PontoWindow(new PontoViewModel(
                 (Funcionario)SessaoLogin.getSessao().UsuarioLogado,
-                criarPontoService(),
+                ponto,
+                pontoService,
                 RepositoryFactory.criarTipoIntervaloRepositorio()));
-        }
-
-        private static PontoService criarPontoService()
-        {
-            var repo = RepositoryFactory.criarPontoRepositorio();
-                
-            return new PontoService(new PontoFactory(),
-                new DataHoraServerStrategy(),
-                new FuncionarioPossuiPontoAbertoSpecification(repo),
-                new FuncionarioJaTrabalhouHojeSpecification(repo),
-                SessaoLogin.getSessao(),
-                repo);
         }
     }
 }

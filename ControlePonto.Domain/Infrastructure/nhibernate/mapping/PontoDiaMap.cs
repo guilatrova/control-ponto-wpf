@@ -17,7 +17,7 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
 
             Map(x => x.Data).Not.Nullable();
             Map(x => x.Inicio)
-                .CustomType(typeof(TimeAsTimeSpanTypeClone))                
+                .CustomType(typeof(TimeAsTimeSpanTypeClone))
                 .Not.Nullable();
             Map(x => x.Fim)
                 .CustomType(typeof(TimeAsTimeSpanTypeClone));

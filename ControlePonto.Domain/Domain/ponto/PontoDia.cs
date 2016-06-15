@@ -26,7 +26,7 @@ namespace ControlePonto.Domain.ponto
             }
             set
             {
-                Check.Require(!_Fim.HasValue);
+                Check.Require(!_Fim.HasValue, "O horário do ponto não pode ser alterado");
                 _Fim = value;
                 isAberto = false;
             }

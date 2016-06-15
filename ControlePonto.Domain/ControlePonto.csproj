@@ -54,6 +54,7 @@
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\factories\RepositoryFactory.cs" />
     <Compile Include="Domain\factories\services\LoginServiceFactory.cs" />
+    <Compile Include="Domain\factories\services\PontoServiceFactory.cs" />
     <Compile Include="Domain\framework\specification\AndSpecification.cs" />
     <Compile Include="Domain\framework\specification\CompositeSpecification.cs" />
     <Compile Include="Domain\framework\specification\ISpecification.cs" />
