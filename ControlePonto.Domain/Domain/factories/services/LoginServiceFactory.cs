@@ -12,7 +12,7 @@ namespace ControlePonto.Domain.factories.services
     {
         public static ILoginService criarLoginService()
         {
-            usuario.IUsuarioRepositorio repo = RepositorioFactory.criarUsuarioRepositorio();
+            usuario.IUsuarioRepositorio repo = RepositoryFactory.criarUsuarioRepositorio();
 
             return new LoginService(
                 repo,

@@ -12,6 +12,8 @@ namespace ControlePonto.Domain.intervalo
 
         public virtual string Nome { get; protected set; }//TODO unique
 
+        protected TipoIntervalo() { }
+
         public TipoIntervalo(string nome)
         {
             base.checkPreConstructor();

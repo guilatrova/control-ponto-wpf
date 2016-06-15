@@ -40,9 +40,25 @@ namespace ControlePonto.Infrastructure.repository
         {
             using (ISession session = NHibernateHelper.openSession())
             {
-                return session.QueryOver<PontoDia>()
-                    .Where(x => x.Data == date.Date && x.Usuario.Equals((Usuario)funcionario))
-                    .RowCount() > 0;
+                return
+                session.CreateCriteria<PontoDia>()
+                    .Add(Restrictions.Eq("Data", date.Date))
+                    .Add(Restrictions.Eq("Usuario", (Usuario)funcionario))
+                    .SetProjection(Projections.RowCount())
+                    .UniqueResult<int>() > 0;
+            }
+        }
+
+
+        public PontoDia findPontoAberto(Funcionario funcionario, DateTime date)
+        {
+            using (ISession session = NHibernateHelper.openSession())
+            {
+                return session.CreateCriteria<PontoDia>()
+                    .Add(Restrictions.Eq("isAberto", true))
+                    .Add(Restrictions.Eq("Usuario", funcionario))
+                    .Add(Restrictions.Eq("Data", date.Date))
+                    .UniqueResult<PontoDia>();
             }
         }
     }

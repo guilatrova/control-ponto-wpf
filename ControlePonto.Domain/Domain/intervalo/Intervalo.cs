@@ -33,6 +33,8 @@ namespace ControlePonto.Domain.intervalo
         }
         public virtual TipoIntervalo TipoIntervalo { get; protected set; }
 
+        protected Intervalo() { }
+
         public Intervalo(TipoIntervalo tipo, TimeSpan entrada)
         {
             TipoIntervalo = tipo;

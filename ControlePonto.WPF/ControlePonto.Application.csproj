@@ -60,6 +60,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="framework\RelayParameterEvaluatorCommand.cs" />
+    <Compile Include="window\ponto\PontoViewModel.cs" />
+    <Compile Include="window\ponto\PontoWindow.xaml.cs">
+      <DependentUpon>PontoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="window\ponto\PontoWindowFactory.cs" />
     <Compile Include="window\usuario\LoginViewModel.cs" />
     <Compile Include="window\usuario\LoginWindow.xaml.cs" />
     <Compile Include="window\usuario\UsuarioWindowFactory.cs" />
@@ -113,14 +119,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="window\ponto\PontoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="window\usuario\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="window\ponto\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

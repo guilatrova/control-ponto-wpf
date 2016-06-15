@@ -1,5 +1,6 @@
 ﻿using ControlePonto.Domain.ponto;
 using FluentNHibernate.Mapping;
+using NHibernate.Type;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +16,17 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
             Id(x => x.Id).GeneratedBy.Identity();
 
             Map(x => x.Data).Not.Nullable();
-            Map(x => x.Inicio).CustomType("TimeAsTimeSpan").Not.Nullable();
-            Map(x => x.Fim).CustomType("TimeAsTimeSpan");
+            Map(x => x.Inicio)
+                .CustomType(typeof(TimeAsTimeSpanTypeClone))                
+                .Not.Nullable();
+            Map(x => x.Fim)
+                .CustomType(typeof(TimeAsTimeSpanTypeClone));
             Map(x => x.isAberto);
 
             HasMany(x => x.Intervalos)
                 .Cascade.All();
 
-            References(x => x.Usuario);
+            References(x => x.Usuario).Not.Nullable();
         }
     }
 }

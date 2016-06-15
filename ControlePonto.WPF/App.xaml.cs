@@ -1,4 +1,5 @@
-﻿using ControlePonto.WPF.window.usuario;
+﻿using ControlePonto.WPF.window.ponto;
+using ControlePonto.WPF.window.usuario;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,7 +17,15 @@ namespace ControlePonto.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            UsuarioWindowFactory.criarLoginWindow().Show();
+            var loginWindow = UsuarioWindowFactory.criarLoginWindow();
+            Window main = new Window();
+
+            var loginSuccess = loginWindow.ShowDialog();
+            if (loginSuccess.HasValue && loginSuccess.Value)
+            {
+                var pontoWindow = PontoWindowFactory.criarPontoWindow();
+                pontoWindow.Show();
+            }
         }
     }
 }

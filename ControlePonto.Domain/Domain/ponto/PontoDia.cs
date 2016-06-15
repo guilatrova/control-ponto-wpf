@@ -12,11 +12,13 @@ namespace ControlePonto.Domain.ponto
 {
     public class PontoDia : Entity<ulong>
     {
-        public DateTime Data { get; private set; }
-        public TimeSpan Inicio { get; private set; }
+        #region Propriedades
+
+        public virtual DateTime Data { get; protected set; }
+        public virtual TimeSpan Inicio { get; protected set; }
 
         private TimeSpan? _Fim;
-        public TimeSpan? Fim 
+        public virtual TimeSpan? Fim 
         {
             get
             {
@@ -30,15 +32,20 @@ namespace ControlePonto.Domain.ponto
             }
         }
 
-        public Usuario Usuario { get; private set; }
-        public bool isFeriado { get; private set; }
-        public bool isAberto { get; private set; }
+        public virtual Usuario Usuario { get; protected set; }
+        public virtual bool isFeriado { get; protected set; }
+        public virtual bool isAberto { get; protected set; }
 
-        public List<Intervalo> Intervalos { get; set; }
+        public virtual ICollection<Intervalo> Intervalos { get; set; }
+
+        #endregion
+
+        protected PontoDia() { }
 
         public PontoDia(DateTime data, TimeSpan inicio, Usuario usuario)
         {
             base.checkPreConstructor();
+            Check.Require(usuario != null, "O usuário não deve ser nulo");
 
             Data = data;
             Inicio = inicio;
@@ -47,7 +54,7 @@ namespace ControlePonto.Domain.ponto
             Intervalos = new List<Intervalo>();
         }
 
-        public Intervalo getIntervalo(TipoIntervalo tipoIntervalo)
+        public virtual Intervalo getIntervalo(TipoIntervalo tipoIntervalo)
         {
             try
             {
@@ -59,9 +66,14 @@ namespace ControlePonto.Domain.ponto
             }
         }
 
-        public void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)
+        public virtual bool intervaloRegistrado(TipoIntervalo tipoIntervalo)
         {
-            if (Intervalos.Exists(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome)))
+            return Intervalos.Any(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
+        }
+
+        public virtual void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)
+        {
+            if (Intervalos.ToList().Exists(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome)))
             {
                 var intervalo = getIntervalo(tipoIntervalo);
                 if (intervalo.Saida.HasValue)
@@ -75,12 +87,12 @@ namespace ControlePonto.Domain.ponto
             }
         }
 
-        public bool algumIntervaloEmAberto()
+        public virtual bool algumIntervaloEmAberto()
         {
             return Intervalos.Any(x => !x.Saida.HasValue);
         }
 
-        public Intervalo getIntervaloEmAberto()
+        public virtual Intervalo getIntervaloEmAberto()
         {
             return Intervalos.FirstOrDefault(x => !x.Saida.HasValue);
         }

@@ -30,5 +30,11 @@ namespace ControlePonto.Tests.mocks.repository
             return
                 listRep.Any(x => x.Data == date.Date && x.Usuario == funcionario);
         }
+
+
+        public PontoDia findPontoAberto(Funcionario funcionario, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Entity.cs" />
-    <Compile Include="Domain\factories\RepositorioFactory.cs" />
+    <Compile Include="Domain\factories\RepositoryFactory.cs" />
     <Compile Include="Domain\factories\services\LoginServiceFactory.cs" />
     <Compile Include="Domain\framework\specification\AndSpecification.cs" />
     <Compile Include="Domain\framework\specification\CompositeSpecification.cs" />
@@ -92,12 +92,14 @@
     <Compile Include="Domain\usuario\SenhaValidaSpecification.cs" />
     <Compile Include="Domain\usuario\Usuario.cs" />
     <Compile Include="Domain\usuario\UsuarioFactory.cs" />
+    <Compile Include="Infrastructure\nhibernate\DataHoraServerStrategy.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\FuncionarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\IntervaloMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\PontoDiaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\TipoIntervaloMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\UsuarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\NHibernateHelper.cs" />
+    <Compile Include="Infrastructure\nhibernate\TimeAsTimeSpanTypeFixed.cs" />
     <Compile Include="Infrastructure\repository\PontoDiaHibernateRepository.cs" />
     <Compile Include="Infrastructure\repository\TipoIntervaloHibernateRepositorio.cs" />
     <Compile Include="Infrastructure\repository\UsuarioHibernateRepositorio.cs" />

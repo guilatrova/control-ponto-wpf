@@ -15,10 +15,11 @@ namespace ControlePonto.Domain.services.ponto
         private PontoFactory pontoFactory;
         private SessaoLogin sessaoLogin;
         private IDataHoraStrategy dataHoraStrategy;
+        private IPontoDiaRepository pontoRepository;
         private FuncionarioPossuiPontoAbertoSpecification deixouPontoAberto;
         private FuncionarioJaTrabalhouHojeSpecification jaTrabalhouHoje;
 
-        public PontoService(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec,  FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin)
+        public PontoService(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec,  FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin, IPontoDiaRepository pontoRepository)
         {
             this.pontoFactory = pontoFactory;
             this.dataHoraStrategy = dataHoraStrategy;
@@ -26,6 +27,7 @@ namespace ControlePonto.Domain.services.ponto
             this.jaTrabalhouHoje = funcTrabSpec;
             this.jaTrabalhouHoje.Data = dataHoraStrategy.getDataHoraAtual();
             this.sessaoLogin = sessaoLogin;
+            this.pontoRepository = pontoRepository;
         }
 
         public PontoDia iniciarDia()
@@ -36,7 +38,9 @@ namespace ControlePonto.Domain.services.ponto
             if (jaTrabalhouHoje.IsSatisfiedBy((Funcionario)sessaoLogin.UsuarioLogado))
                 throw new PontoDiaJaExisteException(jaTrabalhouHoje.Data);
 
-            return pontoFactory.criarPonto(dataHoraStrategy, sessaoLogin);
+            var ponto = pontoFactory.criarPonto(dataHoraStrategy, sessaoLogin);
+            pontoRepository.save(ponto);
+            return ponto;
         }
 
         public void encerrarDia(PontoDia ponto)
@@ -45,6 +49,18 @@ namespace ControlePonto.Domain.services.ponto
                 throw new IntervaloEmAbertoException(ponto.getIntervaloEmAberto());            
 
             ponto.Fim = dataHoraStrategy.getDataHoraAtual().TimeOfDay;
+            pontoRepository.save(ponto);
+        }
+
+        public PontoDia recuperarPontoAbertoFuncionario(Funcionario funcionario)
+        {
+            return pontoRepository.findPontoAberto(funcionario, dataHoraStrategy.getDataHoraAtual());
+        }
+
+        public void registrarIntervalo(TipoIntervalo tipoIntervalo, PontoDia ponto)
+        {
+            ponto.registrarIntervalo(tipoIntervalo, dataHoraStrategy);
+            pontoRepository.save(ponto);
         }
     }
 }

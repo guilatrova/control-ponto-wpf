@@ -11,7 +11,7 @@ namespace ControlePonto.Domain.ponto
     {
         ulong save(PontoDia ponto);
         List<PontoDia> findPontosAbertos(Funcionario funcionario);
-
+        PontoDia findPontoAberto(Funcionario funcionario, DateTime date);
         bool existePontoDia(Funcionario funcionario, DateTime date);
     }
 }

@@ -28,12 +28,10 @@ namespace ControlePonto.Domain.services.login
                 usuario = usuarioRepositorio.findByLogin(login);
                 if (usuario == null || usuario.Senha != senha)
                     throw new LoginInvalidoException();
+                sessaoLogin.iniciar(usuario);
                 return usuario;
             }
-            finally
-            {
-                sessaoLogin.iniciar(usuario);
-            }
-        }
+            finally { }
+        }        
     }
 }

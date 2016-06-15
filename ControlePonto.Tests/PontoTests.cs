@@ -49,11 +49,12 @@ namespace ControlePonto.Tests
             if (repository == null)
                 repository = new PontoDiaMockRepository();
 
-            return new PontoService(factory, 
+            return new PontoService(factory,
                 dataHoraStrategy, 
                 new FuncionarioPossuiPontoAbertoSpecification(repository),
                 new FuncionarioJaTrabalhouHojeSpecification(repository),
-                sessao);
+                sessao,
+                repository);
         }
 
         [TestMethod, TestCategory("Quebra de contrato")]

@@ -16,7 +16,7 @@ namespace ControlePonto.WPF.window.usuario
         {
             return new LoginWindow(new LoginViewModel(
                 LoginServiceFactory.criarLoginService(),
-                RepositorioFactory.criarUsuarioRepositorio()
+                RepositoryFactory.criarUsuarioRepositorio()
             ));
         }
     }
