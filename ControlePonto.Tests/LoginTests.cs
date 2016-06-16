@@ -25,6 +25,7 @@ namespace ControlePonto.Tests
             loginService = new LoginService(usuarioRepositorio, usuarioFactory, SessaoLogin.getSessao());            
 
             usuarioRepositorio.save(usuarioFactory.criarUsuario("João", "joaozinho", "123456"));
+            usuarioRepositorio.save(usuarioFactory.criarUsuario("Maria", "maria", "123456"));
         }
 
         [TestMethod]

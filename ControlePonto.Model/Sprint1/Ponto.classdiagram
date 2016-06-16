@@ -442,9 +442,6 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
-          <operation Id="31a71e89-8861-4a65-a166-c2a857149904" name="baterPonto" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="5ef7c7a2-ce43-4871-b49e-d93eee9cd530" />
-          </operation>
         </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>

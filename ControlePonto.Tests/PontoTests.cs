@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.intervalo;
+using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.services.ponto;
@@ -177,7 +178,7 @@ namespace ControlePonto.Tests
             }
             catch (DiaEmAbertoException ex)
             {
-                Assert.AreEqual("O ponto do dia 10/06/2016 não foi encerrado, avise o gerente", ex.Message);
+                Assert.AreEqual("O ponto do dia 10/06/2016 não foi encerrado", ex.Message);
             }
 
             var serviceCorreto = criarService(inicioDoDia, repositorio, funcionarioCorreto);
@@ -251,6 +252,61 @@ namespace ControlePonto.Tests
 
             var intervalo = ponto.getIntervalo(tipoAlmoco);
             intervalo.Saida = entradaAlmoco.TimeOfDay;
+        }
+
+        [TestMethod]
+        public void pontoDeveCalcularHorasExtras()
+        {
+            var ponto = criarPontoDoDia(22, 8, 2014);                                           //09:00 - INÍCIO
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 15));//12:15 - ALMOÇO
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 13, 00));//13:00 - SAÍDA ALMOÇO
+            criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);     //19:00 - FIM
+                                                                                                                        
+            var jornada = new JornadaTrabalho();
+            jornada.cadastrarDia(DayOfWeek.Sunday, DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(1, 0, 0));
+
+            /* DESCRIÇÃO | ENTRADA | SAÍDA | DURAÇÃO | TOTAL
+             * TRABALHO  |  09:00  | 19:00 | 10:00   | 10:00
+             * ALMOÇO    |  12:15  | 13:00 | 00:45   | 09:15
+             *                               EXTRA   | 01:15 (Jornada configurada para 8 horas) */            
+            Assert.AreEqual(new TimeSpan(1, 15, 0), ponto.calcularHorasExtras(jornada));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DiaEmAbertoException))]
+        public void pontoNaoDeveCalcularHorasExtrasQuandoEstiverAberto()
+        {
+            var ponto = criarPontoDoDia(22, 8, 2014);                                           //09:00 - INÍCIO
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 15));//12:15 - ALMOÇO
+
+            var jornada = new JornadaTrabalho();
+            jornada.cadastrarDia(DayOfWeek.Sunday, DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(1, 0, 0));
+            ponto.calcularHorasExtras(jornada);
+        }
+
+        [TestMethod]
+        public void pontoDeveCalcularHorasExtrasDoDiaCorreto()
+        {
+            var ponto = criarPontoDoDia(11, 6, 2016, 10, 0); //Sábado
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 00));
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 30));
+            criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
+
+            var jornada = new JornadaTrabalho();
+            //Configurado para 6 horas (7 horas - 1 hora de folga)
+            jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(10, 0, 0), new TimeSpan(17, 0, 0), new TimeSpan(1, 0, 0));
+            Assert.AreEqual(new TimeSpan(2, 30, 0), ponto.calcularHorasExtras(jornada));
+        }
+
+        [TestMethod]
+        public void pontoDeveCalcularHorasTrabalhadas()
+        {
+            var ponto = criarPontoDoDia(22, 8, 2014);
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12));
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 13));
+            criarService(new DataHoraMockStrategy(22, 8, 2014, 18)).encerrarDia(ponto);
+
+            Assert.AreEqual(new TimeSpan(8, 0, 0), ponto.calcularHorasTrabalhadas());
         }
     }
 }

@@ -66,6 +66,9 @@
     <Compile Include="Domain\intervalo\TipoIntervalo.cs" />
     <Compile Include="Domain\intervalo\TipoIntervaloFactory.cs" />
     <Compile Include="Domain\intervalo\TipoIntervaloJaExisteException.cs" />
+    <Compile Include="Domain\jornada\DiaJornada.cs" />
+    <Compile Include="Domain\jornada\DiaJornadaReadOnly.cs" />
+    <Compile Include="Domain\jornada\JornadaTrabalho.cs" />
     <Compile Include="Domain\ponto\DiaEmAbertoException.cs" />
     <Compile Include="Domain\ponto\FuncionarioJaTrabalhouHojeSpecification.cs" />
     <Compile Include="Domain\ponto\FuncionarioPossuiPontoAbertoSpecification.cs" />
@@ -94,8 +97,10 @@
     <Compile Include="Domain\usuario\Usuario.cs" />
     <Compile Include="Domain\usuario\UsuarioFactory.cs" />
     <Compile Include="Infrastructure\nhibernate\DataHoraServerStrategy.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\DiaJornadaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\FuncionarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\IntervaloMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\JornadaTrabalhoMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\PontoDiaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\TipoIntervaloMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\UsuarioMap.cs" />

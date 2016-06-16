@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.intervalo;
+using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.utils;
@@ -95,6 +96,27 @@ namespace ControlePonto.Domain.ponto
         public virtual Intervalo getIntervaloEmAberto()
         {
             return Intervalos.FirstOrDefault(x => !x.Saida.HasValue);
+        }
+
+        public TimeSpan calcularHorasTrabalhadas()
+        {
+            if (isAberto) throw new DiaEmAbertoException(this);
+
+            var descanso = new TimeSpan(Intervalos.Sum(x => x.Saida.Value.Subtract(x.Entrada).Ticks));
+            var trabalhado = Fim.Value.Subtract(Inicio);
+
+            return trabalhado.Subtract(descanso);
+        }
+
+        public TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
+        {
+            if (isAberto) throw new DiaEmAbertoException(this);
+
+            DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
+            var trabalhado = calcularHorasTrabalhadas();
+            var esperado = diaJornada.calcularHorasTrabalhoEsperado();
+
+            return trabalhado.Subtract(esperado);
         }
     }
 }

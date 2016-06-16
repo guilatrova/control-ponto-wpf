@@ -43,13 +43,6 @@
       <SubType>Content</SubType>
       <DependentUpon>Sprint1\Ponto.classdiagram</DependentUpon>
     </Content>
-    <Content Include="Sprint1\Specifications.classdiagram">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Sprint1\Specifications.classdiagram.layout">
-      <SubType>Content</SubType>
-      <DependentUpon>Sprint1\Specifications.classdiagram</DependentUpon>
-    </Content>
     <Folder Include="ModelDefinition\" />
     <Content Include="ModelDefinition\ControlePonto.Model.uml">
       <SubType>Content</SubType>
