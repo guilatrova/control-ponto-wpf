@@ -15,6 +15,8 @@ namespace ControlePonto.Domain.jornada
 
         public JornadaTrabalho() 
         {
+            base.checkPreConstructor();
+
             Dias = new List<DiaJornada>(7);
             for (DayOfWeek day = DayOfWeek.Sunday; day <= DayOfWeek.Saturday; day++)
                 Dias.Add(new DiaJornada(day, NAO_DEFINIDO, NAO_DEFINIDO, NAO_DEFINIDO));

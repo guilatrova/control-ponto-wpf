@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="mocks\DataHoraMockListStrategy.cs" />
     <Compile Include="mocks\DataHoraMockStrategy.cs" />
+    <Compile Include="mocks\repository\JornadaTrabalhoMockRepository.cs" />
     <Compile Include="mocks\repository\PontoDiaMockRepository.cs" />
     <Compile Include="mocks\repository\TipoIntervaloMockRepository.cs" />
     <Compile Include="mocks\SessaoLoginMock.cs" />

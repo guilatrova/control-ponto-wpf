@@ -14,7 +14,8 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
         {
             Id(x => x.Id).GeneratedBy.Identity();
 
-            References(x => x.Dias)                
+            HasMany(x => x.Dias)
+                .Cascade.All()
                 .Not.LazyLoad();
         }
     }

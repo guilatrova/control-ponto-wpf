@@ -58,6 +58,11 @@ namespace ControlePonto.Tests
                 repository);
         }
 
+        private JornadaTrabalho criarJornada()
+        {
+            return new JornadaTrabalhoFactory(new JornadaTrabalhoMockRepository()).criarJornadaTrabalho();
+        }
+
         [TestMethod, TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void pontoSoDeveSerCriadoPelaFactory()
@@ -261,8 +266,8 @@ namespace ControlePonto.Tests
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 15));//12:15 - ALMOÇO
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 13, 00));//13:00 - SAÍDA ALMOÇO
             criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);     //19:00 - FIM
-                                                                                                                        
-            var jornada = new JornadaTrabalho();
+
+            var jornada = criarJornada();
             jornada.cadastrarDia(DayOfWeek.Sunday, DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(1, 0, 0));
 
             /* DESCRIÇÃO | ENTRADA | SAÍDA | DURAÇÃO | TOTAL
@@ -279,7 +284,7 @@ namespace ControlePonto.Tests
             var ponto = criarPontoDoDia(22, 8, 2014);                                           //09:00 - INÍCIO
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 15));//12:15 - ALMOÇO
 
-            var jornada = new JornadaTrabalho();
+            var jornada = criarJornada();
             jornada.cadastrarDia(DayOfWeek.Sunday, DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(1, 0, 0));
             ponto.calcularHorasExtras(jornada);
         }
@@ -292,7 +297,7 @@ namespace ControlePonto.Tests
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 30));
             criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
 
-            var jornada = new JornadaTrabalho();
+            var jornada = criarJornada();
             //Configurado para 6 horas (7 horas - 1 hora de folga)
             jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(10, 0, 0), new TimeSpan(17, 0, 0), new TimeSpan(1, 0, 0));
             Assert.AreEqual(new TimeSpan(2, 30, 0), ponto.calcularHorasExtras(jornada));
