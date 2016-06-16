@@ -61,6 +61,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="framework\RelayParameterEvaluatorCommand.cs" />
+    <Compile Include="window\jornada\JornadaTrabalhoWindow.xaml.cs">
+      <DependentUpon>JornadaTrabalhoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="window\ponto\PontoViewModel.cs" />
     <Compile Include="window\ponto\PontoWindow.xaml.cs">
       <DependentUpon>PontoWindow.xaml</DependentUpon>
@@ -119,6 +122,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="window\jornada\JornadaTrabalhoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="window\ponto\PontoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
