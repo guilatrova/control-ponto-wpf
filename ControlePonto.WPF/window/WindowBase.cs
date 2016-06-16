@@ -46,6 +46,8 @@ namespace ControlePonto.WPF.window
 
         protected virtual void viewRequested(object sender, ViewRequestEventArgs e)
         {
+            if (e.RequestCode == ViewModelBase.CLOSE)
+                Close();
         }
 
         protected virtual void messageBoxRequested(object sender, framework.MvvmMessageBoxEventArgs e)

@@ -58,5 +58,12 @@ namespace ControlePonto.Tests
             repository.save(jornada);
             factory.criarJornadaTrabalho();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(PreconditionException))]
+        public void jornadaTrabalhoSoPodeSerCriadoNaFactory()
+        {
+            new JornadaTrabalho();
+        }
     }
 }

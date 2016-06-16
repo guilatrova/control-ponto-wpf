@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.intervalo;
+using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Infrastructure.repository;
@@ -12,19 +13,24 @@ namespace ControlePonto.Domain.factories
 {
     public class RepositoryFactory
     {
-        public static IUsuarioRepositorio criarUsuarioRepositorio()
+        public static IUsuarioRepositorio criarUsuarioRepository()
         {
             return new UsuarioHibernateRepositorio();
         }
 
-        public static IPontoDiaRepository criarPontoRepositorio()
+        public static IPontoDiaRepository criarPontoRepository()
         {
             return new PontoDiaHibernateRepository();
         }
 
-        public static ITipoIntervaloRepository criarTipoIntervaloRepositorio()
+        public static ITipoIntervaloRepository criarTipoIntervaloRepository()
         {
             return new TipoIntervaloHibernateRepositorio();
+        }
+
+        public static IJornadaTrabalhoRepository criarJornadaTrabalhoRepository()
+        {
+            return new JornadaTrabalhoHibernateRepository();
         }
     }
 }

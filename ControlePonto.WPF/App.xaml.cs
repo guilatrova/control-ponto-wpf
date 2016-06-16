@@ -3,6 +3,7 @@ using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
+using ControlePonto.WPF.window.jornada;
 using ControlePonto.WPF.window.ponto;
 using ControlePonto.WPF.window.usuario;
 using System;
@@ -22,6 +23,9 @@ namespace ControlePonto.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            JornadaWindowFactory.criarJornadaWindow().Show();
+            //TODO Volta pra login
+            /*
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;            
 
             var loginWindow = UsuarioWindowFactory.criarLoginWindow();
@@ -40,7 +44,7 @@ namespace ControlePonto.WPF
                     MessageBox.Show(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            Current.Shutdown();
+            Current.Shutdown();*/
         }
 
         private PontoDia recuperarOuIniciarPonto(PontoService pontoService)

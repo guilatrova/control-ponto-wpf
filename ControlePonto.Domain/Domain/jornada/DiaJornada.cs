@@ -24,7 +24,7 @@ namespace ControlePonto.Domain.jornada
 
         protected internal DiaJornada(DayOfWeek diaSemana)
         {
-            this.DiaSemana = DiaSemana;
+            this.DiaSemana = diaSemana;
         }
 
         protected DiaJornada() { }

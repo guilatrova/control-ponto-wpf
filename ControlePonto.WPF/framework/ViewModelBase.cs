@@ -16,6 +16,8 @@ namespace ControlePonto.WPF.framework
         public const string FOCUS_START = "START";
         public const string FOCUS_MAIN = "MAIN";
 
+        public const int CLOSE = -1;
+
         #region Evento para resetar o DataContext
         public event EventHandler<DataContextResetEventArgs> ResetDataContextRequest;
 

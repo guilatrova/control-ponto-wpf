@@ -98,7 +98,7 @@ namespace ControlePonto.Domain.ponto
             return Intervalos.FirstOrDefault(x => !x.Saida.HasValue);
         }
 
-        public TimeSpan calcularHorasTrabalhadas()
+        public virtual TimeSpan calcularHorasTrabalhadas()
         {
             if (isAberto) throw new DiaEmAbertoException(this);
 
@@ -108,7 +108,7 @@ namespace ControlePonto.Domain.ponto
             return trabalhado.Subtract(descanso);
         }
 
-        public TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
+        public virtual TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
         {
             if (isAberto) throw new DiaEmAbertoException(this);
 

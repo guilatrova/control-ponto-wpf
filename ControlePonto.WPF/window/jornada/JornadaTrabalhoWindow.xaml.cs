@@ -11,15 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Xceed.Wpf.Toolkit;
 
 namespace ControlePonto.WPF.window.jornada
 {
     /// <summary>
     /// Interaction logic for JornadaTrabalhoWindow.xaml
     /// </summary>
-    public partial class JornadaTrabalhoWindow : Window
+    public partial class JornadaTrabalhoWindow : WindowBase
     {
-        public JornadaTrabalhoWindow()
+        public JornadaTrabalhoWindow(JornadaTrabalhoViewModel viewModel) : base(viewModel)
         {
             InitializeComponent();
         }

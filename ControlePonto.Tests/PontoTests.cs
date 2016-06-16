@@ -313,5 +313,16 @@ namespace ControlePonto.Tests
 
             Assert.AreEqual(new TimeSpan(8, 0, 0), ponto.calcularHorasTrabalhadas());
         }
+
+        [TestMethod]
+        public void pontoDeveCalcularHorasExtrasEmDiasDeFolga()
+        {
+            var ponto = criarPontoDoDia(12, 6, 2016, 10, 0); //Domingo
+            criarService(new DataHoraMockStrategy(12, 6, 2016, 12, 00)).encerrarDia(ponto);
+
+            var jornada = criarJornada();
+            Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasExtras(jornada));
+            Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasTrabalhadas());
+        }
     }
 }

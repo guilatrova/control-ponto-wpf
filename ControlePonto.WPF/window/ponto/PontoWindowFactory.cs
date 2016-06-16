@@ -20,7 +20,7 @@ namespace ControlePonto.WPF.window.ponto
                 (Funcionario)SessaoLogin.getSessao().UsuarioLogado,
                 ponto,
                 pontoService,
-                RepositoryFactory.criarTipoIntervaloRepositorio()));
+                RepositoryFactory.criarTipoIntervaloRepository()));
         }
     }
 }

@@ -23,11 +23,5 @@ namespace ControlePonto.WPF.window.ponto
         {
             InitializeComponent();
         }
-
-        protected override void viewRequested(object sender, framework.ViewRequestEventArgs e)
-        {
-            if (e.RequestCode == PontoViewModel.CLOSE_VIEW)
-                Close();
-        }
     }
 }

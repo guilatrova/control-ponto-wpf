@@ -14,7 +14,7 @@ namespace ControlePonto.Domain.factories.services
     {
         public static PontoService criarPontoService()
         {
-            var repo = RepositoryFactory.criarPontoRepositorio();
+            var repo = RepositoryFactory.criarPontoRepository();
 
             return new PontoService(new PontoFactory(),
                 new DataHoraServerStrategy(),

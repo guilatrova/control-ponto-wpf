@@ -8,32 +8,29 @@ namespace ControlePonto.Domain.jornada
 {
     public class DiaJornadaReadOnly : DiaJornada
     {
+        private DiaJornada diaProtegido;
+
         protected internal DiaJornadaReadOnly(DiaJornada diaJornada) : 
             base(diaJornada.DiaSemana)
         {
-            _entrada = diaJornada.EntradaEsperada;
-            _saida = diaJornada.SaidaEsperada;
-            _folga = diaJornada.FolgaEsperada;
+            diaProtegido = diaJornada;
         }
 
-        private TimeSpan _entrada;
         public override TimeSpan EntradaEsperada
         {
-            get { return _entrada; }
+            get { return diaProtegido.EntradaEsperada; }
             set { throw new InvalidOperationException(); }
         }
 
-        private TimeSpan _saida;
         public override TimeSpan SaidaEsperada
         {
-            get { return _saida; }
+            get { return diaProtegido.SaidaEsperada; }
             set { throw new InvalidOperationException(); }
         }
 
-        private TimeSpan _folga;
         public override TimeSpan FolgaEsperada
         {
-            get { return _folga; }
+            get { return diaProtegido.FolgaEsperada; }
             set { throw new InvalidOperationException(); }
         }
     }

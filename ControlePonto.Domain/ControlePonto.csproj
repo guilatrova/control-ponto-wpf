@@ -114,6 +114,7 @@
     <Compile Include="Infrastructure\repository\TipoIntervaloHibernateRepositorio.cs" />
     <Compile Include="Infrastructure\repository\UsuarioHibernateRepositorio.cs" />
     <Compile Include="Infrastructure\utils\DesignByContract.cs" />
+    <Compile Include="Infrastructure\utils\DiaSemanaTradutor.cs" />
     <Compile Include="Infrastructure\utils\Validacao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

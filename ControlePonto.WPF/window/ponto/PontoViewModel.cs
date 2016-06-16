@@ -20,8 +20,6 @@ namespace ControlePonto.WPF.window.ponto
         private PontoService pontoService;
         private ITipoIntervaloRepository tipoIntervaloRepository;
 
-        public const int CLOSE_VIEW = -1;
-
         private ICommand _encerrarDiaCommand;
         private ICommand _entrarIntervaloCommand;
         private ICommand _sairIntervaloCommand;
@@ -119,7 +117,7 @@ namespace ControlePonto.WPF.window.ponto
                 try
                 {
                     pontoService.encerrarDia(ponto);
-                    requestView(CLOSE_VIEW);
+                    requestView(CLOSE);
                 }
                 catch (Exception e)
                 {

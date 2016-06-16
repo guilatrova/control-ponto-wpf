@@ -11,23 +11,39 @@ namespace ControlePonto.Domain.jornada
     {
         public virtual ICollection<DiaJornada> Dias { get; protected set; }
 
-        private TimeSpan NAO_DEFINIDO = new TimeSpan(0, 0, 0);
+        public static TimeSpan NAO_DEFINIDO { get { return new TimeSpan(0, 0, 0); } }
 
         public JornadaTrabalho() 
-        {
-            base.checkPreConstructor();
+        {            
+            this.checkPreConstructor();
 
             Dias = new List<DiaJornada>(7);
             for (DayOfWeek day = DayOfWeek.Sunday; day <= DayOfWeek.Saturday; day++)
                 Dias.Add(new DiaJornada(day, NAO_DEFINIDO, NAO_DEFINIDO, NAO_DEFINIDO));
+        }//
+
+        protected override void checkPreConstructor()
+        {
+            var stackTrace = new System.Diagnostics.StackTrace();
+            var type = stackTrace.GetFrame(2).GetMethod().DeclaringType;
+
+            if (type != null)
+            {
+                string invoker = type.Name;
+                Check.Require(this.GetType().Name.Equals(invoker) ||
+                    invoker.Contains("Factory") ||
+                    invoker.Equals("RuntimeMethodHandle"),
+                    "O construtor só deve ser invocado por uma factory ou para clonagem. Invocado por: " + invoker);
+            }
         }
 
-        public virtual void cadastrarDia(DayOfWeek week, TimeSpan entradaEsperada, TimeSpan saidaEsperada, TimeSpan horasFolga)
+        public virtual void cadastrarDia(DayOfWeek weekDay, TimeSpan entradaEsperada, TimeSpan saidaEsperada, TimeSpan horasFolga)
         {
             Check.Require(saidaEsperada >= entradaEsperada,
-                string.Format("A saída esperada deve ser após a entrada. Entrada:{0} Saída:{1}", entradaEsperada, saidaEsperada));
+                string.Format("A saída esperada deve ser após a entrada.\nFoi recebido:\nDia: {2}\nEntrada: {0}\nSaída: {1}",
+                    entradaEsperada, saidaEsperada, DiaSemanaTradutor.traduzir(weekDay)));
 
-            var dia = Dias.Single(x => x.DiaSemana == week);
+            var dia = Dias.Single(x => x.DiaSemana == weekDay);
             dia.EntradaEsperada = entradaEsperada;
             dia.SaidaEsperada = saidaEsperada;
             dia.FolgaEsperada = horasFolga;
