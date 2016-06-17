@@ -324,5 +324,25 @@ namespace ControlePonto.Tests
             Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasExtras(jornada));
             Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasTrabalhadas());
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(IntervaloEmAbertoException))]
+        public void pontoNaoDeveEntrarEmDuasPausasAoMesmoTempo()
+        {
+            var dia = new DateTime(2014, 8, 22, 9, 0, 0);
+            var entradaAlmoco = new DateTime(2014, 8, 22, 12, 00, 0);
+            var entradaLanche = new DateTime(2014, 8, 22, 12, 30, 0);
+            var horarios = new DataHoraMockListStrategy(
+                dia,
+                dia,
+                entradaAlmoco,
+                entradaLanche               
+            );
+            var service = criarService(horarios);
+
+            var ponto = service.iniciarDia();
+            ponto.registrarIntervalo(tipoAlmoco, horarios);
+            ponto.registrarIntervalo(tipoIntervaloFactory.criarTipoIntervalo("LANCHE"), horarios);
+        }
     }
 }

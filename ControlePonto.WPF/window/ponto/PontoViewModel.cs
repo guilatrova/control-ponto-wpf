@@ -83,17 +83,24 @@ namespace ControlePonto.WPF.window.ponto
 
         private void registrarIntervalo(TipoIntervalo tipoIntervalo)
         {
-            pontoService.registrarIntervalo(tipoIntervalo, ponto);
+            try
+            {
+                pontoService.registrarIntervalo(tipoIntervalo, ponto);
+            }
+            catch (Exception ex)
+            {
+                showMessageBox(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         
         private bool podeEntrarIntervalo(TipoIntervalo tipoIntervalo)
-        {
-            return !ponto.intervaloRegistrado(tipoIntervalo);
+        {            
+            return !ponto.algumIntervaloEmAberto() && !ponto.intervaloFoiRegistrado(tipoIntervalo);
         }
 
         private bool podeSairIntervalo(TipoIntervalo tipoIntervalo)
         {
-            if (ponto.intervaloRegistrado(tipoIntervalo))
+            if (ponto.intervaloFoiRegistrado(tipoIntervalo))
             {
                 var intervalo = ponto.getIntervalo(tipoIntervalo);
                 return !intervalo.Saida.HasValue; //Se não houver saída, então pode registrar

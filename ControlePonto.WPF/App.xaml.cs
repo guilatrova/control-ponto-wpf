@@ -23,14 +23,14 @@ namespace ControlePonto.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            JornadaWindowFactory.criarJornadaWindow().Show();
-            //TODO Volta pra login
-            /*
-            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;            
+            //JornadaWindowFactory.criarJornadaWindow().Show();
+            //TODO Volta pra login            
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            tratarArgumentos(e.Args);
 
             var loginWindow = UsuarioWindowFactory.criarLoginWindow();
             var loginResult = loginWindow.ShowDialog();
-
             if (loginResult.HasValue && loginResult.Value)
             {                
                 try
@@ -44,7 +44,7 @@ namespace ControlePonto.WPF
                     MessageBox.Show(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            Current.Shutdown();*/
+            Current.Shutdown();
         }
 
         private PontoDia recuperarOuIniciarPonto(PontoService pontoService)
@@ -53,6 +53,26 @@ namespace ControlePonto.WPF
             if (ponto == null)
                 return pontoService.iniciarDia();
             return ponto;
+        }
+
+        private void tratarArgumentos(string[] args)
+        {
+            if (args.Length == 1)
+            {
+                Task.Factory.StartNew(() => aplicarHost(args[0]));
+            }
+        }
+
+        private void aplicarHost(string host)
+        {
+            try
+            {
+                ControlePonto.Infrastructure.nhibernate.NHibernateHelper.Host = host;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Não foi possível conectar-se ao banco de dados", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

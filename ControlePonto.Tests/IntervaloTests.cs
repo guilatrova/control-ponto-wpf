@@ -45,5 +45,18 @@ namespace ControlePonto.Tests
 
             factory.criarTipoIntervalo("ALMOÇO");
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(TipoIntervaloJaExisteException))]
+        public void tipoIntervaloNaoDeveDiferenciarMaiusculaDeMinusculas()
+        {
+            var repository = new TipoIntervaloMockRepository();
+            var factory = criarFactory(repository);
+
+            var tipo = factory.criarTipoIntervalo("ALMOÇO");
+            repository.save(tipo);
+
+            factory.criarTipoIntervalo("almoço");   
+        }
     }
 }

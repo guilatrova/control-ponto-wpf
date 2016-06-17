@@ -54,6 +54,25 @@ namespace ControlePonto.Domain.ponto
             isAberto = true;
             Intervalos = new List<Intervalo>();
         }
+        
+        public virtual void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)
+        {
+            if (isIntervaloAberto(tipoIntervalo))
+            {
+                var intervalo = getIntervalo(tipoIntervalo);
+                if (intervalo.Saida.HasValue)
+                    throw new IntervaloJaRegistradoException(tipoIntervalo);
+
+                intervalo.Saida = dataHoraStrategy.getDataHoraAtual().TimeOfDay;
+            }
+            else
+            {
+                if (algumIntervaloEmAberto())
+                    throw new IntervaloEmAbertoException(getIntervaloEmAberto());
+
+                Intervalos.Add(new Intervalo(tipoIntervalo, dataHoraStrategy.getDataHoraAtual().TimeOfDay));
+            }
+        }
 
         public virtual Intervalo getIntervalo(TipoIntervalo tipoIntervalo)
         {
@@ -67,25 +86,14 @@ namespace ControlePonto.Domain.ponto
             }
         }
 
-        public virtual bool intervaloRegistrado(TipoIntervalo tipoIntervalo)
+        public virtual bool intervaloFoiRegistrado(TipoIntervalo tipoIntervalo)
         {
             return Intervalos.Any(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
         }
-
-        public virtual void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)
+        
+        public virtual bool isIntervaloAberto(TipoIntervalo tipoIntervalo)
         {
-            if (Intervalos.ToList().Exists(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome)))
-            {
-                var intervalo = getIntervalo(tipoIntervalo);
-                if (intervalo.Saida.HasValue)
-                    throw new IntervaloJaRegistradoException(tipoIntervalo);
-
-                intervalo.Saida = dataHoraStrategy.getDataHoraAtual().TimeOfDay;
-            }
-            else
-            {
-                Intervalos.Add(new Intervalo(tipoIntervalo, dataHoraStrategy.getDataHoraAtual().TimeOfDay));
-            }
+            return Intervalos.ToList().Exists(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
         }
 
         public virtual bool algumIntervaloEmAberto()

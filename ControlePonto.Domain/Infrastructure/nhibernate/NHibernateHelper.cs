@@ -13,10 +13,34 @@ namespace ControlePonto.Infrastructure.nhibernate
 {
     public class NHibernateHelper
     {
-        private const string connectionString = "Server=localhost;Database=db_ponto_artplas;User ID=root;Password=;";
-                
         private static FluentConfiguration _fluentConfiguration;
-        private static ISessionFactory _sessionFactory;        
+        private static ISessionFactory _sessionFactory;
+
+        private static string _host = "localhost";
+        public static string Host
+        {
+            get { return _host; }
+            set 
+            {
+                if (sessionFactoryWasCreated())
+                    throw new InvalidOperationException("Não é possível trocar o host. É necessário reiniciar a aplicação");
+
+                _host = value;
+                try
+                {
+                    createSessionFactory();
+                }
+                catch(Exception ex)
+                {
+                    throw new InvalidHostException(value, ex);
+                }
+            }
+        }
+
+        private static string ConnectionString
+        {
+            get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=root;Password=;", Host); }
+        }   
 
         public static FluentConfiguration getFluentConfiguration()
         {
@@ -24,7 +48,7 @@ namespace ControlePonto.Infrastructure.nhibernate
             {
                 _fluentConfiguration = Fluently.Configure()
                     .Database(
-                        MySQLConfiguration.Standard.ConnectionString(connectionString)
+                        MySQLConfiguration.Standard.ConnectionString(ConnectionString)
                     )
                     .Mappings(
                         m => m.FluentMappings.AddFromAssemblyOf<ControlePonto.Infrastructure.nhibernate.mapping.UsuarioMap>()
@@ -35,12 +59,19 @@ namespace ControlePonto.Infrastructure.nhibernate
 
         public static ISessionFactory getSessionFactory()
         {
-            if (_sessionFactory == null)
-            {
-                _sessionFactory = getFluentConfiguration()
-                    .BuildSessionFactory();
-            }
+            if (!sessionFactoryWasCreated())
+                createSessionFactory();            
             return _sessionFactory;
+        }
+
+        private static void createSessionFactory()
+        {
+            _sessionFactory =  getFluentConfiguration().BuildSessionFactory();
+        }
+
+        private static bool sessionFactoryWasCreated()
+        {
+            return _sessionFactory != null;
         }
 
         public static ISession openSession()

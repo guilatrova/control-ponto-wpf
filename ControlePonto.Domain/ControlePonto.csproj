@@ -100,6 +100,7 @@
     <Compile Include="Domain\usuario\Usuario.cs" />
     <Compile Include="Domain\usuario\UsuarioFactory.cs" />
     <Compile Include="Infrastructure\nhibernate\DataHoraServerStrategy.cs" />
+    <Compile Include="Infrastructure\nhibernate\InvalidHostException.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\DiaJornadaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\FuncionarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\IntervaloMap.cs" />

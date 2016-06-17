@@ -20,7 +20,7 @@ namespace ControlePonto.Tests.mocks.repository
         public TipoIntervalo findByName(string nome)
         {
             return
-                listRep.SingleOrDefault(x => x.Nome == nome);
+                listRep.SingleOrDefault(x => x.Nome.ToUpper() == nome.ToUpper());
         }
 
 

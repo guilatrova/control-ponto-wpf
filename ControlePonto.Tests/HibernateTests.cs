@@ -11,13 +11,38 @@ namespace ControlePonto.Tests
     {
         [TestMethod]
         [TestCategory("Hibernate")]
-        public void testCriarBancoDados()
+        public void criarBancoDados()
         {
             FluentConfiguration config = NHibernateHelper.getFluentConfiguration();
 
             config.ExposeConfiguration(
                               c => new SchemaExport(c).Execute(true, true, false))
                          .BuildConfiguration();
+        }
+
+        [TestMethod]
+        public void hibernatePodeConfigurarHostDoBancoDados()
+        {            
+            Assert.AreEqual("localhost", NHibernateHelper.Host);
+
+            NHibernateHelper.Host = "127.0.0.1";
+            Assert.AreEqual("127.0.0.1", NHibernateHelper.Host);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidHostException))]
+        public void hibernateDeveValidarHost()
+        {
+            NHibernateHelper.Host = "192.168.0.5";            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void hibernateNaoDevePermitirTrocaDeHost()
+        {
+            //Obrigatório reiniciar aplicação
+            NHibernateHelper.Host = "127.0.0.1";
+            NHibernateHelper.Host = "localhost";
         }
     }
 }
