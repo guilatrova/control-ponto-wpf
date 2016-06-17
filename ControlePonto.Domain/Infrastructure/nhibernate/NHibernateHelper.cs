@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NHibernate.Tool.hbm2ddl;
 
 namespace ControlePonto.Infrastructure.nhibernate
 {
@@ -47,12 +48,10 @@ namespace ControlePonto.Infrastructure.nhibernate
             if (_fluentConfiguration == null)
             {
                 _fluentConfiguration = Fluently.Configure()
-                    .Database(
-                        MySQLConfiguration.Standard.ConnectionString(ConnectionString)
-                    )
-                    .Mappings(
-                        m => m.FluentMappings.AddFromAssemblyOf<ControlePonto.Infrastructure.nhibernate.mapping.UsuarioMap>()
-                    );
+                    .Database(MySQLConfiguration.Standard.ConnectionString(ConnectionString))
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ControlePonto.Infrastructure.nhibernate.mapping.UsuarioMap>())
+                    .ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true)); 
+                //One caveat: SchemaUpdate does not do destructive updates (dropping tables, columns, etc.). It will only add them.
             }
             return _fluentConfiguration;
         }

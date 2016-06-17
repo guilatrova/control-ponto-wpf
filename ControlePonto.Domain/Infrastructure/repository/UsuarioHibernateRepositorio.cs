@@ -43,8 +43,10 @@ namespace ControlePonto.Infrastructure.repository
         public uint save(Usuario usuario)
         {
             using (ISession session = NHibernateHelper.openSession())
+            using (ITransaction trx = session.BeginTransaction())
             {
                 session.SaveOrUpdate(usuario);
+                trx.Commit();
                 return usuario.Id;
             }
         }

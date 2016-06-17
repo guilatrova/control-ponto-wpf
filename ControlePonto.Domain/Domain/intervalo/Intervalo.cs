@@ -24,11 +24,11 @@ namespace ControlePonto.Domain.intervalo
                 _saida = value;
             }
         }
-        public virtual bool isFechado
+        public virtual bool isAberto
         {
             get
             {
-                return Saida.HasValue;
+                return !Saida.HasValue;
             }
         }
         public virtual TipoIntervalo TipoIntervalo { get; protected set; }

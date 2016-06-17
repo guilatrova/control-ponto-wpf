@@ -28,14 +28,21 @@ namespace ControlePonto.Domain.ponto
             set
             {
                 Check.Require(!_Fim.HasValue, "O horário do ponto não pode ser alterado");
-                _Fim = value;
-                isAberto = false;
+                _Fim = value;                
             }
         }
 
         public virtual Usuario Usuario { get; protected set; }
         public virtual bool isFeriado { get; protected set; }
-        public virtual bool isAberto { get; protected set; }
+        public virtual bool isAberto 
+        {
+            get
+            {
+                return !_Fim.HasValue;
+            }
+        }
+
+        public virtual bool deleteme { get; set; }
 
         public virtual ICollection<Intervalo> Intervalos { get; set; }
 
@@ -50,14 +57,13 @@ namespace ControlePonto.Domain.ponto
 
             Data = data;
             Inicio = inicio;
-            Usuario = usuario;
-            isAberto = true;
+            Usuario = usuario;            
             Intervalos = new List<Intervalo>();
         }
         
         public virtual void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)
         {
-            if (isIntervaloAberto(tipoIntervalo))
+            if (intervaloFoiRegistrado(tipoIntervalo))
             {
                 var intervalo = getIntervalo(tipoIntervalo);
                 if (intervalo.Saida.HasValue)
@@ -89,21 +95,16 @@ namespace ControlePonto.Domain.ponto
         public virtual bool intervaloFoiRegistrado(TipoIntervalo tipoIntervalo)
         {
             return Intervalos.Any(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
-        }
-        
-        public virtual bool isIntervaloAberto(TipoIntervalo tipoIntervalo)
-        {
-            return Intervalos.ToList().Exists(x => x.TipoIntervalo.Nome.Equals(tipoIntervalo.Nome));
-        }
+        }       
 
         public virtual bool algumIntervaloEmAberto()
         {
-            return Intervalos.Any(x => !x.Saida.HasValue);
+            return Intervalos.Any(x => x.isAberto);
         }
 
         public virtual Intervalo getIntervaloEmAberto()
         {
-            return Intervalos.FirstOrDefault(x => !x.Saida.HasValue);
+            return Intervalos.FirstOrDefault(x => x.isAberto);
         }
 
         public virtual TimeSpan calcularHorasTrabalhadas()

@@ -20,8 +20,7 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
                 .CustomType(typeof(TimeAsTimeSpanTypeClone))
                 .Not.Nullable();
             Map(x => x.Fim)
-                .CustomType(typeof(TimeAsTimeSpanTypeClone));
-            Map(x => x.isAberto);
+                .CustomType(typeof(TimeAsTimeSpanTypeClone));            
 
             HasMany(x => x.Intervalos)
                 .Cascade.All();

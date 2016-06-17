@@ -17,9 +17,10 @@ namespace ControlePonto.Infrastructure.repository
         public ulong save(PontoDia ponto)
         {
             using (ISession session = NHibernateHelper.openSession())
+            using (ITransaction trx = session.BeginTransaction())
             {
                 session.SaveOrUpdate(ponto);
-                session.Flush();
+                trx.Commit();
                 return ponto.Id;
             }
         }
@@ -29,10 +30,8 @@ namespace ControlePonto.Infrastructure.repository
             using (ISession session = NHibernateHelper.openSession())
             {
                 return session.CreateCriteria<PontoDia>()
-                    .Add(Restrictions.And(
-                        Restrictions.Eq("isAberto", true),
-                        Restrictions.Eq("Usuario", funcionario)
-                    ))
+                    .Add(Restrictions.IsNull("Fim"))
+                    .Add(Restrictions.Eq("Usuario", funcionario))                    
                     .List<PontoDia>().ToList();
             }
         }
@@ -56,7 +55,7 @@ namespace ControlePonto.Infrastructure.repository
             using (ISession session = NHibernateHelper.openSession())
             {
                 return session.CreateCriteria<PontoDia>()
-                    .Add(Restrictions.Eq("isAberto", true))
+                    .Add(Restrictions.IsNull("Fim"))
                     .Add(Restrictions.Eq("Usuario", funcionario))
                     .Add(Restrictions.Eq("Data", date.Date))
                     .SetFetchMode("Intervalos", FetchMode.Eager)

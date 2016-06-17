@@ -57,10 +57,8 @@ namespace ControlePonto.WPF
 
         private void tratarArgumentos(string[] args)
         {
-            if (args.Length == 1)
-            {
-                Task.Factory.StartNew(() => aplicarHost(args[0]));
-            }
+            string host = (args.Length == 1) ? args[0] : "127.0.0.1";
+            Task.Factory.StartNew(() => aplicarHost(host));
         }
 
         private void aplicarHost(string host)
