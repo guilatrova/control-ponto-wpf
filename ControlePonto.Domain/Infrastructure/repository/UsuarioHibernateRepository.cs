@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Infrastructure.repository
 {
-    public class UsuarioHibernateRepositorio : IUsuarioRepositorio
+    public class UsuarioHibernateRepository : IUsuarioRepositorio
     {
         public Usuario findById(int id)
         {

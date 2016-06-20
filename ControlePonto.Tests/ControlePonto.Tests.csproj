@@ -78,6 +78,7 @@
     <Compile Include="HibernateTests.cs" />
     <Compile Include="IntervaloTests.cs" />
     <Compile Include="JornadaTrabalhoTests.cs" />
+    <Compile Include="FeriadoTests.cs" />
     <Compile Include="UsuarioTests.cs" />
   </ItemGroup>
   <ItemGroup>

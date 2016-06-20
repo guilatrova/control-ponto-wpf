@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ControlePonto.WPF.window.administracao
+namespace ControlePonto.WPF.window.feriado
 {
     /// <summary>
-    /// Interaction logic for PainelControleWindow.xaml
+    /// Interaction logic for CadastrarFeriadoWindow.xaml
     /// </summary>
-    public partial class PainelControleWindow : WindowBase
+    public partial class CadastrarFeriadoWindow : WindowBase
     {
-        public PainelControleWindow(PainelControleViewModel viewModel) : base(viewModel)
+        public CadastrarFeriadoWindow() : base(null)
         {
             InitializeComponent();
         }

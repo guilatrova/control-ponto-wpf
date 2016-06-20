@@ -1,0 +1,111 @@
+﻿<base:WindowBase x:Class="ControlePonto.WPF.window.feriado.CadastrarFeriadoWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:base="clr-namespace:ControlePonto.WPF.window"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:frmwrk="clr-namespace:ControlePonto.WPF.framework"
+                 xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+                 Title="Cadastrar feriado" 
+                 SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <sys:String x:Key="strTipo">Tipo:</sys:String>
+        <sys:String x:Key="strTipoFixo">Fixo</sys:String>
+        <sys:String x:Key="strTipoRelativo">Relativo</sys:String>
+        <sys:String x:Key="strTipoEspecifico">Específico</sys:String>
+        <sys:String x:Key="strNome">Nome:</sys:String>
+        <sys:String x:Key="strData">Data:</sys:String>
+        
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        
+        <Style TargetType="RadioButton">
+            <Setter Property="Margin" Value="10,0" />
+        </Style>
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5,0,0,0" />
+        </Style>
+        
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5,5,0,0" />
+        </Style>
+
+        <Style TargetType="toolkit:DateTimePicker">
+            <Setter Property="Margin" Value="5,5,0,0" />
+            <Setter Property="Value" Value="{Binding Data}" />
+            <Setter Property="FormatString" Value="{Binding DataStringFormat}" />
+            <Setter Property="AllowSpin" Value="False"/>
+            <Setter Property="TimePickerVisibility" Value="Collapsed" />
+         </Style>                
+    </Window.Resources>
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="8*" />
+        </Grid.ColumnDefinitions>
+        
+        <Label Content="{StaticResource strTipo}"/>
+        
+        <Label Grid.Row="1" 
+               Content="{StaticResource strNome}"/>
+        
+        <Label Grid.Row="2"
+               Content="{StaticResource strData}"/>
+        
+        <StackPanel Grid.Column="1" 
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+            
+            <RadioButton Content="{StaticResource strTipoFixo}"
+                         IsChecked="{Binding TipoFixo, UpdateSourceTrigger=PropertyChanged}" />
+            
+            <RadioButton Content="{StaticResource strTipoRelativo}"
+                         IsChecked="{Binding TipoRelativo, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <RadioButton Content="{StaticResource strTipoEspecifico}"
+                         IsChecked="{Binding TipoEspecifico, UpdateSourceTrigger=PropertyChanged}"/>
+            
+        </StackPanel>
+        
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 Text="{Binding Nome}"/>
+        
+        <!-- FIXO OU ESPECÍFICO -->
+        <DatePicker Grid.Row="2"
+                    Grid.Column="1" />
+        
+        <toolkit:DateTimePicker Grid.Row="2"
+                                Grid.Column="1" />
+        
+        <!-- RELATIVO -->
+        <Grid Grid.Row="2"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="8*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <ComboBox />
+            
+            <ComboBox Grid.Column="1" />
+
+            <toolkit:DateTimePicker  Grid.Row="1"
+                                     Grid.ColumnSpan="2" />
+            
+        </Grid>
+
+    </Grid>
+</base:WindowBase>

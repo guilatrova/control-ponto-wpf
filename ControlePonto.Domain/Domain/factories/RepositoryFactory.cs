@@ -15,7 +15,7 @@ namespace ControlePonto.Domain.factories
     {
         public static IUsuarioRepositorio criarUsuarioRepository()
         {
-            return new UsuarioHibernateRepositorio();
+            return new UsuarioHibernateRepository();
         }
 
         public static IPontoDiaRepository criarPontoRepository()
@@ -25,7 +25,7 @@ namespace ControlePonto.Domain.factories
 
         public static ITipoIntervaloRepository criarTipoIntervaloRepository()
         {
-            return new TipoIntervaloHibernateRepositorio();
+            return new TipoIntervaloHibernateRepository();
         }
 
         public static IJornadaTrabalhoRepository criarJornadaTrabalhoRepository()

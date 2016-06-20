@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Infrastructure.repository
 {
-    public class TipoIntervaloHibernateRepositorio : ITipoIntervaloRepository
+    public class TipoIntervaloHibernateRepository : ITipoIntervaloRepository
     {
         public List<TipoIntervalo> findAll()
         {

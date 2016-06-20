@@ -79,8 +79,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="framework\RelayParameterEvaluatorCommand.cs" />
+    <Compile Include="window\administracao\PainelControleViewModel.cs" />
     <Compile Include="window\administracao\PainelControleWindow.xaml.cs">
       <DependentUpon>PainelControleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="window\feriado\CadastrarFeriadoViewModel.cs" />
+    <Compile Include="window\feriado\CadastrarFeriadoWindow.xaml.cs">
+      <DependentUpon>CadastrarFeriadoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\jornada\DiaJornadaViewModel.cs" />
     <Compile Include="window\jornada\JornadaTrabalhoViewModel.cs" />
@@ -147,6 +152,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="window\administracao\PainelControleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="window\feriado\CadastrarFeriadoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
