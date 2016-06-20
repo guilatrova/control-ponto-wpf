@@ -119,13 +119,26 @@ namespace ControlePonto.Domain.ponto
 
         public virtual TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
         {
-            if (isAberto) throw new DiaEmAbertoException(this);
+            DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
+            var trabalhado = calcularHorasTrabalhadas();
+            var esperado = diaJornada.calcularHorasTrabalhoEsperado();
+            
+            var resultado = trabalhado.Subtract(esperado);
+            if (resultado > new TimeSpan(0))
+                return resultado;
+            return new TimeSpan(0, 0, 0);
+        }
 
+        public virtual TimeSpan calcularHorasDevedoras(JornadaTrabalho jornada)
+        {
             DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
             var trabalhado = calcularHorasTrabalhadas();
             var esperado = diaJornada.calcularHorasTrabalhoEsperado();
 
-            return trabalhado.Subtract(esperado);
+            var resultado = esperado.Subtract(trabalhado);
+            if (resultado > new TimeSpan(0))
+                return resultado;
+            return new TimeSpan(0, 0, 0);
         }
     }
 }

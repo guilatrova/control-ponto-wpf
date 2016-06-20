@@ -344,5 +344,53 @@ namespace ControlePonto.Tests
             ponto.registrarIntervalo(tipoAlmoco, horarios);
             ponto.registrarIntervalo(tipoIntervaloFactory.criarTipoIntervalo("LANCHE"), horarios);
         }
+
+        [TestMethod]
+        public void pontoDeveCalcularHorasDevedoras()
+        {
+            var ponto = criarPontoDoDia(18, 6, 2016, 9);
+            criarService(new DataHoraMockStrategy(18, 6, 2016, 16)).encerrarDia(ponto);
+
+            var jornada = criarJornada();
+            jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 0, 0));
+            Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasDevedoras(jornada));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DiaEmAbertoException))]
+        public void pontoNaoDeveCalcularHorasDevedorasSeEstiverAberto()
+        {
+            var ponto = criarPontoDoDia(18, 6, 2016, 9);
+            var jornada = criarJornada();
+            
+            ponto.calcularHorasDevedoras(jornada);
+        }
+
+        [TestMethod]
+        public void pontoNaoDeveCalcularHorasExtrasNegativas()
+        {
+            //Quando possuo hora devedora, não devo calcular extras como negativo
+            var ponto = criarPontoDoDia(18, 6, 2016, 9);
+            criarService(new DataHoraMockStrategy(18, 6, 2016, 16)).encerrarDia(ponto);
+
+            var jornada = criarJornada();
+            jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 0, 0));
+            //2:00 devedoras
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.calcularHorasExtras(jornada));
+        }
+
+        [TestMethod]
+        public void pontoNaoDeveCalcularHorasDevedorasNegativas()
+        {
+            var ponto = criarPontoDoDia(11, 6, 2016, 10, 0); //Sábado
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 00));
+            ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 30));
+            criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
+
+            var jornada = criarJornada();
+            jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(10, 0, 0), new TimeSpan(17, 0, 0), new TimeSpan(1, 0, 0));
+            //2:30 extras
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.calcularHorasDevedoras(jornada)); 
+        }
     }
 }

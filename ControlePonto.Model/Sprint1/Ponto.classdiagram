@@ -8,13 +8,6 @@
         <classMoniker Id="d8387d0c-335f-42ea-9335-5317665bb785" LastKnownName="TipoIntervalo" />
       </annotatedElements>
     </comment>
-    <comment Id="b864afb5-c8b5-418e-9ed8-97daf636cb20">
-      <elementDefinition Id="f1be84ef-49f8-4bd2-b01c-782b201da52e" />
-      <body>Fechado indica se o ponto já tem entrada e saída, ou se a saída está faltando</body>
-      <annotatedElements>
-        <classMoniker Id="8cb99635-a135-4bdf-ac31-250b2934d5b1" LastKnownName="Intervalo" />
-      </annotatedElements>
-    </comment>
   </ownedCommentsInternal>
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
@@ -82,12 +75,6 @@
               <referencedTypeMoniker Id="86c8c650-39e2-4405-9b32-bcacc521b997" LastKnownName="Time" />
             </type_NamedElement>
           </property>
-          <property Id="b8a06d32-e599-47f8-9366-2138f23f5869" name="Fechado" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="0d10bf5e-0837-4320-9aa7-75ce7d441046" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="d65765e2-ee59-4974-8876-50f64a2fe731" LastKnownName="bool" />
-            </type_NamedElement>
-          </property>
           <property Id="2e76763b-a9a5-4330-9245-6edfabba22c8" name="Tipo" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="0ad1330b-4893-4ccd-b354-a8ab592561ad" />
             <type_NamedElement>
@@ -129,11 +116,6 @@
     <packageHasNamedElement>
       <referencedType Id="7637c505-9fa2-4253-b680-0b9535967429" name="ulong" isAbstract="false" isLeaf="false" cachedFullName="ulong">
         <elementDefinition Id="5a52a58b-3e77-4a69-9fb6-90625cf51e82" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="d65765e2-ee59-4974-8876-50f64a2fe731" name="bool" isAbstract="false" isLeaf="false" cachedFullName="bool">
-        <elementDefinition Id="67023a7f-b678-4c90-9687-cb031c448971" />
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -239,24 +221,6 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation Id="704139d1-4c08-4b3e-aa09-44d4f8149d65" name="baterPonto" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="9047fa02-1415-4274-b8f6-8875803117e1" />
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="14b59f70-64c0-49a2-a0e5-fa7f11a72d0c" direction="Return" isUnique="false">
-                  <elementDefinition Id="7c8059bf-150a-4757-86fe-8097183bc14e" />
-                  <type_NamedElement>
-                    <referencedTypeMoniker Id="d2a8d305-ca47-47c6-8e90-1360a0a65a69" LastKnownName="Intervalo" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-              <operationHasOwnedParameters>
-                <parameter Id="5adc33a0-c9ee-4adb-bd4d-1944ce811e80" name="TipoPonto" direction="In" isUnique="false">
-                  <elementDefinition Id="4e3b5543-dcbf-4c2e-9adb-fff7f0066eef" />
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
           <operation Id="ba73d5c1-a3b1-43b4-9819-8c5dc9242ac4" name="iniciarDia" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="f678ab3f-e481-4d13-bb39-90d0895b627c" />
             <ownedParameters>

@@ -22,6 +22,13 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" Condition="'$(VSToolsPath)' != ''" />
   <ItemGroup>
+    <Content Include="Sprint 2\Sprint2.classdiagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Sprint 2\Sprint2.classdiagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Sprint 2\Sprint2.classdiagram</DependentUpon>
+    </Content>
     <Content Include="Sprint1\Nhibernate.classdiagram">
       <SubType>Content</SubType>
     </Content>
@@ -47,6 +54,7 @@
     <Content Include="ModelDefinition\ControlePonto.Model.uml">
       <SubType>Content</SubType>
     </Content>
+    <Folder Include="Sprint 2" />
     <Folder Include="Sprint1" />
   </ItemGroup>
 </Project>

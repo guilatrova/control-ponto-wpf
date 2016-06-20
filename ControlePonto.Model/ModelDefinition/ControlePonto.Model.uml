@@ -15,16 +15,6 @@
       </annotatedElements>
     </comment>
     <comment
-      Id="f1be84ef-49f8-4bd2-b01c-782b201da52e">
-      <body>Fechado indica se o ponto já tem entrada e saída, ou se a saída está faltando</body>
-      <annotatedElements>
-        <classMoniker
-          Id="38ec4cae-cb62-4a13-ac77-ef8e314d3565"
-          LastKnownName="Intervalo"
-          LastKnownLocation="ControlePonto.Model.uml" />
-      </annotatedElements>
-    </comment>
-    <comment
       Id="0f68fb71-cc29-47b2-b511-59ea630babc0">
       <body>Singleton</body>
       <annotatedElements>
@@ -207,24 +197,6 @@
               <undefinedTypeMoniker
                 Id="e9141d20-78c4-4aa2-a018-79fc05c7bb3b"
                 LastKnownName="Time"
-                LastKnownLocation="ControlePonto.Model.uml" />
-            </type_NamedElement>
-          </property>
-          <property
-            Id="0d10bf5e-0837-4320-9aa7-75ce7d441046"
-            name="Fechado"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="67023a7f-b678-4c90-9687-cb031c448971"
-                LastKnownName="bool"
                 LastKnownLocation="ControlePonto.Model.uml" />
             </type_NamedElement>
           </property>
@@ -539,37 +511,6 @@
             isComposite="false" />
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation
-            Id="9047fa02-1415-4274-b8f6-8875803117e1"
-            name="baterPonto"
-            isLeaf="false"
-            isStatic="false"
-            isAbstract="false"
-            concurrency="Sequential"
-            isQuery="false">
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="7c8059bf-150a-4757-86fe-8097183bc14e"
-                  direction="Return"
-                  isUnique="false">
-                  <type_NamedElement>
-                    <classMoniker
-                      Id="38ec4cae-cb62-4a13-ac77-ef8e314d3565"
-                      LastKnownName="Intervalo"
-                      LastKnownLocation="ControlePonto.Model.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="4e3b5543-dcbf-4c2e-9adb-fff7f0066eef"
-                  name="TipoPonto"
-                  direction="In"
-                  isUnique="false" />
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
           <operation
             Id="f678ab3f-e481-4d13-bb39-90d0895b627c"
             name="iniciarDia"
@@ -1199,14 +1140,6 @@
         name="HoraExtra[]" />
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <class
-        Id="0b4c81f3-9a23-4966-9a41-17f9e3b13461"
-        name="Feriado"
-        isAbstract="false"
-        isLeaf="false"
-        isActiveClass="false" />
-    </packageHasNamedElement>
-    <packageHasNamedElement>
       <undefinedType
         Id="23d18c56-b6e2-4865-a49f-e7d8e39c2d2c"
         name="List&lt;Intervalo&gt;" />
@@ -1544,7 +1477,51 @@
                 LastKnownLocation="ControlePonto.Model.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="c4a26d19-026c-4f75-bc62-83dd3fea6cb4"
+            name="Mes"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="fbc58945-9d39-4339-bdcc-6a960e93aa41"
+                LastKnownName="int"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="8e299e1c-1f23-41d3-8db3-4b625dea15d3"
+            name="getData"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="7a46fd8a-caaa-4ccc-be6c-0f841b0a917f"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="33431b5d-2535-446c-9922-38ca22943f85"
+                      LastKnownName="DateTime"
+                      LastKnownLocation="ControlePonto.Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -1565,24 +1542,6 @@
           </generalization>
         </generalsInternal>
         <ownedAttributesInternal>
-          <property
-            Id="a1d30299-a5e3-4c14-be7b-562e7b094676"
-            name="Mes"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="fbc58945-9d39-4339-bdcc-6a960e93aa41"
-                LastKnownName="int"
-                LastKnownLocation="ControlePonto.Model.uml" />
-            </type_NamedElement>
-          </property>
           <property
             Id="b93f22fc-1747-4dc9-b984-b34e34037e3a"
             name="Dia"
@@ -1622,24 +1581,6 @@
           </generalization>
         </generalsInternal>
         <ownedAttributesInternal>
-          <property
-            Id="733ecc4f-b029-4906-8478-1cf86773c7e1"
-            name="Mes"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="fbc58945-9d39-4339-bdcc-6a960e93aa41"
-                LastKnownName="int"
-                LastKnownLocation="ControlePonto.Model.uml" />
-            </type_NamedElement>
-          </property>
           <property
             Id="f486f311-c5ee-4eec-bcb1-8a509b1661d9"
             name="DiaSemana"
@@ -1836,6 +1777,152 @@
         name="Configurar jornada de trabalho"
         isAbstract="false"
         isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="ee7d7a27-b7ce-499e-98c2-dcbca20b2c18"
+        name="FeriadoEspecifico"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="20c369ab-13e9-4f47-ba6d-f95d8e2bed68"
+            isSubstitutable="false">
+            <classMoniker
+              Id="3cf9dbc4-ba37-440c-bae5-3ab8d91d68bc"
+              LastKnownName="Feriado"
+              LastKnownLocation="ControlePonto.Model.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="36120d67-8081-4410-bf9e-f22272874543"
+            name="Dia"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="fbc58945-9d39-4339-bdcc-6a960e93aa41"
+                LastKnownName="int"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="9824b3fa-9379-452c-9882-6d879cf9d97e"
+            name="Ano"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="fbc58945-9d39-4339-bdcc-6a960e93aa41"
+                LastKnownName="int"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="d00d0f1c-d47f-4cea-b5a0-9531bca0034c"
+        name="Folga"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="c1bb490f-8bb3-4462-b7cc-62b774a5670c"
+            name="Data"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="33431b5d-2535-446c-9922-38ca22943f85"
+                LastKnownName="DateTime"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="cedcf9d4-3508-419c-b1cb-5d15cefd2f46"
+            name="Id"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="f0adb1ce-e86c-49fc-9d42-ede4a76603e3"
+                LastKnownName="uint"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="403b73fa-33c9-4895-a7cf-03a26878ff4a"
+            name="Descricao"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="fa094f67-c89f-4db2-a604-16ff615f4331"
+            name="PontoDia"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <classMoniker
+                Id="554c1342-22b4-49c8-8f78-416e642a5f36"
+                LastKnownName="PontoDia"
+                LastKnownLocation="ControlePonto.Model.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="520f9ee5-cbb8-4912-a1d3-5e0b5397117b"
+        name="Datetime" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

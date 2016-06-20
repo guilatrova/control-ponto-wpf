@@ -23,9 +23,9 @@ namespace ControlePonto.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //JornadaWindowFactory.criarJornadaWindow().Show();
+            JornadaWindowFactory.criarJornadaWindow().Show();
             //TODO Volta pra login            
-            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            /*Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             tratarArgumentos(e.Args);
 
@@ -44,7 +44,7 @@ namespace ControlePonto.WPF
                     MessageBox.Show(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            Current.Shutdown();
+            Current.Shutdown();*/
         }
 
         private PontoDia recuperarOuIniciarPonto(PontoService pontoService)
