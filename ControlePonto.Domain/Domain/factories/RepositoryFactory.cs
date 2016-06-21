@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.intervalo;
+﻿using ControlePonto.Domain.feriado;
+using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.usuario;
@@ -31,6 +32,11 @@ namespace ControlePonto.Domain.factories
         public static IJornadaTrabalhoRepository criarJornadaTrabalhoRepository()
         {
             return new JornadaTrabalhoHibernateRepository();
+        }
+
+        public static IFeriadoRepository criarFeriadoRepository()
+        {
+            return new FeriadoHibernateRepository();
         }
     }
 }

@@ -3,6 +3,8 @@ using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
+using ControlePonto.WPF.window.administracao;
+using ControlePonto.WPF.window.feriado;
 using ControlePonto.WPF.window.jornada;
 using ControlePonto.WPF.window.ponto;
 using ControlePonto.WPF.window.usuario;
@@ -23,7 +25,12 @@ namespace ControlePonto.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            JornadaWindowFactory.criarJornadaWindow().Show();
+#if DEBUG
+            LoginServiceFactory.criarLoginService().Logar("gui", "123456");
+#endif
+
+            new PainelControleWindow(new PainelControleViewModel()).Show();
+            //JornadaWindowFactory.criarJornadaWindow().Show();
             //TODO Volta pra login            
             /*Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 

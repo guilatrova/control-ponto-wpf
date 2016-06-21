@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlePonto.WPF.window.feriado;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,21 @@ namespace ControlePonto.WPF.window.administracao
         public PainelControleWindow(PainelControleViewModel viewModel) : base(viewModel)
         {
             InitializeComponent();
+        }
+
+        protected override void viewRequested(object sender, framework.ViewRequestEventArgs e)
+        {
+            switch (e.RequestCode)
+            {
+                case PainelControleViewModel.VIEW_FERIADO:
+                    FeriadoWindowFactory.criarCadastroFeriadoWindow().ShowDialog();
+                    break;
+
+                default:
+                    base.viewRequested(sender, e);
+                    break;
+            }
+
         }
     }
 }

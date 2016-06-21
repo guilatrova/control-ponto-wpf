@@ -19,7 +19,7 @@ namespace ControlePonto.WPF.window.feriado
     /// </summary>
     public partial class CadastrarFeriadoWindow : WindowBase
     {
-        public CadastrarFeriadoWindow() : base(null)
+        public CadastrarFeriadoWindow(CadastrarFeriadoViewModel viewModel) : base(viewModel)
         {
             InitializeComponent();
         }
