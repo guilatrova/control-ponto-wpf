@@ -17,9 +17,8 @@ using System.Threading.Tasks;
 namespace ControlePonto.Tests
 {
     [TestClass]
-    public class PontoTests
+    public partial class PontoTests
     {
-        private PontoFactory factory;
         private TipoIntervaloFactory tipoIntervaloFactory;
         private TipoIntervalo tipoAlmoco;
         private SessaoLogin sessaoLogin;
@@ -30,18 +29,19 @@ namespace ControlePonto.Tests
         {
             funcionario = new FuncionarioFactory().criarFuncionario("Jhon Doe", "doe", "123456", "", "41617099864");
             sessaoLogin = new SessaoLoginMock(funcionario);            
-            factory = new PontoFactory();
             tipoIntervaloFactory = new TipoIntervaloFactory(new NomeIntervaloJaExisteSpecification(new TipoIntervaloMockRepository()));
             tipoAlmoco = tipoIntervaloFactory.criarTipoIntervalo("ALMOÇO");
+
+            setUpFolga();
         }
 
         private PontoDia criarPontoDoDia(int dia, int mes, int ano, int hora = 9, int minuto = 0)
         {
             var dt = new DataHoraMockStrategy(new DateTime(ano, mes, dia, hora, minuto, 0));
-            return factory.criarPonto(dt, sessaoLogin);
+            return criarPontoFactory().criarPonto(dt, sessaoLogin);
         }
 
-        private PontoService criarService(IDataHoraStrategy dataHoraStrategy, IPontoDiaRepository repository = null, Funcionario logado = null)
+        private PontoService criarPontoService(IDataHoraStrategy dataHoraStrategy, IPontoDiaRepository repository = null, Funcionario logado = null)
         {
             var sessao = sessaoLogin;
             if (logado != null)
@@ -50,7 +50,7 @@ namespace ControlePonto.Tests
             if (repository == null)
                 repository = new PontoDiaMockRepository();
 
-            return new PontoService(factory,
+            return new PontoService(criarPontoFactory(repository),
                 dataHoraStrategy, 
                 new FuncionarioPossuiPontoAbertoSpecification(repository),
                 new FuncionarioJaTrabalhouHojeSpecification(repository),
@@ -63,31 +63,39 @@ namespace ControlePonto.Tests
             return new JornadaTrabalhoFactory(new JornadaTrabalhoMockRepository()).criarJornadaTrabalho();
         }
 
-        [TestMethod, TestCategory("Quebra de contrato")]
+        private PontoFactory criarPontoFactory(IPontoDiaRepository repo = null)
+        {
+            if (repo == null)
+                repo = new PontoDiaMockRepository();
+
+            return new PontoFactory(repo);
+        }
+
+        [TestMethod, TestCategory("Trabalho"), TestCategory("Trabalho"), TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void pontoSoDeveSerCriadoPelaFactory()
         {
-            var ponto = factory.criarPonto(new DataHoraMockStrategy(22, 8, 2014), sessaoLogin);
+            var ponto = criarPontoFactory().criarPonto(new DataHoraMockStrategy(22, 8, 2014), sessaoLogin);
             Assert.IsNotNull(ponto);
 
             ponto = new PontoDia(new DateTime(2014, 8, 22), new TimeSpan(19, 30, 0), null);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveSerCriadoComDataHoraCorreta()
         {
             var esperado = new DataHoraMockStrategy(22, 8, 2014, 19, 30);
-            var ponto = factory.criarPonto(esperado, sessaoLogin);
+            var ponto = criarPontoFactory().criarPonto(esperado, sessaoLogin);
 
             Assert.AreEqual(new DateTime(2014, 8, 22, 0, 0, 0), ponto.Data);
             Assert.AreEqual(new TimeSpan(19, 30, 0), ponto.Inicio);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveSerEncerradoComDataHoraCorreta()
         {
             var fimEsperado = new DataHoraMockStrategy(new DateTime(2014, 8, 22, 22, 30, 0));
-            var service = criarService(fimEsperado);
+            var service = criarPontoService(fimEsperado);
 
             var ponto = service.iniciarDia();
             service.encerrarDia(ponto);
@@ -95,15 +103,15 @@ namespace ControlePonto.Tests
             Assert.AreEqual(new TimeSpan(22, 30, 0), ponto.Fim);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveSerCriadoAssociadoAoFuncionario()
         {
-            var ponto = factory.criarPonto(new DataHoraMockStrategy(22, 8, 2016), sessaoLogin);
+            var ponto = criarPontoFactory().criarPonto(new DataHoraMockStrategy(22, 8, 2016), sessaoLogin);
 
             Assert.AreEqual(funcionario, ponto.Usuario);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveContabilizarIntervalos()
         {
             var entradaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
@@ -118,7 +126,7 @@ namespace ControlePonto.Tests
                     entradaLanche,
                     saidaLanche);
 
-            var ponto = factory.criarPonto(dtMock, sessaoLogin);
+            var ponto = criarPontoFactory().criarPonto(dtMock, sessaoLogin);
 
             ponto.registrarIntervalo(tipoAlmoco, dtMock);
             ponto.registrarIntervalo(tipoAlmoco, dtMock);
@@ -131,7 +139,7 @@ namespace ControlePonto.Tests
             Assert.AreEqual(saidaLanche.TimeOfDay, ponto.getIntervalo(tipoLanche).Saida);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(IntervaloEmAbertoException))]
         public void diaNaoDeveEncerrarComPontoAberto()
         {
@@ -144,14 +152,14 @@ namespace ControlePonto.Tests
                     entradaAlmoco,
                     encerramentoDia);
 
-            var service = criarService(dtMock);
+            var service = criarPontoService(dtMock);
             var ponto = service.iniciarDia();
 
             ponto.registrarIntervalo(tipoAlmoco, dtMock);
             service.encerrarDia(ponto);            
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(DiaEmAbertoException))]
         public void diaNaoDeveIniciarSeHouverPontoAbertoEmDiasAnteriores()
         {
@@ -161,11 +169,11 @@ namespace ControlePonto.Tests
             repositorio.save(pontoAntigo);
 
             //Vou simular o dia de hoje
-            var service = criarService(new DataHoraMockStrategy(13, 6, 2016), repositorio);
+            var service = criarPontoService(new DataHoraMockStrategy(13, 6, 2016), repositorio);
             var pontoHoje = service.iniciarDia();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void diaPodeIniciarSeFuncionarioNaoPossuirPontoEmAberto()
         {
             var funcionarioCorreto = new FuncionarioFactory().criarFuncionario("Thais", "tatacs", "123456", "", "41617099864");
@@ -177,7 +185,7 @@ namespace ControlePonto.Tests
 
             try
             {
-                var service = criarService(inicioDoDia, repositorio);
+                var service = criarPontoService(inicioDoDia, repositorio);
                 service.iniciarDia();
                 Assert.Fail();
             }
@@ -186,19 +194,19 @@ namespace ControlePonto.Tests
                 Assert.AreEqual("O ponto do dia 10/06/2016 não foi encerrado", ex.Message);
             }
 
-            var serviceCorreto = criarService(inicioDoDia, repositorio, funcionarioCorreto);
+            var serviceCorreto = criarPontoService(inicioDoDia, repositorio, funcionarioCorreto);
             var ponto = serviceCorreto.iniciarDia();
 
             Assert.AreEqual(new DateTime(2016, 6, 13), ponto.Data.Date);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(PontoDiaJaExisteException))]
         public void funcionarioNaoPodeTerDoisPontosParaMesmoDia()
         {
             var rep = new PontoDiaMockRepository();
             var mesmoDia = new DataHoraMockStrategy(22, 8, 2014);
-            var service = criarService(mesmoDia, rep);
+            var service = criarPontoService(mesmoDia, rep);
 
             var ponto = service.iniciarDia();
             service.encerrarDia(ponto);
@@ -208,7 +216,7 @@ namespace ControlePonto.Tests
             service.iniciarDia();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(IntervaloJaRegistradoException))]
         public void pontoNaoDeveRegistrarIntervalosRepetidos()
         {
@@ -219,7 +227,7 @@ namespace ControlePonto.Tests
                 saidaAlmoco,
                 new DateTime(2014, 8, 22, 17, 00, 0) //Horário de saída/erro
             );
-            var service = criarService(horarios);
+            var service = criarPontoService(horarios);
 
             var ponto = service.iniciarDia();
             ponto.registrarIntervalo(tipoAlmoco, horarios);
@@ -227,17 +235,17 @@ namespace ControlePonto.Tests
             ponto.registrarIntervalo(tipoAlmoco, horarios);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(IntervaloNaoRegistradoException))]
         public void pontoDeveAlertarIntervalosNaoRegistradosQuandoForSolicitadoPeloIntervalo()
         {
-            var service = criarService(new DataHoraMockStrategy(22, 8, 2014));
+            var service = criarPontoService(new DataHoraMockStrategy(22, 8, 2014));
             var ponto = service.iniciarDia();
 
             ponto.getIntervalo(tipoAlmoco);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void saidaDoIntervaloNaoDeveSerAlterado()
         {
@@ -249,7 +257,7 @@ namespace ControlePonto.Tests
                 saidaAlmoco,
                 new DateTime(2014, 8, 22, 17, 00, 0) //Horário de saída/erro
             );
-            var service = criarService(horarios);
+            var service = criarPontoService(horarios);
 
             var ponto = service.iniciarDia();
             ponto.registrarIntervalo(tipoAlmoco, horarios);
@@ -259,13 +267,13 @@ namespace ControlePonto.Tests
             intervalo.Saida = entradaAlmoco.TimeOfDay;
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveCalcularHorasExtras()
         {
             var ponto = criarPontoDoDia(22, 8, 2014);                                           //09:00 - INÍCIO
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 15));//12:15 - ALMOÇO
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 13, 00));//13:00 - SAÍDA ALMOÇO
-            criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);     //19:00 - FIM
+            criarPontoService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);     //19:00 - FIM
 
             var jornada = criarJornada();
             jornada.cadastrarDia(DayOfWeek.Sunday, DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(1, 0, 0));
@@ -277,7 +285,7 @@ namespace ControlePonto.Tests
             Assert.AreEqual(new TimeSpan(1, 15, 0), ponto.calcularHorasExtras(jornada));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(DiaEmAbertoException))]
         public void pontoNaoDeveCalcularHorasExtrasQuandoEstiverAberto()
         {
@@ -289,13 +297,13 @@ namespace ControlePonto.Tests
             ponto.calcularHorasExtras(jornada);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveCalcularHorasExtrasDoDiaCorreto()
         {
             var ponto = criarPontoDoDia(11, 6, 2016, 10, 0); //Sábado
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 00));
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 30));
-            criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
+            criarPontoService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
 
             var jornada = criarJornada();
             //Configurado para 6 horas (7 horas - 1 hora de folga)
@@ -303,29 +311,29 @@ namespace ControlePonto.Tests
             Assert.AreEqual(new TimeSpan(2, 30, 0), ponto.calcularHorasExtras(jornada));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveCalcularHorasTrabalhadas()
         {
             var ponto = criarPontoDoDia(22, 8, 2014);
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12));
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 13));
-            criarService(new DataHoraMockStrategy(22, 8, 2014, 18)).encerrarDia(ponto);
+            criarPontoService(new DataHoraMockStrategy(22, 8, 2014, 18)).encerrarDia(ponto);
 
             Assert.AreEqual(new TimeSpan(8, 0, 0), ponto.calcularHorasTrabalhadas());
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveCalcularHorasExtrasEmDiasDeFolga()
         {
             var ponto = criarPontoDoDia(12, 6, 2016, 10, 0); //Domingo
-            criarService(new DataHoraMockStrategy(12, 6, 2016, 12, 00)).encerrarDia(ponto);
+            criarPontoService(new DataHoraMockStrategy(12, 6, 2016, 12, 00)).encerrarDia(ponto);
 
             var jornada = criarJornada();
             Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasExtras(jornada));
             Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasTrabalhadas());
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(IntervaloEmAbertoException))]
         public void pontoNaoDeveEntrarEmDuasPausasAoMesmoTempo()
         {
@@ -338,25 +346,25 @@ namespace ControlePonto.Tests
                 entradaAlmoco,
                 entradaLanche               
             );
-            var service = criarService(horarios);
+            var service = criarPontoService(horarios);
 
             var ponto = service.iniciarDia();
             ponto.registrarIntervalo(tipoAlmoco, horarios);
             ponto.registrarIntervalo(tipoIntervaloFactory.criarTipoIntervalo("LANCHE"), horarios);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveCalcularHorasDevedoras()
         {
             var ponto = criarPontoDoDia(18, 6, 2016, 9);
-            criarService(new DataHoraMockStrategy(18, 6, 2016, 16)).encerrarDia(ponto);
+            criarPontoService(new DataHoraMockStrategy(18, 6, 2016, 16)).encerrarDia(ponto);
 
             var jornada = criarJornada();
             jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 0, 0));
             Assert.AreEqual(new TimeSpan(2, 0, 0), ponto.calcularHorasDevedoras(jornada));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         [ExpectedException(typeof(DiaEmAbertoException))]
         public void pontoNaoDeveCalcularHorasDevedorasSeEstiverAberto()
         {
@@ -366,12 +374,12 @@ namespace ControlePonto.Tests
             ponto.calcularHorasDevedoras(jornada);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoNaoDeveCalcularHorasExtrasNegativas()
         {
             //Quando possuo hora devedora, não devo calcular extras como negativo
             var ponto = criarPontoDoDia(18, 6, 2016, 9);
-            criarService(new DataHoraMockStrategy(18, 6, 2016, 16)).encerrarDia(ponto);
+            criarPontoService(new DataHoraMockStrategy(18, 6, 2016, 16)).encerrarDia(ponto);
 
             var jornada = criarJornada();
             jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 0, 0));
@@ -379,18 +387,30 @@ namespace ControlePonto.Tests
             Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.calcularHorasExtras(jornada));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Trabalho")]
         public void pontoNaoDeveCalcularHorasDevedorasNegativas()
         {
             var ponto = criarPontoDoDia(11, 6, 2016, 10, 0); //Sábado
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 00));
             ponto.registrarIntervalo(tipoAlmoco, new DataHoraMockStrategy(22, 8, 2014, 12, 30));
-            criarService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
+            criarPontoService(new DataHoraMockStrategy(22, 8, 2014, 19, 00)).encerrarDia(ponto);
 
             var jornada = criarJornada();
             jornada.cadastrarDia(DayOfWeek.Saturday, new TimeSpan(10, 0, 0), new TimeSpan(17, 0, 0), new TimeSpan(1, 0, 0));
             //2:30 extras
             Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.calcularHorasDevedoras(jornada)); 
+        }
+
+        [TestMethod, TestCategory("Trabalho")]
+        [ExpectedException(typeof(PontoDiaJaExisteException))]
+        public void naoDeveExistirMaisDeUmPontoDoFuncionarioNoDia()
+        {
+            var repo = new PontoDiaMockRepository();
+            var service = criarPontoService(new DataHoraMockStrategy(DateTime.Today), repo);
+            var ponto = service.iniciarDia();
+            service.encerrarDia(ponto);
+
+            criarPontoFactory(repo).criarPonto(new DataHoraMockStrategy(DateTime.Today), sessaoLogin);            
         }
     }
 }

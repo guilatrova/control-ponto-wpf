@@ -1844,24 +1844,6 @@
         isActiveClass="false">
         <ownedAttributesInternal>
           <property
-            Id="c1bb490f-8bb3-4462-b7cc-62b774a5670c"
-            name="Data"
-            isLeaf="false"
-            isStatic="false"
-            isReadOnly="false"
-            isUnique="false"
-            isDerived="false"
-            isDerivedUnion="false"
-            aggregation="None"
-            isComposite="false">
-            <type_NamedElement>
-              <undefinedTypeMoniker
-                Id="33431b5d-2535-446c-9922-38ca22943f85"
-                LastKnownName="DateTime"
-                LastKnownLocation="ControlePonto.Model.uml" />
-            </type_NamedElement>
-          </property>
-          <property
             Id="cedcf9d4-3508-419c-b1cb-5d15cefd2f46"
             name="Id"
             isLeaf="false"

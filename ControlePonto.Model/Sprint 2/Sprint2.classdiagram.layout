@@ -54,11 +54,11 @@
         <classShapeMoniker Id="d61fffcd-c772-4988-8d65-24bbba786c74" />
       </nodes>
     </generalizationConnector>
-    <classShape Id="f0206a03-ddf3-4e86-840e-54bd2d212ad7" absoluteBounds="9, 1.25, 1.875, 1.5429687152306237" hideQualifiedName="false" increaseHeight="0" customColor="181, 193, 223">
+    <classShape Id="f0206a03-ddf3-4e86-840e-54bd2d212ad7" absoluteBounds="9, 1.25, 1.875, 1.3828124701976781" hideQualifiedName="false" increaseHeight="0" customColor="181, 193, 223">
       <classMoniker Id="5bc71b0c-a4c6-44c3-8448-de2333aa4e6f" LastKnownName="Folga" />
       <nestedChildShapes>
-        <AttributeElementListCompartment Id="95f1a093-d1da-405b-adeb-48eb428e152c" absoluteBounds="9.015, 1.6400000000000001, 1.8450000000000002, 0.84179684768120444" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
-        <OperationElementListCompartment Id="f046779e-337a-46b5-9c51-af25c18ab791" absoluteBounds="9.015, 2.4917968476812042, 1.8450000000000002, 0.20117186754941963" name="OperationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <AttributeElementListCompartment Id="95f1a093-d1da-405b-adeb-48eb428e152c" absoluteBounds="9.015, 1.6400000000000001, 1.8450000000000002, 0.68164060264825821" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <OperationElementListCompartment Id="f046779e-337a-46b5-9c51-af25c18ab791" absoluteBounds="9.015, 2.3316406026482586, 1.8450000000000002, 0.20117186754941963" name="OperationsCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

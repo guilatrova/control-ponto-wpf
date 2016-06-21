@@ -33,7 +33,7 @@ namespace ControlePonto.Domain.ponto
         }
 
         public virtual Usuario Usuario { get; protected set; }
-        public virtual bool isFeriado { get; protected set; }
+        public virtual bool isFolga { get; protected set; }
         public virtual bool isAberto 
         {
             get
@@ -42,23 +42,32 @@ namespace ControlePonto.Domain.ponto
             }
         }
 
-        public virtual bool deleteme { get; set; }
-
         public virtual ICollection<Intervalo> Intervalos { get; set; }
 
         #endregion
 
         protected PontoDia() { }
 
-        public PontoDia(DateTime data, TimeSpan inicio, Usuario usuario)
+        public PontoDia(DateTime data, TimeSpan inicio, Funcionario funcionario)
         {
             base.checkPreConstructor();
-            Check.Require(usuario != null, "O usuário não deve ser nulo");
+            Check.Require(funcionario != null, "O usuário não deve ser nulo");
 
             Data = data;
             Inicio = inicio;
-            Usuario = usuario;            
+            Usuario = funcionario;            
             Intervalos = new List<Intervalo>();
+        }
+
+        public static PontoDia criarComoDiaFolga(DateTime data, Funcionario funcionario)
+        {
+            return new PontoDia()
+            {
+                Data = data,
+                Inicio = new TimeSpan(0, 0, 0),
+                Usuario = funcionario,
+                isFolga = true
+            };
         }
         
         public virtual void registrarIntervalo(TipoIntervalo tipoIntervalo, IDataHoraStrategy dataHoraStrategy)

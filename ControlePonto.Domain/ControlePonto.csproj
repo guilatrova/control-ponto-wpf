@@ -63,6 +63,13 @@
     <Compile Include="Domain\feriado\FeriadoRelativo.cs" />
     <Compile Include="Domain\feriado\FeriadoService.cs" />
     <Compile Include="Domain\feriado\IFeriadoRepository.cs" />
+    <Compile Include="Domain\folga\Folga.cs" />
+    <Compile Include="Domain\folga\FolgaDiaInvalidoException.cs" />
+    <Compile Include="Domain\folga\FolgaDiaTrabalhadoException.cs" />
+    <Compile Include="Domain\folga\FolgaFactory.cs" />
+    <Compile Include="Domain\folga\FolgaJaExisteException.cs" />
+    <Compile Include="Domain\folga\FolgaService.cs" />
+    <Compile Include="Domain\folga\IFolgaRepository.cs" />
     <Compile Include="Domain\framework\specification\AndSpecification.cs" />
     <Compile Include="Domain\framework\specification\CompositeSpecification.cs" />
     <Compile Include="Domain\framework\specification\ISpecification.cs" />

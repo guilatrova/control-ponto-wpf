@@ -139,12 +139,6 @@
       <class Id="5bc71b0c-a4c6-44c3-8448-de2333aa4e6f" name="Folga" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="d00d0f1c-d47f-4cea-b5a0-9531bca0034c" />
         <ownedAttributesInternal>
-          <property Id="75e2fbeb-8082-4161-8a90-6368feb02236" name="Data" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="c1bb490f-8bb3-4462-b7cc-62b774a5670c" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="32bc0899-80fc-424a-b002-085d4c391f80" LastKnownName="DateTime" />
-            </type_NamedElement>
-          </property>
           <property Id="3f29532e-e679-445f-875c-78ba4ce0d0fe" name="Id" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="cedcf9d4-3508-419c-b1cb-5d15cefd2f46" />
             <type_NamedElement>

@@ -65,6 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="mocks\FolgaMockRepository.cs" />
     <Compile Include="mocks\DataHoraMockListStrategy.cs" />
     <Compile Include="mocks\DataHoraMockStrategy.cs" />
     <Compile Include="mocks\repository\JornadaTrabalhoMockRepository.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="IntervaloTests.cs" />
     <Compile Include="JornadaTrabalhoTests.cs" />
     <Compile Include="FeriadoTests.cs" />
+    <Compile Include="FolgaTests.cs" />
     <Compile Include="UsuarioTests.cs" />
   </ItemGroup>
   <ItemGroup>
