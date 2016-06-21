@@ -1,18 +1,12 @@
 ﻿using ControlePonto.Domain.factories.services;
-using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
-using ControlePonto.WPF.window.administracao;
-using ControlePonto.WPF.window.feriado;
-using ControlePonto.WPF.window.jornada;
+using ControlePonto.Infrastructure.nhibernate;
 using ControlePonto.WPF.window.ponto;
 using ControlePonto.WPF.window.usuario;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -27,12 +21,12 @@ namespace ControlePonto.WPF
         {
 #if DEBUG
             LoginServiceFactory.criarLoginService().Logar("gui", "123456");
-#endif
-
             new PainelControleWindow(new PainelControleViewModel()).Show();
             //JornadaWindowFactory.criarJornadaWindow().Show();
-            //TODO Volta pra login            
-            /*Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            return;
+#endif
+                        
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             tratarArgumentos(e.Args);
 
@@ -51,10 +45,10 @@ namespace ControlePonto.WPF
                     MessageBox.Show(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            Current.Shutdown();*/
+            Current.Shutdown();
         }
 
-        private PontoDia recuperarOuIniciarPonto(PontoService pontoService)
+        private DiaTrabalho recuperarOuIniciarPonto(PontoService pontoService)
         {
             var ponto = pontoService.recuperarPontoAbertoFuncionario(SessaoLogin.getSessao().UsuarioLogado as Funcionario);
             if (ponto == null)

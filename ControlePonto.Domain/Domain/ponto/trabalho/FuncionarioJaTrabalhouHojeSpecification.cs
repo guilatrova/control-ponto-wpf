@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControlePonto.Domain.ponto
+namespace ControlePonto.Domain.ponto.trabalho
 {
     public class FuncionarioJaTrabalhouHojeSpecification : CompositeSpecification<Funcionario>
     {

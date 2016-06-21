@@ -1,5 +1,6 @@
 ﻿using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
@@ -16,7 +17,7 @@ namespace ControlePonto.WPF.window.ponto
     public class PontoViewModel : ViewModelBase
     {
         private Funcionario funcionario;
-        private PontoDia ponto;
+        private DiaTrabalho ponto;
         private PontoService pontoService;
         private ITipoIntervaloRepository tipoIntervaloRepository;
 
@@ -24,7 +25,7 @@ namespace ControlePonto.WPF.window.ponto
         private ICommand _entrarIntervaloCommand;
         private ICommand _sairIntervaloCommand;
 
-        public PontoViewModel(Funcionario funcionario, PontoDia ponto, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
+        public PontoViewModel(Funcionario funcionario, DiaTrabalho ponto, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
         {
             this.funcionario = funcionario;
             this.ponto = ponto;

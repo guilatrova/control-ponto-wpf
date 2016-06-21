@@ -1,5 +1,7 @@
 ﻿using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.ponto.folga;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.usuario.funcionario;
 using System;
@@ -30,7 +32,7 @@ namespace ControlePonto.Domain.services.ponto
             this.pontoRepository = pontoRepository;
         }
 
-        public PontoDia iniciarDia()
+        public DiaTrabalho iniciarDia()
         {            
             if (deixouPontoAberto.IsSatisfiedBy((Funcionario)sessaoLogin.UsuarioLogado))
                 throw new DiaEmAbertoException(deixouPontoAberto.PontoDiaAbertoEncontrado);
@@ -38,12 +40,12 @@ namespace ControlePonto.Domain.services.ponto
             if (jaTrabalhouHoje.IsSatisfiedBy((Funcionario)sessaoLogin.UsuarioLogado))
                 throw new PontoDiaJaExisteException(jaTrabalhouHoje.Data);
 
-            var ponto = pontoFactory.criarPonto(dataHoraStrategy, sessaoLogin);
+            var ponto = pontoFactory.criarDiaTrabalho(dataHoraStrategy, sessaoLogin);
             pontoRepository.save(ponto);
-            return ponto;
+            return ponto as DiaTrabalho;
         }
 
-        public void encerrarDia(PontoDia ponto)
+        public void encerrarDia(DiaTrabalho ponto)
         {
             if (ponto.algumIntervaloEmAberto())
                 throw new IntervaloEmAbertoException(ponto.getIntervaloEmAberto());            
@@ -52,15 +54,26 @@ namespace ControlePonto.Domain.services.ponto
             pontoRepository.save(ponto);
         }
 
-        public PontoDia recuperarPontoAbertoFuncionario(Funcionario funcionario)
+        public DiaTrabalho recuperarPontoAbertoFuncionario(Funcionario funcionario)
         {
             return pontoRepository.findPontoAberto(funcionario, dataHoraStrategy.getDataHoraAtual());
         }
 
-        public void registrarIntervalo(TipoIntervalo tipoIntervalo, PontoDia ponto)
+        public void registrarIntervalo(TipoIntervalo tipoIntervalo, DiaTrabalho ponto)
         {
             ponto.registrarIntervalo(tipoIntervalo, dataHoraStrategy);
             pontoRepository.save(ponto);
+        }
+
+        public PontoDia darFolgaPara(Funcionario funcionario, DateTime data, string descricao)
+        {
+            if (data.Date < DateTime.Today)
+                throw new FolgaDiaInvalidoException(data);
+
+            var folga = pontoFactory.criarDiaFolga(funcionario, data, descricao);
+            pontoRepository.save(folga);
+
+            return folga;
         }
     }
 }

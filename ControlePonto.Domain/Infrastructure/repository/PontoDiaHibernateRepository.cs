@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.nhibernate;
@@ -25,14 +26,14 @@ namespace ControlePonto.Infrastructure.repository
             }
         }
 
-        public List<PontoDia> findPontosAbertos(Funcionario funcionario)
+        public List<DiaTrabalho> findPontosAbertos(Funcionario funcionario)
         {
             using (ISession session = NHibernateHelper.openSession())
             {
-                return session.CreateCriteria<PontoDia>()
+                return session.CreateCriteria<DiaTrabalho>()
                     .Add(Restrictions.IsNull("Fim"))
-                    .Add(Restrictions.Eq("Usuario", funcionario))                    
-                    .List<PontoDia>().ToList();
+                    .Add(Restrictions.Eq("Usuario", funcionario))
+                    .List<DiaTrabalho>().ToList();
             }
         }
 
@@ -50,17 +51,17 @@ namespace ControlePonto.Infrastructure.repository
         }
 
 
-        public PontoDia findPontoAberto(Funcionario funcionario, DateTime date)
+        public DiaTrabalho findPontoAberto(Funcionario funcionario, DateTime date)
         {
             using (ISession session = NHibernateHelper.openSession())
             {
-                return session.CreateCriteria<PontoDia>()
+                return session.CreateCriteria<DiaTrabalho>()
                     .Add(Restrictions.IsNull("Fim"))
                     .Add(Restrictions.Eq("Usuario", funcionario))
                     .Add(Restrictions.Eq("Data", date.Date))
                     .SetFetchMode("Intervalos", FetchMode.Eager)
                     .SetFetchMode("Intervalos.TipoIntervalo", FetchMode.Eager)
-                    .UniqueResult<PontoDia>();
+                    .UniqueResult<DiaTrabalho>();
             }
         }
     }

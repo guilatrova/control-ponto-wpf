@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.usuario.funcionario;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,13 @@ namespace ControlePonto.Tests.mocks.repository
             return (ulong)listRep.Count();
         }
 
-        public List<PontoDia> findPontosAbertos(Funcionario funcionario)
+        public List<DiaTrabalho> findPontosAbertos(Funcionario funcionario)
         {
             return
-                listRep.Where(x => x.isAberto && x.Usuario == funcionario).ToList();
+                listRep
+                .Where(x => x.GetType() == typeof(DiaTrabalho))
+                .Select(x => x as DiaTrabalho)
+                .Where(x => x.isAberto && x.Usuario.Nome.Equals(funcionario.Nome)).ToList();
         }
 
 
@@ -33,6 +37,12 @@ namespace ControlePonto.Tests.mocks.repository
 
 
         public PontoDia findPontoAberto(Funcionario funcionario, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        DiaTrabalho IPontoDiaRepository.findPontoAberto(Funcionario funcionario, DateTime date)
         {
             throw new NotImplementedException();
         }

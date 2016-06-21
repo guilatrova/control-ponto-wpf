@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.usuario.funcionario;
+﻿using ControlePonto.Domain.ponto.trabalho;
+using ControlePonto.Domain.usuario.funcionario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace ControlePonto.Domain.ponto
     public interface IPontoDiaRepository
     {
         ulong save(PontoDia ponto);
-        List<PontoDia> findPontosAbertos(Funcionario funcionario);
-        PontoDia findPontoAberto(Funcionario funcionario, DateTime date);
+        List<DiaTrabalho> findPontosAbertos(Funcionario funcionario);
+        DiaTrabalho findPontoAberto(Funcionario funcionario, DateTime date);
         bool existePontoDia(Funcionario funcionario, DateTime date);
     }
 }

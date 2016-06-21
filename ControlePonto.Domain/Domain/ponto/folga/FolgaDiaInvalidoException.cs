@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControlePonto.Domain.folga
+namespace ControlePonto.Domain.ponto.folga
 {
     public class FolgaDiaInvalidoException : Exception
     {

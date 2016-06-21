@@ -15,17 +15,14 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
         {
             Id(x => x.Id).GeneratedBy.Identity();
 
-            Map(x => x.Data).Not.Nullable();
-            Map(x => x.Inicio)
-                .CustomType(typeof(TimeAsTimeSpanTypeClone))
+            Map(x => x.Data)
                 .Not.Nullable();
-            Map(x => x.Fim)
-                .CustomType(typeof(TimeAsTimeSpanTypeClone));            
 
-            HasMany(x => x.Intervalos)
-                .Cascade.All();
+            Map(x => x.Tipo)
+                .Not.Nullable();
 
-            References(x => x.Usuario).Not.Nullable();
+            References(x => x.Usuario)
+                .Not.Nullable();            
         }
     }
 }
