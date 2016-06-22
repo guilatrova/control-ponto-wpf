@@ -1,4 +1,5 @@
 ﻿using ControlePonto.WPF.window.feriado;
+using ControlePonto.WPF.window.ponto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,10 @@ namespace ControlePonto.WPF.window.administracao
             {
                 case PainelControleViewModel.VIEW_FERIADO:
                     FeriadoWindowFactory.criarCadastroFeriadoWindow().ShowDialog();
+                    break;
+
+                case PainelControleViewModel.VIEW_FOLGA:
+                    PontoWindowFactory.criarFolgaWindow().ShowDialog();
                     break;
 
                 default:

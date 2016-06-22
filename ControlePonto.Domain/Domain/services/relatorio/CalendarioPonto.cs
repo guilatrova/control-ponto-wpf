@@ -16,9 +16,9 @@ namespace ControlePonto.Domain.services.relatorio
 
         public DateTime PeriodoFim { get; private set; }
 
-        public List<DiaCalendarioDTO> Dias { get; private set; }
+        public List<DiaCalendarioPonto> Dias { get; private set; }
 
-        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, List<DiaCalendarioDTO> todosDias)
+        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, List<DiaCalendarioPonto> todosDias)
         {
             this.Funcionario = funcionario;
             this.PeriodoInicio = inicio;

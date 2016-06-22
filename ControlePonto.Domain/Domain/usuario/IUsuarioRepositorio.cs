@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlePonto.Domain.usuario.funcionario;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,7 @@ namespace ControlePonto.Domain.usuario
         bool loginExiste(string login);
         int getCount();
         uint save(Usuario usuario);
+
+        List<Funcionario> findFuncionarios();
     }
 }

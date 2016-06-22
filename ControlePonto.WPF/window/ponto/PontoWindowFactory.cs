@@ -2,7 +2,9 @@
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
+using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario.funcionario;
+using ControlePonto.WPF.window.ponto.folga;
 
 namespace ControlePonto.WPF.window.ponto
 {
@@ -15,6 +17,14 @@ namespace ControlePonto.WPF.window.ponto
                 ponto,
                 pontoService,
                 RepositoryFactory.criarTipoIntervaloRepository()));
+        }
+
+        public static ControleFolgaWindow criarFolgaWindow()
+        {
+            return new ControleFolgaWindow(new ControleFolgaViewModel(
+                RepositoryFactory.criarUsuarioRepository(),
+                new RelatorioService(RepositoryFactory.criarPontoRepository())
+            ));
         }
     }
 }

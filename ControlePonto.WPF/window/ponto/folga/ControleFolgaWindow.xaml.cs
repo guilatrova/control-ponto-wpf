@@ -19,7 +19,7 @@ namespace ControlePonto.WPF.window.ponto.folga
     /// </summary>
     public partial class ControleFolgaWindow : WindowBase
     {
-        public ControleFolgaWindow() : base(null)
+        public ControleFolgaWindow(ControleFolgaViewModel viewModel) : base(viewModel)
         {
             InitializeComponent();
         }

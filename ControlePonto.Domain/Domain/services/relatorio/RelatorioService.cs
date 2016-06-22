@@ -24,10 +24,12 @@ namespace ControlePonto.Domain.services.relatorio
             var diasFaltando = inicio.Range(fim).Except(todosPontos.Select(x => x.Data));
 
             var todosDias = todosPontos
-                .Select(x => new DiaCalendarioDTO(x))
+                .Select(x => new DiaCalendarioPonto(x))
                 .Concat(diasFaltando
-                    .Select(x => new DiaCalendarioDTO(x))
-                ).ToList();                        
+                    .Select(x => new DiaCalendarioPonto(x))
+                )
+                .OrderBy(x => x.Data)
+                .ToList();                        
 
             return new CalendarioPonto(funcionario, inicio, fim, todosDias);
         }

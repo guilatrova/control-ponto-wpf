@@ -99,7 +99,8 @@
     <Compile Include="window\ponto\controle\PontoWindow.xaml.cs">
       <DependentUpon>PontoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="window\ponto\controle\PontoWindowFactory.cs" />
+    <Compile Include="window\ponto\folga\DiaFolgaDTO.cs" />
+    <Compile Include="window\ponto\PontoWindowFactory.cs" />
     <Compile Include="window\ponto\folga\ControleFolgaWindow.xaml.cs">
       <DependentUpon>ControleFolgaWindow.xaml</DependentUpon>
     </Compile>

@@ -56,5 +56,11 @@ namespace ControlePonto.Tests.mocks
         {
             return usuarioList.Any(x => x.Login == login);
         }
+
+
+        public List<Domain.usuario.funcionario.Funcionario> findFuncionarios()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

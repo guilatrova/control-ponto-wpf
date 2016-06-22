@@ -64,7 +64,7 @@
     <Compile Include="Domain\feriado\FeriadoService.cs" />
     <Compile Include="Domain\feriado\IFeriadoRepository.cs" />
     <Compile Include="Domain\services\relatorio\CalendarioPonto.cs" />
-    <Compile Include="Domain\services\relatorio\DiaCalendarioDTO.cs" />
+    <Compile Include="Domain\services\relatorio\DiaCalendarioPonto.cs" />
     <Compile Include="Domain\framework\Extensions.cs" />
     <Compile Include="Domain\services\relatorio\ETipoDiaCalendario.cs" />
     <Compile Include="Domain\services\relatorio\RelatorioService.cs" />

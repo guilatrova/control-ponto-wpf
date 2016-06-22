@@ -21,10 +21,10 @@ namespace ControlePonto.WPF
         private void Application_Startup(object sender, StartupEventArgs e)
         {
 #if DEBUG
-            /*LoginServiceFactory.criarLoginService().Logar("gui", "123456");
+            LoginServiceFactory.criarLoginService().Logar("gui", "123456");
             new PainelControleWindow(new PainelControleViewModel()).Show();
             //JornadaWindowFactory.criarJornadaWindow().Show();
-            return;*/
+            return;
 #endif
                         
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;

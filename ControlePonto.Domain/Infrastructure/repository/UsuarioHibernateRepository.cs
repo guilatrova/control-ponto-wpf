@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.usuario;
+using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.nhibernate;
 using NHibernate;
 using NHibernate.Criterion;
@@ -23,7 +24,7 @@ namespace ControlePonto.Infrastructure.repository
             using (ISession session = NHibernateHelper.openSession())
             {
                 return session
-                    .CreateCriteria(typeof(Usuario))
+                    .CreateCriteria<Usuario>()
                     .Add(Restrictions.Eq("Login", login))
                     .UniqueResult<Usuario>();
             }
@@ -59,6 +60,18 @@ namespace ControlePonto.Infrastructure.repository
                 return session.QueryOver<Usuario>()
                     .Where(x => x.Login == login)
                     .RowCount() > 0;
+            }
+        }
+
+
+        public List<Funcionario> findFuncionarios()
+        {
+            using (ISession session = NHibernateHelper.openSession())
+            {
+                return session
+                    .CreateCriteria<Funcionario>()
+                    .List<Funcionario>()
+                    .ToList();
             }
         }
     }

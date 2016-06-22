@@ -21,10 +21,10 @@ namespace ControlePonto.WPF.window.administracao
             Titulo = string.Format("{0} - Painel de Controle", DateTime.Today.ToShortDateString());
             UsuarioLogado = SessaoLogin.getSessao().UsuarioLogado.Nome;
 
-            RelatorioCommand = new RelayCommand(() => requestThisView(VIEW_RELATORIO));
-            FolgaCommand = new RelayCommand(() => requestThisView(VIEW_FOLGA));
-            FeriadoCommand = new RelayCommand(() => requestThisView(VIEW_FERIADO));
-            JornadaCommand = new RelayCommand(() => requestThisView(VIEW_JORNADA));
+            RelatorioCommand = new RelayCommand(() => requestView(VIEW_RELATORIO));
+            FolgaCommand = new RelayCommand(() => requestView(VIEW_FOLGA));
+            FeriadoCommand = new RelayCommand(() => requestView(VIEW_FERIADO));
+            JornadaCommand = new RelayCommand(() => requestView(VIEW_JORNADA));
         }
 
         #region Propriedades
@@ -38,11 +38,6 @@ namespace ControlePonto.WPF.window.administracao
         public ICommand JornadaCommand{ get; private set; }
 
         #endregion
-
-        private void requestThisView(int view)
-        {
-            requestView(view);
-        }
 
         protected override string validar(string propertyName)
         {

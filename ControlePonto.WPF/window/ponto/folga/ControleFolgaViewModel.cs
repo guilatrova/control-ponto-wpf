@@ -1,12 +1,11 @@
 ﻿using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace ControlePonto.WPF.window.ponto.folga
@@ -14,17 +13,27 @@ namespace ControlePonto.WPF.window.ponto.folga
     public class ControleFolgaViewModel : ViewModelBase
     {
         private IUsuarioRepositorio usuarioRepository;
-        private IPontoDiaRepository pontoRepository;
+        private RelatorioService relatorioService;
 
-        public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, IPontoDiaRepository pontoRep)
+        public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, RelatorioService relatorioService)
         {
             this.usuarioRepository = usuarioRep;
-            this.pontoRepository = pontoRep;
+            this.relatorioService = relatorioService;
+
+            var today = DateTime.Today;
+            this.PeriodoInicio = new DateTime(today.Year, today.Month, 1);
+            this.PeriodoFim = PeriodoInicio.AddMonths(1).AddDays(-1);
+
+            this.Funcionarios = usuarioRepository.findFuncionarios().OrderBy(x => x.Nome).ToList();
+            this.FuncionarioEscolhido = Funcionarios[0];
+
+            ExibirCommand = new RelayCommand(exibir);
         }
 
         #region Propriedades
 
         public List<Funcionario> Funcionarios{ get; private set; }
+        public Funcionario FuncionarioEscolhido { get; set; }
 
         private DateTime _periodoInicio;
         public DateTime PeriodoInicio
@@ -45,12 +54,52 @@ namespace ControlePonto.WPF.window.ponto.folga
                 SetField(ref _periodoFim, value);
             }
         }
+        
+        private bool _exibirSomenteFolgas;
+        public bool ExibirSomenteFolgas
+        {
+            get { return _exibirSomenteFolgas; }
+            set 
+            { 
+                if (SetField(ref _exibirSomenteFolgas, value) && DiasPeriodo != null)
+                {
+                    aplicarFiltro(value);
+                }
+            }
+        }
 
         public ICommand ExibirCommand { get; private set; }
 
-        public List<object> CalendarioFolgas { get; private set; }
+        private List<DiaFolgaDTO> DiasPeriodo { get; set; }
+
+        private List<DiaFolgaDTO> _diasPeriodoFiltro;
+        public List<DiaFolgaDTO> DiasPeriodoFiltro
+        {
+            get { return _diasPeriodoFiltro; }
+            private set { SetField(ref _diasPeriodoFiltro, value); }
+        }
+        
 
         #endregion
+
+        private void exibir()
+        {
+            DiasPeriodo = relatorioService
+                .gerarCalendario(FuncionarioEscolhido, PeriodoInicio, PeriodoFim).Dias
+                .Select(x => new DiaFolgaDTO(x))
+                .ToList();
+
+            aplicarFiltro(ExibirSomenteFolgas);
+            RaisePropertyChanged("DiasPeriodoFiltro");
+        }
+
+        private void aplicarFiltro(bool somenteFolga)
+        {
+            if (somenteFolga)
+                DiasPeriodoFiltro = DiasPeriodo.Where(x => x.IsDiaFolga).ToList();
+            else
+                DiasPeriodoFiltro = DiasPeriodo;
+        }
 
         protected override string validar(string propertyName)
         {

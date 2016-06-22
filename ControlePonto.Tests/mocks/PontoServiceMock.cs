@@ -18,7 +18,7 @@ namespace ControlePonto.Tests.mocks
         {
         }
 
-        public DiaFolga darFolgaPara(Funcionario funcionario, DateTime data, string descricao)
+        public new DiaFolga darFolgaPara(Funcionario funcionario, DateTime data, string descricao)
         {
             var folga = base.pontoFactory.criarDiaFolga(funcionario, data, descricao);
             pontoRepository.save(folga);

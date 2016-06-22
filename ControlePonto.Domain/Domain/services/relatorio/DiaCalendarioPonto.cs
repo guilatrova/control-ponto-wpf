@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public class DiaCalendarioDTO
+    public class DiaCalendarioPonto
     {
-        private PontoDia pontoDia;
+        public PontoDia PontoDia { get; set; }
 
         public DateTime Data { get; private set; }
 
@@ -16,23 +16,23 @@ namespace ControlePonto.Domain.services.relatorio
         {
             get 
             {
-                if (pontoDia == null)
+                if (PontoDia == null)
                     return ETipoDiaCalendario.FALTOU;
 
-                if (pontoDia.Tipo == ETipo.TRABALHO)
+                if (PontoDia.Tipo == ETipo.TRABALHO)
                     return ETipoDiaCalendario.TRABALHO;
 
                 return ETipoDiaCalendario.FOLGA;
             }
         }
 
-        public DiaCalendarioDTO(PontoDia pontoDia)
+        public DiaCalendarioPonto(PontoDia pontoDia)
         {
-            this.pontoDia = pontoDia;
+            this.PontoDia = pontoDia;
             this.Data = pontoDia.Data;
         }
 
-        public DiaCalendarioDTO(DateTime data)
+        public DiaCalendarioPonto(DateTime data)
         {
             this.Data = data;
         }
