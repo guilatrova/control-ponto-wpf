@@ -64,5 +64,24 @@ namespace ControlePonto.Infrastructure.repository
                     .UniqueResult<DiaTrabalho>();
             }
         }
+
+
+        public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
+        {
+            FetchMode fetchDiaTrabalho = lazyLoadTrabalho ? FetchMode.Lazy : FetchMode.Eager;
+            FetchMode fetchDiaFolga = lazyLoadFolga ? FetchMode.Lazy : FetchMode.Eager;
+
+            using (ISession session = NHibernateHelper.openSession())
+            {
+                return
+                    session
+                        .CreateCriteria<PontoDia>()
+                        .SetFetchMode("DiaTrabalho", fetchDiaTrabalho)
+                        .SetFetchMode("DiaFolga", fetchDiaFolga)
+                        .Add(Restrictions.Eq("Usuario", funcionario))
+                        .Add(Restrictions.Between("Data", inicio, fim))
+                        .List<PontoDia>().ToList();
+            }
+        }
     }
 }

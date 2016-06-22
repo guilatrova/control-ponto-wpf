@@ -10,16 +10,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControlePonto.Domain.services.ponto
+namespace ControlePonto.Domain.ponto
 {
     public class PontoService
     {
-        private PontoFactory pontoFactory;
-        private SessaoLogin sessaoLogin;
-        private IDataHoraStrategy dataHoraStrategy;
-        private IPontoDiaRepository pontoRepository;
-        private FuncionarioPossuiPontoAbertoSpecification deixouPontoAberto;
-        private FuncionarioJaTrabalhouHojeSpecification jaTrabalhouHoje;
+        protected PontoFactory pontoFactory;
+        protected SessaoLogin sessaoLogin;
+        protected IDataHoraStrategy dataHoraStrategy;
+        protected IPontoDiaRepository pontoRepository;
+        protected FuncionarioPossuiPontoAbertoSpecification deixouPontoAberto;
+        protected FuncionarioJaTrabalhouHojeSpecification jaTrabalhouHoje;
 
         public PontoService(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec,  FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin, IPontoDiaRepository pontoRepository)
         {
@@ -65,7 +65,7 @@ namespace ControlePonto.Domain.services.ponto
             pontoRepository.save(ponto);
         }
 
-        public PontoDia darFolgaPara(Funcionario funcionario, DateTime data, string descricao)
+        public DiaFolga darFolgaPara(Funcionario funcionario, DateTime data, string descricao)
         {
             if (data.Date < DateTime.Today)
                 throw new FolgaDiaInvalidoException(data);

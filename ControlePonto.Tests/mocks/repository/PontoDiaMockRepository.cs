@@ -35,14 +35,17 @@ namespace ControlePonto.Tests.mocks.repository
                 listRep.Any(x => x.Data == date.Date && x.Usuario == funcionario);
         }
 
-
-        public PontoDia findPontoAberto(Funcionario funcionario, DateTime date)
+        public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
         {
-            throw new NotImplementedException();
+            return
+                listRep
+                .Where(x => x.Usuario.Nome.Equals(funcionario.Nome))
+                .Where(x => x.Data >= inicio && x.Data <= fim)
+                .ToList();
         }
 
 
-        DiaTrabalho IPontoDiaRepository.findPontoAberto(Funcionario funcionario, DateTime date)
+        public DiaTrabalho findPontoAberto(Funcionario funcionario, DateTime date)
         {
             throw new NotImplementedException();
         }

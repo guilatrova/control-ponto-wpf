@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NHibernate.Tool.hbm2ddl;
+using MySql.Data.MySqlClient;
 
 namespace ControlePonto.Infrastructure.nhibernate
 {
@@ -31,7 +32,7 @@ namespace ControlePonto.Infrastructure.nhibernate
                 {
                     createSessionFactory();
                 }
-                catch(Exception ex)
+                catch(MySqlException ex)
                 {
                     throw new InvalidHostException(value, ex);
                 }

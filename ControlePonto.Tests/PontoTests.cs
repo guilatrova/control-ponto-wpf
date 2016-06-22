@@ -3,7 +3,6 @@ using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
-using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.utils;
 using ControlePonto.Tests.mocks;
@@ -34,30 +33,26 @@ namespace ControlePonto.Tests
             tipoAlmoco = tipoIntervaloFactory.criarTipoIntervalo("ALMOÇO");            
         }
 
+        #region Helper methods
+
+        private Funcionario criarFuncionario()
+        {
+            return new FuncionarioFactory().criarFuncionario("Guilherme", "gui", "123", "", "41617099864");
+        }
+
         private DiaTrabalho criarPontoTrabalhoDoDia(int dia, int mes, int ano, int hora = 9, int minuto = 0)
         {
             var dt = new DataHoraMockStrategy(new DateTime(ano, mes, dia, hora, minuto, 0));
-            return criarPontoFactory().criarDiaTrabalho(dt, sessaoLogin);
+            return criarFactory().criarDiaTrabalho(dt, sessaoLogin);
         }
 
         private PontoService criarService(IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository repository = null, Funcionario logado = null)
-        {
-            if (dataHoraStrategy == null)
-                dataHoraStrategy = new DataHoraMockStrategy(DateTime.Today);
-
+        {            
             var sessao = sessaoLogin;
             if (logado != null)
                 sessao = new SessaoLoginMock(logado);
 
-            if (repository == null)
-                repository = new PontoDiaMockRepository();
-
-            return new PontoService(criarPontoFactory(repository),
-                dataHoraStrategy,
-                new FuncionarioPossuiPontoAbertoSpecification(repository),
-                new FuncionarioJaTrabalhouHojeSpecification(repository),
-                sessao,
-                repository);
+            return FactoryHelper.criarPontoService(sessao, dataHoraStrategy, repository);
         }
 
         private JornadaTrabalho criarJornada()
@@ -65,7 +60,7 @@ namespace ControlePonto.Tests
             return new JornadaTrabalhoFactory(new JornadaTrabalhoMockRepository()).criarJornadaTrabalho();
         }
 
-        private PontoFactory criarPontoFactory(IPontoDiaRepository repo = null)
+        private PontoFactory criarFactory(IPontoDiaRepository repo = null)
         {
             if (repo == null)
                 repo = new PontoDiaMockRepository();
@@ -73,11 +68,13 @@ namespace ControlePonto.Tests
             return new PontoFactory(repo);
         }
 
+        #endregion
+
         [TestMethod, TestCategory("Trabalho"), TestCategory("Quebra de contrato")]
         [ExpectedException(typeof(PreconditionException))]
         public void diaTrabalhoSoDeveSerCriadoPelaFactory()
         {
-            var ponto = criarPontoFactory().criarDiaTrabalho(new DataHoraMockStrategy(22, 8, 2014), sessaoLogin);
+            var ponto = criarFactory().criarDiaTrabalho(new DataHoraMockStrategy(22, 8, 2014), sessaoLogin);
             Assert.IsNotNull(ponto);
 
             ponto = new DiaTrabalho(new DateTime(2014, 8, 22), new TimeSpan(19, 30, 0), null);
@@ -87,7 +84,7 @@ namespace ControlePonto.Tests
         public void pontoDeveSerCriadoComDataHoraCorreta()
         {
             var esperado = new DataHoraMockStrategy(22, 8, 2014, 19, 30);
-            var ponto = criarPontoFactory().criarDiaTrabalho(esperado, sessaoLogin);
+            var ponto = criarFactory().criarDiaTrabalho(esperado, sessaoLogin);
 
             Assert.AreEqual(new DateTime(2014, 8, 22, 0, 0, 0), ponto.Data);
             Assert.AreEqual(new TimeSpan(19, 30, 0), ponto.Inicio);
@@ -108,7 +105,7 @@ namespace ControlePonto.Tests
         [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveSerCriadoAssociadoAoFuncionario()
         {
-            var ponto = criarPontoFactory().criarDiaTrabalho(new DataHoraMockStrategy(22, 8, 2016), sessaoLogin);
+            var ponto = criarFactory().criarDiaTrabalho(new DataHoraMockStrategy(22, 8, 2016), sessaoLogin);
 
             Assert.AreEqual(funcionario, ponto.Usuario);
         }
@@ -128,7 +125,7 @@ namespace ControlePonto.Tests
                     entradaLanche,
                     saidaLanche);
 
-            var ponto = criarPontoFactory().criarDiaTrabalho(dtMock, sessaoLogin);
+            var ponto = criarFactory().criarDiaTrabalho(dtMock, sessaoLogin);
 
             ponto.registrarIntervalo(tipoAlmoco, dtMock);
             ponto.registrarIntervalo(tipoAlmoco, dtMock);
@@ -412,7 +409,7 @@ namespace ControlePonto.Tests
             var ponto = service.iniciarDia();
             service.encerrarDia(ponto);
 
-            criarPontoFactory(repo).criarDiaTrabalho(new DataHoraMockStrategy(DateTime.Today), sessaoLogin);            
+            criarFactory(repo).criarDiaTrabalho(new DataHoraMockStrategy(DateTime.Today), sessaoLogin);            
         }
     }
 }

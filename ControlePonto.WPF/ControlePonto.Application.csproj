@@ -95,11 +95,15 @@
       <DependentUpon>JornadaTrabalhoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\jornada\JornadaWindowFactory.cs" />
-    <Compile Include="window\ponto\PontoViewModel.cs" />
-    <Compile Include="window\ponto\PontoWindow.xaml.cs">
+    <Compile Include="window\ponto\controle\PontoViewModel.cs" />
+    <Compile Include="window\ponto\controle\PontoWindow.xaml.cs">
       <DependentUpon>PontoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="window\ponto\PontoWindowFactory.cs" />
+    <Compile Include="window\ponto\controle\PontoWindowFactory.cs" />
+    <Compile Include="window\ponto\folga\ControleFolgaWindow.xaml.cs">
+      <DependentUpon>ControleFolgaWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="window\ponto\folga\ControleFolgaViewModel.cs" />
     <Compile Include="window\usuario\LoginViewModel.cs" />
     <Compile Include="window\usuario\LoginWindow.xaml.cs" />
     <Compile Include="window\usuario\UsuarioWindowFactory.cs" />
@@ -165,7 +169,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="window\ponto\PontoWindow.xaml">
+    <Page Include="window\ponto\controle\PontoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="window\ponto\folga\ControleFolgaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

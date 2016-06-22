@@ -11,8 +11,13 @@ namespace ControlePonto.Domain.ponto
     public interface IPontoDiaRepository
     {
         ulong save(PontoDia ponto);
+
         List<DiaTrabalho> findPontosAbertos(Funcionario funcionario);
+
         DiaTrabalho findPontoAberto(Funcionario funcionario, DateTime date);
+
         bool existePontoDia(Funcionario funcionario, DateTime date);
+
+        List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true);
     }
 }

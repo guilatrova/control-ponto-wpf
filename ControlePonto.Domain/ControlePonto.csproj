@@ -63,6 +63,11 @@
     <Compile Include="Domain\feriado\FeriadoRelativo.cs" />
     <Compile Include="Domain\feriado\FeriadoService.cs" />
     <Compile Include="Domain\feriado\IFeriadoRepository.cs" />
+    <Compile Include="Domain\services\relatorio\CalendarioPonto.cs" />
+    <Compile Include="Domain\services\relatorio\DiaCalendarioDTO.cs" />
+    <Compile Include="Domain\framework\Extensions.cs" />
+    <Compile Include="Domain\services\relatorio\ETipoDiaCalendario.cs" />
+    <Compile Include="Domain\services\relatorio\RelatorioService.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\DiaTrabalhoMap.cs" />
     <Compile Include="Domain\ponto\ETipo.cs" />
     <Compile Include="Domain\ponto\folga\DiaFolga.cs" />
@@ -100,7 +105,7 @@
     <Compile Include="Domain\services\login\LoginService.cs" />
     <Compile Include="Domain\services\login\SessaoLogin.cs" />
     <Compile Include="Domain\services\login\SessaoNaoEncerradaException.cs" />
-    <Compile Include="Domain\services\ponto\PontoService.cs" />
+    <Compile Include="Domain\ponto\PontoService.cs" />
     <Compile Include="Domain\usuario\funcionario\Funcionario.cs" />
     <Compile Include="Domain\usuario\funcionario\FuncionarioFactory.cs" />
     <Compile Include="Domain\usuario\funcionario\CPFInvalidoException.cs" />

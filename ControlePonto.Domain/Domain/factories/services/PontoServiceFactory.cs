@@ -1,7 +1,6 @@
 ﻿using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
-using ControlePonto.Domain.services.ponto;
 using ControlePonto.Infrastructure.nhibernate;
 using System;
 using System.Collections.Generic;

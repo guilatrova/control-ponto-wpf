@@ -1,9 +1,10 @@
 ﻿using ControlePonto.Domain.factories.services;
+using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
-using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.nhibernate;
+using ControlePonto.WPF.window.administracao;
 using ControlePonto.WPF.window.ponto;
 using ControlePonto.WPF.window.usuario;
 using System;
@@ -20,10 +21,10 @@ namespace ControlePonto.WPF
         private void Application_Startup(object sender, StartupEventArgs e)
         {
 #if DEBUG
-            LoginServiceFactory.criarLoginService().Logar("gui", "123456");
+            /*LoginServiceFactory.criarLoginService().Logar("gui", "123456");
             new PainelControleWindow(new PainelControleViewModel()).Show();
             //JornadaWindowFactory.criarJornadaWindow().Show();
-            return;
+            return;*/
 #endif
                         
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -70,7 +71,8 @@ namespace ControlePonto.WPF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Não foi possível conectar-se ao banco de dados", MessageBoxButton.OK, MessageBoxImage.Error);
+                string msg = string.Format("{0}\nDetails:\n{1}", ex.Message, ex.GetBaseException().Message);
+                MessageBox.Show(msg, "Não foi possível conectar-se ao banco de dados", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

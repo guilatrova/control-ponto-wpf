@@ -25,7 +25,7 @@ namespace ControlePonto.Domain.ponto
             return new DiaTrabalho(dt.Date, dt.TimeOfDay, sessaoLogin.UsuarioLogado as Funcionario);
         }
 
-        public PontoDia criarDiaFolga(Funcionario funcionario, DateTime data, string descricao)
+        public DiaFolga criarDiaFolga(Funcionario funcionario, DateTime data, string descricao)
         {
             Check.Require(!string.IsNullOrWhiteSpace(descricao), "A descrição deve ser válida");
 

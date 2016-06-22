@@ -13,7 +13,6 @@ namespace ControlePonto.Domain.ponto
 {
     public abstract class PontoDia : Entity<ulong>
     {
-        //http://stackoverflow.com/questions/18089383/abstract-classes-and-fluent-nhibernate
         public virtual DateTime Data { get; protected set; }
 
         public virtual Usuario Usuario { get; protected set; }

@@ -1,7 +1,6 @@
 ﻿using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
-using ControlePonto.Domain.services.ponto;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
 using System;
