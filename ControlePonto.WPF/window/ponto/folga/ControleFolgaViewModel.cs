@@ -12,8 +12,11 @@ namespace ControlePonto.WPF.window.ponto.folga
 {
     public class ControleFolgaViewModel : ViewModelBase
     {
-        private IUsuarioRepositorio usuarioRepository;
+        private IUsuarioRepositorio usuarioRepository;        
         private RelatorioService relatorioService;
+        private PontoService pontoService;
+
+        private List<DiaFolgaDTO> diasAlterados;
 
         public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, RelatorioService relatorioService)
         {
@@ -27,7 +30,11 @@ namespace ControlePonto.WPF.window.ponto.folga
             this.Funcionarios = usuarioRepository.findFuncionarios().OrderBy(x => x.Nome).ToList();
             this.FuncionarioEscolhido = Funcionarios[0];
 
+            diasAlterados = new List<DiaFolgaDTO>();
+
             ExibirCommand = new RelayCommand(exibir);
+            SalvarCommand = new RelayCommand(salvar, podeSalvar);
+            FecharCommand = new RelayCommand(() => requestView(CLOSE));
         }
 
         #region Propriedades
@@ -66,9 +73,7 @@ namespace ControlePonto.WPF.window.ponto.folga
                     aplicarFiltro(value);
                 }
             }
-        }
-
-        public ICommand ExibirCommand { get; private set; }
+        }        
 
         private List<DiaFolgaDTO> DiasPeriodo { get; set; }
 
@@ -78,7 +83,12 @@ namespace ControlePonto.WPF.window.ponto.folga
             get { return _diasPeriodoFiltro; }
             private set { SetField(ref _diasPeriodoFiltro, value); }
         }
-        
+
+        public ICommand ExibirCommand { get; private set; }
+
+        public ICommand SalvarCommand { get; private set; }
+
+        public ICommand FecharCommand { get; private set; }
 
         #endregion
 
@@ -88,9 +98,15 @@ namespace ControlePonto.WPF.window.ponto.folga
                 .gerarCalendario(FuncionarioEscolhido, PeriodoInicio, PeriodoFim).Dias
                 .Select(x => new DiaFolgaDTO(x))
                 .ToList();
-
+                        
+            DiasPeriodo.ForEach(x => x.PropertyChanged += DiaFolgaChanged);
             aplicarFiltro(ExibirSomenteFolgas);
             RaisePropertyChanged("DiasPeriodoFiltro");
+        }
+
+        private void DiaFolgaChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            diasAlterados.Add(sender as DiaFolgaDTO);
         }
 
         private void aplicarFiltro(bool somenteFolga)
@@ -99,6 +115,19 @@ namespace ControlePonto.WPF.window.ponto.folga
                 DiasPeriodoFiltro = DiasPeriodo.Where(x => x.IsDiaFolga).ToList();
             else
                 DiasPeriodoFiltro = DiasPeriodo;
+        }
+
+        private void salvar()
+        {
+            foreach (DiaFolgaDTO folga in diasAlterados)
+            {
+                pontoService.darFolgaPara(FuncionarioEscolhido, folga.Data, folga.Descricao);
+            }
+        }
+
+        private bool podeSalvar()
+        {
+            return (diasAlterados.Count > 0) ;
         }
 
         protected override string validar(string propertyName)
