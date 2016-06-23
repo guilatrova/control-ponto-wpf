@@ -1,5 +1,6 @@
 ﻿using ControlePonto.Domain.factories;
 using ControlePonto.Domain.factories.services;
+using ControlePonto.Domain.feriado;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
@@ -11,6 +12,13 @@ namespace ControlePonto.WPF.window.ponto
 {
     public class PontoWindowFactory
     {
+        private static RelatorioService criarRelatorioService()
+        {
+            return new RelatorioService(
+                RepositoryFactory.criarPontoRepository(),
+                new FeriadoService(RepositoryFactory.criarFeriadoRepository()));
+        }
+
         public static PontoWindow criarPontoWindow(DiaTrabalho ponto, PontoService pontoService)
         {
             return new PontoWindow(new PontoViewModel(
@@ -24,7 +32,7 @@ namespace ControlePonto.WPF.window.ponto
         {
             return new ControleFolgaWindow(new ControleFolgaViewModel(
                 RepositoryFactory.criarUsuarioRepository(),
-                new RelatorioService(RepositoryFactory.criarPontoRepository()),
+                criarRelatorioService(),
                 PontoServiceFactory.criarPontoService()
             ));
         }

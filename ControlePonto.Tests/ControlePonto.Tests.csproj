@@ -69,6 +69,7 @@
     <Compile Include="mocks\DataHoraMockListStrategy.cs" />
     <Compile Include="mocks\DataHoraMockStrategy.cs" />
     <Compile Include="mocks\PontoServiceMock.cs" />
+    <Compile Include="mocks\repository\FeriadoMockRepository.cs" />
     <Compile Include="mocks\repository\JornadaTrabalhoMockRepository.cs" />
     <Compile Include="mocks\repository\PontoDiaMockRepository.cs" />
     <Compile Include="mocks\repository\TipoIntervaloMockRepository.cs" />

@@ -17,6 +17,12 @@ namespace ControlePonto.Domain.ponto
 
         public virtual Funcionario Funcionario { get; protected set; }
 
-        public virtual ETipo Tipo { get; protected set; }
+        public virtual ETipoPonto Tipo { get; protected set; }
+
+        public abstract TimeSpan calcularHorasTrabalhadas();
+
+        public abstract TimeSpan calcularHorasExtras(JornadaTrabalho jornada);
+
+        public abstract TimeSpan calcularHorasDevedoras(JornadaTrabalho jornada);
     }
 }

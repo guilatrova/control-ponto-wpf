@@ -70,7 +70,7 @@ namespace ControlePonto.WPF.window.ponto.folga
 
         private bool diaExiste;
 
-        public DiaFolgaDTO(DiaCalendarioPonto diaCalendario, Funcionario funcionario)
+        public DiaFolgaDTO(DiaCalendario diaCalendario, Funcionario funcionario)
         {
             this.Data = diaCalendario.Data;
             this.Funcionario = funcionario;
@@ -78,12 +78,12 @@ namespace ControlePonto.WPF.window.ponto.folga
 
             switch (diaCalendario.TipoDia)
             {
-                case ETipoDiaCalendario.FOLGA:
+                case ETipoDiaCalendarioPonto.FOLGA:
                     _isDiaFolga = true;
-                    this.Descricao = (diaCalendario.PontoDia as DiaFolga).Descricao;
+                    this.Descricao = ((diaCalendario as DiaCalendarioPonto).PontoDia as DiaFolga).Descricao;
                     break;
 
-                case ETipoDiaCalendario.TRABALHO:
+                case ETipoDiaCalendarioPonto.TRABALHO:
                     this.Descricao = "Funcionário trabalhou neste dia";
                     break;
 

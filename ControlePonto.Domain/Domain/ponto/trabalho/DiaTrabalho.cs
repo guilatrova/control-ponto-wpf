@@ -48,7 +48,7 @@ namespace ControlePonto.Domain.ponto.trabalho
             base.checkPreConstructor();
             Check.Require(funcionario != null, "O usuário não deve ser nulo");
 
-            base.Tipo = ETipo.TRABALHO;
+            base.Tipo = ETipoPonto.TRABALHO;
             base.Data = data;
             base.Funcionario = funcionario;
             this.Inicio = inicio;
@@ -101,7 +101,7 @@ namespace ControlePonto.Domain.ponto.trabalho
             return Intervalos.FirstOrDefault(x => x.isAberto);
         }
 
-        public virtual TimeSpan calcularHorasTrabalhadas()
+        public override TimeSpan calcularHorasTrabalhadas()
         {
             if (isAberto) throw new DiaEmAbertoException(this);
 
@@ -111,7 +111,7 @@ namespace ControlePonto.Domain.ponto.trabalho
             return trabalhado.Subtract(descanso);
         }
 
-        public virtual TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
+        public override TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
         {
             DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
             var trabalhado = calcularHorasTrabalhadas();
@@ -123,7 +123,7 @@ namespace ControlePonto.Domain.ponto.trabalho
             return new TimeSpan(0, 0, 0);
         }
 
-        public virtual TimeSpan calcularHorasDevedoras(JornadaTrabalho jornada)
+        public override TimeSpan calcularHorasDevedoras(JornadaTrabalho jornada)
         {
             DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
             var trabalhado = calcularHorasTrabalhadas();

@@ -5,9 +5,10 @@ using System.Text;
 
 namespace ControlePonto.Domain.ponto
 {
-    public enum ETipo
+    public enum ETipoPonto
     {
         TRABALHO,
+        FERIADO_TRABALHADO,
         FOLGA
     }
 }

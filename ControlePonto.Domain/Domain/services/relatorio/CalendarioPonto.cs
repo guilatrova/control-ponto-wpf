@@ -16,9 +16,9 @@ namespace ControlePonto.Domain.services.relatorio
 
         public DateTime PeriodoFim { get; private set; }
 
-        public List<DiaCalendarioPonto> Dias { get; private set; }
+        public List<DiaCalendario> Dias { get; private set; }
 
-        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, List<DiaCalendarioPonto> todosDias)
+        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, List<DiaCalendario> todosDias)
         {
             this.Funcionario = funcionario;
             this.PeriodoInicio = inicio;
@@ -33,6 +33,28 @@ namespace ControlePonto.Domain.services.relatorio
                 fim.ToShortDateString(),
                 difDias,
                 Dias.Count));
+        }
+
+        public List<IDiaCalendarioFeriado> getFeriados()
+        {
+            return
+                Dias
+                .Where(x => x.TipoDia == ETipoDiaCalendarioPonto.FERIADO || 
+                    x.TipoDia == ETipoDiaCalendarioPonto.FERIADO_TRABALHADO)
+                .Cast<IDiaCalendarioFeriado>()
+                .ToList();
+        }
+
+        public List<IDiaCalendarioTrabalho> getPontos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<DiaCalendarioPonto> getFolgas()
+        {
+            return Dias.Where(x => x.TipoDia == ETipoDiaCalendarioPonto.FOLGA)
+                .Cast<DiaCalendarioPonto>()
+                .ToList();
         }
     }
 }

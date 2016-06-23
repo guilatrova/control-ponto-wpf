@@ -19,10 +19,20 @@ namespace ControlePonto.Domain.feriado
 
         public bool isFeriado(DateTime date)
         {
-            if (cache[date.Month] == null)
-                cache.Add(date.Month, repository.findFromMonth(date.Month));
-
+            iniciarCache(date);
             return cache[date.Month].Any(x => date.Equals(x.getData()));
+        }
+
+        public Feriado getFeriado(DateTime date)
+        {
+            iniciarCache(date);
+            return cache[date.Month].First(x => x.getData() == date);
+        }
+
+        private void iniciarCache(DateTime date)
+        {
+            if (!cache.ContainsKey(date.Month))
+                cache.Add(date.Month, repository.findFromMonth(date.Month));
         }
     }
 }

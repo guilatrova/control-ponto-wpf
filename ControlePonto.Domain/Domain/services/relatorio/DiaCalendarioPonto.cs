@@ -1,40 +1,44 @@
 ﻿using ControlePonto.Domain.ponto;
+using ControlePonto.Infrastructure.utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public class DiaCalendarioPonto
+    public class DiaCalendarioPonto : DiaCalendario, IDiaCalendarioTrabalho
     {
         public PontoDia PontoDia { get; set; }
 
-        public DateTime Data { get; private set; }
-
-        public ETipoDiaCalendario TipoDia
+        public override ETipoDiaCalendarioPonto TipoDia
         {
-            get 
+            get
             {
-                if (PontoDia == null)
-                    return ETipoDiaCalendario.FALTOU;
+                if (PontoDia.Tipo == ETipoPonto.TRABALHO)
+                    return ETipoDiaCalendarioPonto.TRABALHO;
 
-                if (PontoDia.Tipo == ETipo.TRABALHO)
-                    return ETipoDiaCalendario.TRABALHO;
-
-                return ETipoDiaCalendario.FOLGA;
+                return ETipoDiaCalendarioPonto.FOLGA;
             }
         }
 
         public DiaCalendarioPonto(PontoDia pontoDia)
+            : base(pontoDia.Data)
         {
+            Check.Require(pontoDia.Tipo != ETipoPonto.FERIADO_TRABALHADO,
+                "Feriado trabalhado não deve ser criado desta forma.");            
             this.PontoDia = pontoDia;
-            this.Data = pontoDia.Data;
+        }
+        
+        public TimeSpan Entrada
+        {
+            get { throw new NotImplementedException(); }
         }
 
-        public DiaCalendarioPonto(DateTime data)
+        public TimeSpan Saida
         {
-            this.Data = data;
+            get { throw new NotImplementedException(); }
         }
     }
 }
