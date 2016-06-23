@@ -4,16 +4,19 @@ using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.usuario.funcionario;
 using System;
 using ControlePonto.Infrastructure.utils;
+using ControlePonto.Domain.feriado;
 
 namespace ControlePonto.Domain.ponto
 {
     public class PontoFactory
     {
         private IPontoDiaRepository repository;
+        private FeriadoService feriadoService;
 
-        public PontoFactory(IPontoDiaRepository repository)
+        public PontoFactory(IPontoDiaRepository repository, FeriadoService feriadoService)
         {
             this.repository = repository;
+            this.feriadoService = feriadoService;
         }
 
         public DiaTrabalho criarDiaTrabalho(IDataHoraStrategy dataHoraStrategy, SessaoLogin sessaoLogin)
@@ -22,7 +25,10 @@ namespace ControlePonto.Domain.ponto
             if (repository.existePontoDia(sessaoLogin.UsuarioLogado as Funcionario, dt))
                 throw new PontoDiaJaExisteException(dt);
 
-            return new DiaTrabalho(dt.Date, dt.TimeOfDay, sessaoLogin.UsuarioLogado as Funcionario);
+            if (feriadoService.isFeriado(dt))
+                return new DiaTrabalhoFeriado(feriadoService.getFeriado(dt), dt.TimeOfDay, sessaoLogin.UsuarioLogado as Funcionario);
+
+            return new DiaTrabalhoComum(dt.Date, dt.TimeOfDay, sessaoLogin.UsuarioLogado as Funcionario);
         }
 
         public DiaFolga criarDiaFolga(Funcionario funcionario, DateTime data, string descricao)

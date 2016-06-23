@@ -27,7 +27,9 @@ namespace ControlePonto.Domain.services.relatorio
             : base(pontoDia.Data)
         {
             Check.Require(pontoDia.Tipo != ETipoPonto.FERIADO_TRABALHADO,
-                "Feriado trabalhado não deve ser criado desta forma.");            
+                "Feriado trabalhado não deve ser criado desta forma.");
+            Check.Require(pontoDia != null, "O ponto deve ser válido");
+
             this.PontoDia = pontoDia;
         }
         

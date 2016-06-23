@@ -16,12 +16,18 @@ namespace ControlePonto.Domain.factories.services
         {
             var repo = RepositoryFactory.criarPontoRepository();
 
-            return new PontoService(new PontoFactory(repo),
+            return new PontoService(
+                criarPontoFactory(repo),
                 new DataHoraServerStrategy(),
                 new FuncionarioPossuiPontoAbertoSpecification(repo),
                 new FuncionarioJaTrabalhouHojeSpecification(repo),
                 SessaoLogin.getSessao(),
                 repo);
+        }
+
+        private static PontoFactory criarPontoFactory(IPontoDiaRepository repo)
+        {
+            return new PontoFactory(repo, FeriadoServiceFactory.criarFeriadoService());
         }
     }
 }

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\factories\RepositoryFactory.cs" />
+    <Compile Include="Domain\factories\services\FeriadoServiceFactory.cs" />
     <Compile Include="Domain\factories\services\LoginServiceFactory.cs" />
     <Compile Include="Domain\factories\services\PontoServiceFactory.cs" />
     <Compile Include="Domain\feriado\Feriado.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Domain\feriado\FeriadoRelativo.cs" />
     <Compile Include="Domain\feriado\FeriadoService.cs" />
     <Compile Include="Domain\feriado\IFeriadoRepository.cs" />
+    <Compile Include="Domain\ponto\trabalho\DiaTrabalhoComum.cs" />
+    <Compile Include="Domain\ponto\trabalho\DiaTrabalhoFeriado.cs" />
     <Compile Include="Domain\services\relatorio\CalendarioPonto.cs" />
     <Compile Include="Domain\services\relatorio\DiaCalendarioFalta.cs" />
     <Compile Include="Domain\services\relatorio\DiaCalendarioFeriado.cs" />
@@ -74,7 +77,9 @@
     <Compile Include="Domain\services\relatorio\IDiaCalendarioFeriado.cs" />
     <Compile Include="Domain\services\relatorio\IDiaCalendarioTrabalho.cs" />
     <Compile Include="Domain\services\relatorio\RelatorioService.cs" />
-    <Compile Include="Infrastructure\nhibernate\mapping\DiaTrabalhoMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\pontodia\DiaTrabalhoComumMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\pontodia\DiaTrabalhoFeriadoMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\pontodia\DiaTrabalhoMap.cs" />
     <Compile Include="Domain\ponto\ETipoPonto.cs" />
     <Compile Include="Domain\ponto\folga\DiaFolga.cs" />
     <Compile Include="Domain\ponto\folga\FolgaDiaInvalidoException.cs" />
@@ -125,7 +130,7 @@
     <Compile Include="Domain\usuario\UsuarioFactory.cs" />
     <Compile Include="Infrastructure\nhibernate\DataHoraServerStrategy.cs" />
     <Compile Include="Infrastructure\nhibernate\InvalidHostException.cs" />
-    <Compile Include="Infrastructure\nhibernate\mapping\DiaFolgaMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\pontodia\DiaFolgaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\DiaJornadaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\FeriadoEspecificoMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\FeriadoFixoMap.cs" />
@@ -134,7 +139,7 @@
     <Compile Include="Infrastructure\nhibernate\mapping\FuncionarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\IntervaloMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\JornadaTrabalhoMap.cs" />
-    <Compile Include="Infrastructure\nhibernate\mapping\PontoDiaMap.cs" />
+    <Compile Include="Infrastructure\nhibernate\mapping\pontodia\PontoDiaMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\TipoIntervaloMap.cs" />
     <Compile Include="Infrastructure\nhibernate\mapping\UsuarioMap.cs" />
     <Compile Include="Infrastructure\nhibernate\NHibernateHelper.cs" />

@@ -65,7 +65,7 @@ namespace ControlePonto.Tests
             if (repo == null)
                 repo = new PontoDiaMockRepository();
 
-            return new PontoFactory(repo);
+            return FactoryHelper.criarPontoFactory(repo);
         }
 
         #endregion
@@ -77,7 +77,7 @@ namespace ControlePonto.Tests
             var ponto = criarFactory().criarDiaTrabalho(new DataHoraMockStrategy(22, 8, 2014), sessaoLogin);
             Assert.IsNotNull(ponto);
 
-            ponto = new DiaTrabalho(new DateTime(2014, 8, 22), new TimeSpan(19, 30, 0), null);
+            ponto = new DiaTrabalhoComum(new DateTime(2014, 8, 22), new TimeSpan(19, 30, 0), null);
         }
 
         [TestMethod, TestCategory("Trabalho")]
@@ -186,7 +186,7 @@ namespace ControlePonto.Tests
             {
                 var service = criarService(inicioDoDia, repositorio);
                 service.iniciarDia();
-                Assert.Fail();
+                Assert.Fail("O dia não deveria ter iniciado!");
             }
             catch (DiaEmAbertoException ex)
             {

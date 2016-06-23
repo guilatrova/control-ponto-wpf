@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.ponto;
+﻿using ControlePonto.Domain.feriado;
+using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.usuario.funcionario;
@@ -14,43 +15,51 @@ namespace ControlePonto.Tests
 {
     public static class FactoryHelper
     {
-        public static PontoService criarPontoService(SessaoLogin sessao, IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository repository = null, bool mock = false)
+        public static PontoService criarPontoService(SessaoLogin sessao, IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository pontoRepository = null, bool mock = false, IFeriadoRepository feriadoRepository = null)
         {
             if (dataHoraStrategy == null)
                 dataHoraStrategy = new DataHoraMockStrategy(DateTime.Today);            
 
-            if (repository == null)
-                repository = new PontoDiaMockRepository();
+            if (pontoRepository == null)
+                pontoRepository = new PontoDiaMockRepository();
 
             if (mock)
             {
-                return new PontoServiceMock(criarPontoFactory(repository),
+                return new PontoServiceMock(criarPontoFactory(pontoRepository, feriadoRepository),
                     dataHoraStrategy,
-                    new FuncionarioPossuiPontoAbertoSpecification(repository),
-                    new FuncionarioJaTrabalhouHojeSpecification(repository),
+                    new FuncionarioPossuiPontoAbertoSpecification(pontoRepository),
+                    new FuncionarioJaTrabalhouHojeSpecification(pontoRepository),
                     sessao,
-                    repository);
+                    pontoRepository);
             }
 
-            return new PontoService(criarPontoFactory(repository),
+            return new PontoService(criarPontoFactory(pontoRepository, feriadoRepository),
                 dataHoraStrategy,
-                new FuncionarioPossuiPontoAbertoSpecification(repository),
-                new FuncionarioJaTrabalhouHojeSpecification(repository),
+                new FuncionarioPossuiPontoAbertoSpecification(pontoRepository),
+                new FuncionarioJaTrabalhouHojeSpecification(pontoRepository),
                 sessao,
-                repository);
+                pontoRepository);
         }
 
-        public static PontoService criarPontoService(Funcionario logado, IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository repository = null, bool mock = false)
+        public static PontoService criarPontoService(Funcionario logado, IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository pontoRepository = null, bool mock = false, IFeriadoRepository feriadoRepository = null)
         {
-            return criarPontoService(new SessaoLoginMock(logado), dataHoraStrategy, repository, mock);
+            return criarPontoService(new SessaoLoginMock(logado), dataHoraStrategy, pontoRepository, mock, feriadoRepository);
         }
 
-        public static PontoFactory criarPontoFactory(IPontoDiaRepository repository = null)
+        public static PontoFactory criarPontoFactory(FeriadoService feriadoService, IPontoDiaRepository pontoRepository = null)
         {
-            if (repository == null)
-                repository = new PontoDiaMockRepository();
+            if (pontoRepository == null)
+                pontoRepository = new PontoDiaMockRepository();
 
-            return new PontoFactory(repository);
+            return new PontoFactory(pontoRepository, feriadoService);
+        }
+        
+        public static PontoFactory criarPontoFactory(IPontoDiaRepository pontoRepository = null, IFeriadoRepository feriadoRepository = null)
+        {
+            if (feriadoRepository == null)
+                feriadoRepository = new FeriadoMockRepository();
+
+            return criarPontoFactory(new FeriadoService(feriadoRepository), pontoRepository);
         }
     }
 }

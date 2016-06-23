@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ControlePonto.Domain.framework;
 using ControlePonto.Domain.feriado;
+using ControlePonto.Domain.ponto.trabalho;
 
 namespace ControlePonto.Domain.services.relatorio
 {
@@ -25,7 +26,8 @@ namespace ControlePonto.Domain.services.relatorio
         {
             var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, true, false);
             var diasFaltando = inicio.Range(fim).Except(todosPontos.Select(x => x.Data));
-            var feriadosNaoTrabalhados = diasFaltando.Where(x => feriadoService.isFeriado(x));
+            var feriadosNaoTrabalhados = diasFaltando
+                .Where(x => feriadoService.isFeriado(x));
 
             //Se é um feriado, não deve ser contado como falta
             diasFaltando = diasFaltando.Except(feriadosNaoTrabalhados);
@@ -53,6 +55,8 @@ namespace ControlePonto.Domain.services.relatorio
 
         private DiaCalendario criarDia(PontoDia ponto)
         {
+            if (ponto is DiaTrabalhoFeriado)
+                return new DiaCalendarioFeriadoTrabalhado(ponto, (ponto as DiaTrabalhoFeriado).Feriado);
             return new DiaCalendarioPonto(ponto);
         }
 

@@ -13,6 +13,9 @@ namespace ControlePonto.Tests.mocks.repository
 
         public uint save(Feriado feriado)
         {
+            if (listRep.Contains(feriado))
+                return (uint)listRep.IndexOf(feriado);
+                
             listRep.Add(feriado);
             return (uint)listRep.Count;
         }

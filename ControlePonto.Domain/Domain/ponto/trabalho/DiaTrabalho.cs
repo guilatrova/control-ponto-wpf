@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.ponto.trabalho
 {
-    public class DiaTrabalho : PontoDia
+    public abstract class DiaTrabalho : PontoDia
     {
         #region Propriedades
 
@@ -39,16 +39,14 @@ namespace ControlePonto.Domain.ponto.trabalho
         }
 
         public virtual ICollection<Intervalo> Intervalos { get; set; }
-        #endregion
 
-        protected DiaTrabalho() { }
+        #endregion        
 
         public DiaTrabalho(DateTime data, TimeSpan inicio, Funcionario funcionario)
         {
             base.checkPreConstructor();
             Check.Require(funcionario != null, "O usuário não deve ser nulo");
-
-            base.Tipo = ETipoPonto.TRABALHO;
+            
             base.Data = data;
             base.Funcionario = funcionario;
             this.Inicio = inicio;

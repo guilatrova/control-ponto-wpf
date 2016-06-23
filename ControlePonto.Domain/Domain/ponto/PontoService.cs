@@ -42,7 +42,7 @@ namespace ControlePonto.Domain.ponto
 
             var ponto = pontoFactory.criarDiaTrabalho(dataHoraStrategy, sessaoLogin);
             pontoRepository.save(ponto);
-            return ponto as DiaTrabalho;
+            return ponto;
         }
 
         public void encerrarDia(DiaTrabalho ponto)

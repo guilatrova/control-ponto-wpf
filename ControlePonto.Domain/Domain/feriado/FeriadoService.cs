@@ -20,13 +20,13 @@ namespace ControlePonto.Domain.feriado
         public bool isFeriado(DateTime date)
         {
             iniciarCache(date);
-            return cache[date.Month].Any(x => date.Equals(x.getData()));
+            return cache[date.Month].Any(x => date.Date.Equals(x.getData()));
         }
 
         public Feriado getFeriado(DateTime date)
         {
             iniciarCache(date);
-            return cache[date.Month].First(x => x.getData() == date);
+            return cache[date.Month].First(x => x.getData().Equals(date.Date));
         }
 
         private void iniciarCache(DateTime date)

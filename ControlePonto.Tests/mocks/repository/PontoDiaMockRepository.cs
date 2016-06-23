@@ -15,6 +15,9 @@ namespace ControlePonto.Tests.mocks.repository
 
         public ulong save(PontoDia ponto)
         {
+            if (listRep.Contains(ponto))
+                return (uint)listRep.IndexOf(ponto);
+
             listRep.Add(ponto);
             return (ulong)listRep.Count();
         }
@@ -23,7 +26,7 @@ namespace ControlePonto.Tests.mocks.repository
         {
             return
                 listRep
-                .Where(x => x.GetType() == typeof(DiaTrabalho))
+                .Where(x => x is DiaTrabalho)
                 .Select(x => x as DiaTrabalho)
                 .Where(x => x.isAberto && x.Funcionario.Nome.Equals(funcionario.Nome)).ToList();
         }

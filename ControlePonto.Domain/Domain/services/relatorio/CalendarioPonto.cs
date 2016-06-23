@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.utils;
 using System;
@@ -45,9 +46,14 @@ namespace ControlePonto.Domain.services.relatorio
                 .ToList();
         }
 
-        public List<IDiaCalendarioTrabalho> getPontos()
+        public List<IDiaCalendarioTrabalho> getDiasTrabalhados()
         {
-            throw new NotImplementedException();
+            return
+                Dias
+                .Where(x => x.TipoDia == ETipoDiaCalendarioPonto.TRABALHO ||
+                    x.TipoDia == ETipoDiaCalendarioPonto.FERIADO_TRABALHADO)
+                .Cast<IDiaCalendarioTrabalho>()
+                .ToList();
         }
 
         public List<DiaCalendarioPonto> getFolgas()
@@ -55,6 +61,29 @@ namespace ControlePonto.Domain.services.relatorio
             return Dias.Where(x => x.TipoDia == ETipoDiaCalendarioPonto.FOLGA)
                 .Cast<DiaCalendarioPonto>()
                 .ToList();
+        }
+
+        public TimeSpan calcularHorasExtras(double valorHoraExtra)
+        {
+            return
+                new TimeSpan(
+                    getDiasTrabalhados()
+                        .Select(x => x.PontoDia)
+                        .Cast<DiaTrabalho>()
+                        .Where(x => x.calcularValorHoraExtra() == valorHoraExtra)
+                        .Sum(x => x.calcularHorasExtras(null).Ticks)
+                );
+        }
+
+        public TimeSpan calcularHorasExtras()
+        {
+            return
+                new TimeSpan(
+                    getDiasTrabalhados()
+                        .Select(x => x.PontoDia)
+                        .Cast<DiaTrabalho>()
+                        .Sum(x => x.calcularHorasExtras(null).Ticks)
+                );
         }
     }
 }
