@@ -32,7 +32,7 @@ namespace ControlePonto.Infrastructure.repository
             {
                 return session.CreateCriteria<DiaTrabalho>()
                     .Add(Restrictions.IsNull("Fim"))
-                    .Add(Restrictions.Eq("Usuario", funcionario))
+                    .Add(Restrictions.Eq("Funcionario", funcionario))
                     .List<DiaTrabalho>().ToList();
             }
         }
@@ -44,7 +44,7 @@ namespace ControlePonto.Infrastructure.repository
                 return
                 session.CreateCriteria<PontoDia>()
                     .Add(Restrictions.Eq("Data", date.Date))
-                    .Add(Restrictions.Eq("Usuario", (Usuario)funcionario))
+                    .Add(Restrictions.Eq("Funcionario", funcionario))
                     .SetProjection(Projections.RowCount())
                     .UniqueResult<int>() > 0;
             }
@@ -57,7 +57,7 @@ namespace ControlePonto.Infrastructure.repository
             {
                 return session.CreateCriteria<DiaTrabalho>()
                     .Add(Restrictions.IsNull("Fim"))
-                    .Add(Restrictions.Eq("Usuario", funcionario))
+                    .Add(Restrictions.Eq("Funcionario", funcionario))
                     .Add(Restrictions.Eq("Data", date.Date))
                     .SetFetchMode("Intervalos", FetchMode.Eager)
                     .SetFetchMode("Intervalos.TipoIntervalo", FetchMode.Eager)
@@ -78,7 +78,7 @@ namespace ControlePonto.Infrastructure.repository
                         .CreateCriteria<PontoDia>()
                         .SetFetchMode("DiaTrabalho", fetchDiaTrabalho)
                         .SetFetchMode("DiaFolga", fetchDiaFolga)
-                        .Add(Restrictions.Eq("Usuario", funcionario))
+                        .Add(Restrictions.Eq("Funcionario", funcionario))
                         .Add(Restrictions.Between("Data", inicio, fim))
                         .List<PontoDia>().ToList();
             }

@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.factories;
+using ControlePonto.Domain.factories.services;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
@@ -23,7 +24,8 @@ namespace ControlePonto.WPF.window.ponto
         {
             return new ControleFolgaWindow(new ControleFolgaViewModel(
                 RepositoryFactory.criarUsuarioRepository(),
-                new RelatorioService(RepositoryFactory.criarPontoRepository())
+                new RelatorioService(RepositoryFactory.criarPontoRepository()),
+                PontoServiceFactory.criarPontoService()
             ));
         }
     }

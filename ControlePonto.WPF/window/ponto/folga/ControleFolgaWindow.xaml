@@ -137,7 +137,7 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBox Text="{Binding Descricao}"
+                                                                <TextBox Text="{Binding Descricao, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                                          IsReadOnly="{Binding IsReadOnly}"
                                                                          MaxLength="{Binding DescricaoMax}" />
                                                             </DataTemplate>
@@ -175,10 +175,12 @@
                     HorizontalAlignment="Center">
 
             <Button Content="{StaticResource strFechar}"
-                    Style="{StaticResource bottomButton}"/>
+                    Style="{StaticResource bottomButton}"
+                    Command="{Binding FecharCommand}"/>
 
             <Button Content="{StaticResource strSalvar}"
-                    Style="{StaticResource bottomButton}"/>            
+                    Style="{StaticResource bottomButton}"
+                    Command="{Binding SalvarCommand}"/>
 
         </StackPanel>
     </Grid>

@@ -107,7 +107,7 @@ namespace ControlePonto.Tests
         {
             var ponto = criarFactory().criarDiaTrabalho(new DataHoraMockStrategy(22, 8, 2016), sessaoLogin);
 
-            Assert.AreEqual(funcionario, ponto.Usuario);
+            Assert.AreEqual(funcionario, ponto.Funcionario);
         }
 
         [TestMethod, TestCategory("Trabalho")]

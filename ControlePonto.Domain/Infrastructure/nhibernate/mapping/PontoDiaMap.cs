@@ -21,7 +21,7 @@ namespace ControlePonto.Infrastructure.nhibernate.mapping
             Map(x => x.Tipo)
                 .Not.Nullable();
 
-            References(x => x.Usuario)
+            References(x => x.Funcionario)
                 .Not.Nullable();            
         }
     }

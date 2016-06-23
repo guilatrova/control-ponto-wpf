@@ -15,7 +15,7 @@ namespace ControlePonto.Domain.ponto
     {
         public virtual DateTime Data { get; protected set; }
 
-        public virtual Usuario Usuario { get; protected set; }
+        public virtual Funcionario Funcionario { get; protected set; }
 
         public virtual ETipo Tipo { get; protected set; }
     }

@@ -1,4 +1,5 @@
 ﻿using ControlePonto.WPF.window.feriado;
+using ControlePonto.WPF.window.jornada;
 using ControlePonto.WPF.window.ponto;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,10 @@ namespace ControlePonto.WPF.window.administracao
 
                 case PainelControleViewModel.VIEW_FOLGA:
                     PontoWindowFactory.criarFolgaWindow().ShowDialog();
+                    break;
+
+                case PainelControleViewModel.VIEW_JORNADA:
+                    JornadaWindowFactory.criarJornadaWindow().ShowDialog();
                     break;
 
                 default:

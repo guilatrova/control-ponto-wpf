@@ -50,7 +50,7 @@ namespace ControlePonto.Domain.ponto.trabalho
 
             base.Tipo = ETipo.TRABALHO;
             base.Data = data;
-            base.Usuario = funcionario;
+            base.Funcionario = funcionario;
             this.Inicio = inicio;
             this.Intervalos = new List<Intervalo>();            
         }

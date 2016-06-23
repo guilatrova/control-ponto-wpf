@@ -25,21 +25,21 @@ namespace ControlePonto.Tests.mocks.repository
                 listRep
                 .Where(x => x.GetType() == typeof(DiaTrabalho))
                 .Select(x => x as DiaTrabalho)
-                .Where(x => x.isAberto && x.Usuario.Nome.Equals(funcionario.Nome)).ToList();
+                .Where(x => x.isAberto && x.Funcionario.Nome.Equals(funcionario.Nome)).ToList();
         }
 
 
         public bool existePontoDia(Funcionario funcionario, DateTime date)
         {
             return
-                listRep.Any(x => x.Data == date.Date && x.Usuario == funcionario);
+                listRep.Any(x => x.Data == date.Date && x.Funcionario == funcionario);
         }
 
         public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
         {
             return
                 listRep
-                .Where(x => x.Usuario.Nome.Equals(funcionario.Nome))
+                .Where(x => x.Funcionario.Nome.Equals(funcionario.Nome))
                 .Where(x => x.Data >= inicio && x.Data <= fim)
                 .ToList();
         }

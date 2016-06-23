@@ -1,15 +1,17 @@
 ﻿using ControlePonto.Domain.ponto.folga;
 using ControlePonto.Domain.services.relatorio;
+using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ControlePonto.WPF.window.ponto.folga
 {
-    public class DiaFolgaDTO : NotifyPropertyChangedBase
+    public class DiaFolgaDTO : NotifyPropertyChangedBase, IDataErrorInfo
     {
         private const string FUNCIONARIO_NAO_TRABALHOU = "Funcionário não trabalhou neste dia";        
 
@@ -30,6 +32,8 @@ namespace ControlePonto.WPF.window.ponto.folga
         }
 
         public DateTime Data { get; private set; }
+
+        public Funcionario Funcionario { get; private set; }
 
         private string _descricao;
         public string Descricao
@@ -66,9 +70,10 @@ namespace ControlePonto.WPF.window.ponto.folga
 
         private bool diaExiste;
 
-        public DiaFolgaDTO(DiaCalendarioPonto diaCalendario)
+        public DiaFolgaDTO(DiaCalendarioPonto diaCalendario, Funcionario funcionario)
         {
             this.Data = diaCalendario.Data;
+            this.Funcionario = funcionario;
             diaExiste = true;
 
             switch (diaCalendario.TipoDia)
@@ -88,6 +93,27 @@ namespace ControlePonto.WPF.window.ponto.folga
                     break;
             }
         }
-        
+
+        #region Tratativa de erros
+
+        public string Error
+        {
+            get { return String.Empty; }
+        }
+
+        public string this[string columnName]
+        {
+            get 
+            { 
+                if (columnName == "Descricao")
+                {
+                    if (string.IsNullOrWhiteSpace(Descricao))
+                        return "É obrigatório justificar a razão da folga!";
+                }
+                return String.Empty;
+            }
+        }
+
+        #endregion
     }
 }

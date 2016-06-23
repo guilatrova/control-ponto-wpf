@@ -7,6 +7,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows;
+using ControlePonto.Infrastructure.utils;
 
 namespace ControlePonto.WPF.window.ponto.folga
 {
@@ -18,10 +20,11 @@ namespace ControlePonto.WPF.window.ponto.folga
 
         private List<DiaFolgaDTO> diasAlterados;
 
-        public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, RelatorioService relatorioService)
+        public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, RelatorioService relatorioService, PontoService pontoService)
         {
             this.usuarioRepository = usuarioRep;
             this.relatorioService = relatorioService;
+            this.pontoService = pontoService;
 
             var today = DateTime.Today;
             this.PeriodoInicio = new DateTime(today.Year, today.Month, 1);
@@ -32,15 +35,18 @@ namespace ControlePonto.WPF.window.ponto.folga
 
             diasAlterados = new List<DiaFolgaDTO>();
 
-            ExibirCommand = new RelayCommand(exibir);
-            SalvarCommand = new RelayCommand(salvar, podeSalvar);
+            ExibirCommand = new RelayCommand(validarExibicao);
+            SalvarCommand = new RelayCommand(confirmarSalvar, podeSalvar);
             FecharCommand = new RelayCommand(() => requestView(CLOSE));
         }
 
         #region Propriedades
 
         public List<Funcionario> Funcionarios{ get; private set; }
+
         public Funcionario FuncionarioEscolhido { get; set; }
+
+        public Funcionario FuncionarioEmExibicao { get; private set; }
 
         private DateTime _periodoInicio;
         public DateTime PeriodoInicio
@@ -92,11 +98,41 @@ namespace ControlePonto.WPF.window.ponto.folga
 
         #endregion
 
+        #region Exibir Command
+
+        private void validarExibicao()
+        {
+            if (diasAlterados.Count > 0)
+            {
+                showMessageBox(confirmarResetDiasAlterados,
+                    "Você tem mudanças que ainda não foram salvas! Se exibir novos dados, tudo que você alterou até agora será perdido. Tem certeza que deseja continuar?",
+                    "Confirmar operação",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No);
+            }
+            else
+            {
+                exibir();
+            }
+        }
+
+        private void confirmarResetDiasAlterados(MessageBoxResult result)
+        {
+            if (result == MessageBoxResult.Yes)
+            {
+                diasAlterados.Clear();
+                exibir();
+            }
+        }
+
         private void exibir()
         {
+            FuncionarioEmExibicao = FuncionarioEscolhido;
+
             DiasPeriodo = relatorioService
                 .gerarCalendario(FuncionarioEscolhido, PeriodoInicio, PeriodoFim).Dias
-                .Select(x => new DiaFolgaDTO(x))
+                .Select(x => new DiaFolgaDTO(x, FuncionarioEmExibicao))
                 .ToList();
                         
             DiasPeriodo.ForEach(x => x.PropertyChanged += DiaFolgaChanged);
@@ -104,9 +140,22 @@ namespace ControlePonto.WPF.window.ponto.folga
             RaisePropertyChanged("DiasPeriodoFiltro");
         }
 
+        #endregion
+
         private void DiaFolgaChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            diasAlterados.Add(sender as DiaFolgaDTO);
+            var dia = sender as DiaFolgaDTO;
+            if (dia.IsDiaFolga)
+            {
+                if (!diasAlterados.Contains(sender))
+                {
+                    diasAlterados.Add(sender as DiaFolgaDTO);
+                }
+            }
+            else
+            {
+                diasAlterados.Remove(dia);
+            }
         }
 
         private void aplicarFiltro(bool somenteFolga)
@@ -117,18 +166,80 @@ namespace ControlePonto.WPF.window.ponto.folga
                 DiasPeriodoFiltro = DiasPeriodo;
         }
 
-        private void salvar()
+        #region Salvar Command
+
+        private void confirmarSalvar()
         {
+            string dadosAlterados = getDadosAlterados();
+
+            string mensagem = string.Format("Confirmar a mudanças abaixo: {0}{0}{1}{0}" + 
+                "Tem certeza que deseja dar essa(s) folga(s)? A operação não poderá ser desfeita " +
+                "e o funcionário não conseguirá registrar seu(s) ponto(s) neste(s) dia(s)",
+                Environment.NewLine,
+                dadosAlterados);
+
+            showMessageBox(salvar,
+                mensagem,
+                "Confirmar ação", 
+                MessageBoxButton.YesNo, 
+                MessageBoxImage.Warning, 
+                MessageBoxResult.No);
+        }
+
+        private string getDadosAlterados()
+        {
+            string dadosAlterados = "";
             foreach (DiaFolgaDTO folga in diasAlterados)
             {
-                pontoService.darFolgaPara(FuncionarioEscolhido, folga.Data, folga.Descricao);
+                dadosAlterados += string.Format("• {0} ganhará o dia {1:dd'/'MM'/'yyyy} ({2}) de folga{3}",
+                    folga.Funcionario.Nome,
+                    folga.Data,
+                    DiaSemanaTradutor.traduzir(folga.Data.DayOfWeek),
+                    Environment.NewLine);
+            }
+            return dadosAlterados;
+        }
+
+        private void salvar(MessageBoxResult result)
+        {
+            if (result == MessageBoxResult.Yes)
+            {
+                var salvos = new List<DiaFolgaDTO>();
+                foreach (DiaFolgaDTO folga in diasAlterados)
+                {
+                    try
+                    {
+                        pontoService.darFolgaPara(folga.Funcionario, folga.Data, folga.Descricao);
+                        salvos.Add(folga);
+                    }
+                    catch(Exception ex)
+                    {
+                        showMessageBox(string.Format("Não foi possível salvar a folga do dia {0}. {1}", 
+                                folga.Data.ToShortDateString(),
+                                ex.Message), 
+                            "Não foi possível salvar uma folga", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
+                    }
+                }
+                diasAlterados = diasAlterados.Except(salvos).ToList();
+                FuncionarioEscolhido = FuncionarioEmExibicao;
+                exibir();
             }
         }
 
         private bool podeSalvar()
         {
-            return (diasAlterados.Count > 0) ;
+            if (diasAlterados.Count > 0)
+            {
+                if (diasAlterados.Any(x => string.IsNullOrWhiteSpace(x.Descricao)))
+                    return false;
+                return true;
+            }
+            return false;
         }
+
+        #endregion
 
         protected override string validar(string propertyName)
         {
