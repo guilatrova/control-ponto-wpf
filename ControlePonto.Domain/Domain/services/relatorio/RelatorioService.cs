@@ -25,7 +25,7 @@ namespace ControlePonto.Domain.services.relatorio
             this.jornadaRepository = jornadaRepository;
         }
 
-        public CalendarioPonto gerarCalendario(Funcionario funcionario, DateTime inicio, DateTime fim)
+        public RelatorioPonto gerarCalendario(Funcionario funcionario, DateTime inicio, DateTime fim)
         {
             var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, true, false);
             var diasFaltando = inicio.Range(fim).Except(todosPontos.Select(x => x.Data));
@@ -48,24 +48,24 @@ namespace ControlePonto.Domain.services.relatorio
                 .OrderBy(x => x.Data)
                 .ToList();                        
 
-            return new CalendarioPonto(funcionario, inicio, fim, jornadaRepository.findJornadaAtiva(), todosDias);
+            return new RelatorioPonto(funcionario, inicio, fim, jornadaRepository.findJornadaAtiva(), todosDias);
         }
 
-        private DiaCalendario criarDia(DateTime date)
+        private DiaRelatorio criarDia(DateTime date)
         {
-            return new DiaCalendarioFalta(date);
+            return new DiaFalta(date);
         }
 
-        private DiaCalendario criarDia(PontoDia ponto)
+        private DiaRelatorio criarDia(PontoDia ponto)
         {
             if (ponto is DiaTrabalhoFeriado)
-                return new DiaCalendarioFeriadoTrabalhado(ponto, (ponto as DiaTrabalhoFeriado).Feriado);
-            return new DiaCalendarioPonto(ponto);
+                return new DiaFeriadoTrabalhado(ponto, (ponto as DiaTrabalhoFeriado).Feriado);
+            return new DiaPonto(ponto);
         }
 
-        private DiaCalendario criarDia(Feriado feriado)
+        private DiaRelatorio criarDia(Feriado feriado)
         {
-            return new DiaCalendarioFeriado(feriado);
+            return new DiaFeriado(feriado);
         }
     }
 }

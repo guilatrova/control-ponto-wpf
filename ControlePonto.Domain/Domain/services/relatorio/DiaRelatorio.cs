@@ -6,13 +6,13 @@ using System.Text;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public abstract class DiaCalendario
+    public abstract class DiaRelatorio
     {
         public DateTime Data { get; private set; }
 
-        public abstract ETipoDiaCalendarioPonto TipoDia { get; }
+        public abstract ETipoDiaRelatorio TipoDia { get; }
 
-        public DiaCalendario(DateTime data)
+        public DiaRelatorio(DateTime data)
         {
             this.Data = data;
         }

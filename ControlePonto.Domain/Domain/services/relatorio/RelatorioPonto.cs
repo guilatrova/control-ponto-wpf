@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public class CalendarioPonto
+    public class RelatorioPonto
     {
         #region Propriedades
 
@@ -20,13 +20,13 @@ namespace ControlePonto.Domain.services.relatorio
 
         public DateTime PeriodoFim { get; private set; }
 
-        public List<DiaCalendario> Dias { get; private set; }        
+        public List<DiaRelatorio> Dias { get; private set; }        
 
         #endregion
 
         private JornadaTrabalho jornadaAtiva;
 
-        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, JornadaTrabalho jornadaAtiva, List<DiaCalendario> todosDias)
+        public RelatorioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, JornadaTrabalho jornadaAtiva, List<DiaRelatorio> todosDias)
         {
             this.Funcionario = funcionario;
             this.PeriodoInicio = inicio;
@@ -44,30 +44,31 @@ namespace ControlePonto.Domain.services.relatorio
                 Dias.Count));
         }
 
-        public List<IDiaCalendarioFeriado> getFeriados()
+        public List<IDiaFeriado> getFeriados()
         {
             return
                 Dias
-                .Where(x => x.TipoDia == ETipoDiaCalendarioPonto.FERIADO || 
-                    x.TipoDia == ETipoDiaCalendarioPonto.FERIADO_TRABALHADO)
-                .Cast<IDiaCalendarioFeriado>()
+                .Where(x => x.TipoDia == ETipoDiaRelatorio.FERIADO || 
+                    x.TipoDia == ETipoDiaRelatorio.FERIADO_TRABALHADO)
+                .Cast<IDiaFeriado>()
                 .ToList();
         }
 
-        public List<IDiaCalendarioTrabalho> getDiasTrabalhados()
+        public List<IDiaComPonto> getDiasTrabalhados()
         {
             return
                 Dias
-                .Where(x => x.TipoDia == ETipoDiaCalendarioPonto.TRABALHO ||
-                    x.TipoDia == ETipoDiaCalendarioPonto.FERIADO_TRABALHADO)
-                .Cast<IDiaCalendarioTrabalho>()
+                .Where(x => 
+                    x.TipoDia == ETipoDiaRelatorio.TRABALHO ||
+                    x.TipoDia == ETipoDiaRelatorio.FERIADO_TRABALHADO)
+                .Cast<IDiaComPonto>()
                 .ToList();
         }
 
-        public List<DiaCalendarioPonto> getFolgas()
+        public List<DiaPonto> getFolgas()
         {
-            return Dias.Where(x => x.TipoDia == ETipoDiaCalendarioPonto.FOLGA)
-                .Cast<DiaCalendarioPonto>()
+            return Dias.Where(x => x.TipoDia == ETipoDiaRelatorio.FOLGA)
+                .Cast<DiaPonto>()
                 .ToList();
         }
 
@@ -76,8 +77,7 @@ namespace ControlePonto.Domain.services.relatorio
             return
                 new TimeSpan(
                     getDiasTrabalhados()
-                        .Select(x => x.PontoDia)
-                        .Cast<DiaTrabalho>()
+                        .Cast<ICalculoHoraExtra>()
                         .Where(x => x.calcularValorHoraExtra() == valorHoraExtra)
                         .Sum(x => x.calcularHorasExtras(jornadaAtiva).Ticks)
                 );
@@ -88,9 +88,20 @@ namespace ControlePonto.Domain.services.relatorio
             return
                 new TimeSpan(
                     getDiasTrabalhados()
-                        .Select(x => x.PontoDia)
-                        .Cast<DiaTrabalho>()
+                        .Cast<ICalculoHoraExtra>()
                         .Sum(x => x.calcularHorasExtras(jornadaAtiva).Ticks)
+                );
+        }
+    
+        public TimeSpan calcularHorasDevedoras()
+        {
+            return
+                new TimeSpan(
+                    Dias.Where(x => 
+                        x.TipoDia != ETipoDiaRelatorio.FERIADO_TRABALHADO &&
+                        x.TipoDia != ETipoDiaRelatorio.FERIADO)
+                        .Cast<ICalculoHoraDevedora>()
+                        .Sum(x => x.calcularHorasDevedoras(jornadaAtiva).Ticks)
                 );
         }
     }

@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.ponto;
+﻿using ControlePonto.Domain.jornada;
+using ControlePonto.Domain.ponto;
 using ControlePonto.Infrastructure.utils;
 using System;
 using System.Collections.Generic;
@@ -8,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public class DiaCalendarioPonto : DiaCalendario, IDiaCalendarioTrabalho
+    public class DiaPonto : DiaRelatorio, IDiaComPonto
     {
         public PontoDia PontoDia { get; set; }
 
-        public override ETipoDiaCalendarioPonto TipoDia
+        public override ETipoDiaRelatorio TipoDia
         {
             get
             {
                 if (PontoDia.Tipo == ETipoPonto.TRABALHO)
-                    return ETipoDiaCalendarioPonto.TRABALHO;
+                    return ETipoDiaRelatorio.TRABALHO;
 
-                return ETipoDiaCalendarioPonto.FOLGA;
+                return ETipoDiaRelatorio.FOLGA;
             }
         }
 
-        public DiaCalendarioPonto(PontoDia pontoDia)
+        public DiaPonto(PontoDia pontoDia)
             : base(pontoDia.Data)
         {
             Check.Require(pontoDia.Tipo != ETipoPonto.FERIADO_TRABALHADO,
@@ -32,15 +33,20 @@ namespace ControlePonto.Domain.services.relatorio
 
             this.PontoDia = pontoDia;
         }
-        
-        public TimeSpan Entrada
+
+        public TimeSpan calcularHorasExtras(JornadaTrabalho jornadaAtiva)
         {
-            get { throw new NotImplementedException(); }
+            return PontoDia.calcularHorasExtras(jornadaAtiva);
         }
 
-        public TimeSpan Saida
+        public double calcularValorHoraExtra()
         {
-            get { throw new NotImplementedException(); }
+            return PontoDia.calcularValorHoraExtra();
+        }
+
+        public TimeSpan calcularHorasDevedoras(JornadaTrabalho jornadaAtiva)
+        {
+            return PontoDia.calcularHorasDevedoras(jornadaAtiva);
         }
     }
 }

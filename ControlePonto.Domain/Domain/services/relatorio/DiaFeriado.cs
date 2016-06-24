@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public class DiaCalendarioFeriado : DiaCalendario, IDiaCalendarioFeriado
+    public class DiaFeriado : DiaRelatorio, IDiaFeriado
     {
         private Feriado feriado;
 
@@ -16,12 +16,12 @@ namespace ControlePonto.Domain.services.relatorio
             get { return feriado.Nome; }
         }
 
-        public override ETipoDiaCalendarioPonto TipoDia
+        public override ETipoDiaRelatorio TipoDia
         {
-            get { return ETipoDiaCalendarioPonto.FERIADO; }
+            get { return ETipoDiaRelatorio.FERIADO; }
         }
 
-        public DiaCalendarioFeriado(Feriado feriado) : base(feriado.getData())
+        public DiaFeriado(Feriado feriado) : base(feriado.getData())
         {
             this.feriado = feriado;
         }

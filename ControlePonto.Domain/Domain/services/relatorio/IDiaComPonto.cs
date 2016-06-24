@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public interface IDiaCalendarioTrabalho
+    public interface IDiaComPonto : ICalculoHoraExtra, ICalculoHoraDevedora
     {
         PontoDia PontoDia { get; }
-
-        TimeSpan Entrada { get; }
-
-        TimeSpan Saida { get; }
     }
 }

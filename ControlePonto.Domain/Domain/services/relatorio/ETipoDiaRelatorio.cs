@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.services.relatorio
 {
-    public interface IDiaCalendarioFeriado
+    public enum ETipoDiaRelatorio : int
     {
-        DateTime Data { get; }
-
-        string Nome { get; }
+        TRABALHO,        
+        FERIADO,
+        FERIADO_TRABALHADO,
+        FOLGA,
+        FALTOU
     }
 }

@@ -256,6 +256,63 @@ namespace ControlePonto.Tests
             Assert.AreEqual(new TimeSpan(11, 0, 0), calendario.calcularHorasExtras(100));
         }
 
+        [TestMethod]
+        public void relatorioDeveContarHorasDevedoras()
+        {
+            #region Arranging: Dias de trabalho
+
+            var pontoRepository = new PontoDiaMockRepository();
+            var horariosEntrada = new DataHoraMockListStrategy(
+                new DateTime(2016, 6, 2, 10, 0, 0),
+                new DateTime(2016, 6, 3, 10, 0, 0),
+                new DateTime(2016, 6, 4, 10, 0, 0));
+            var horariosSaida = new DataHoraMockListStrategy(true,
+                new DateTime(2016, 6, 2, 15, 0, 0),
+                new DateTime(2016, 6, 3, 15, 0, 0),
+                new DateTime(2016, 6, 4, 15, 0, 0));
+
+            var diasDeTrabalho = new List<DiaTrabalho>();            
+            while(horariosEntrada.Count > 0)
+            {
+                diasDeTrabalho.Add(
+                    iniciarEncerrarDia(pontoRepository, null, horariosEntrada.getDataHoraAtual(), horariosSaida));
+                horariosSaida.dequeue();
+            }
+
+            #endregion
+
+            #region Arranging: Jornada de trabalho
+
+            var jornadaRepository = new JornadaTrabalhoMockRepository();
+            var jornada = criarJornadaTrabalho(jornadaRepository);
+            jornada.cadastrarDia(DayOfWeek.Monday, DayOfWeek.Friday, new TimeSpan(10, 0, 0), new TimeSpan(15, 0, 0), new TimeSpan(0, 0, 0));
+            jornadaRepository.save(jornada);
+
+            #endregion
+
+            //Arranging: Relatório Service
+            var relatorio = criarRelatorioService(pontoRepository, null, jornadaRepository);
+            var inicio = new DateTime(2016, 6, 1);
+            var fim = new DateTime(2016, 6, 30);
+
+            //Act            
+            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var diasTrabalhadosNoPeriodo = calendario.getDiasTrabalhados();
+
+            //Assert
+            Assert.AreEqual(30, calendario.Dias.Count);
+            
+            /*
+             * Espera-se 5 horas nos dias úteis  |
+             * 06/2016 possui 22 dias úteis      | 22 *  5  = Há 110 horas a trabalhar neste período
+             * O funcionário só trabalhou 3 dias |
+             * Porém, de dia útil, apenas 2      | 2  *  5  = 10 horas trabalhadas
+             * Logo...                           | 110 - 10 = O funcionário deve 100 horas neste período
+             */
+            Assert.AreEqual(3, diasTrabalhadosNoPeriodo.Count);
+            Assert.AreEqual(new TimeSpan(100, 0, 0), calendario.calcularHorasDevedoras());
+        }
+
         private DiaTrabalho iniciarEncerrarDia(IPontoDiaRepository pontoRepository, IFeriadoRepository feriadoRepository, DateTime entrada, IDataHoraStrategy dataHora)
         {
             var diaTrab = criarPontoTrabalhoDoDia(pontoRepository, feriadoRepository, entrada.Day, entrada.Month, entrada.Year, entrada.Hour);
