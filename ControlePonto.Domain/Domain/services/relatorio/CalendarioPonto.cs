@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.ponto;
+﻿using ControlePonto.Domain.jornada;
+using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.utils;
@@ -11,19 +12,26 @@ namespace ControlePonto.Domain.services.relatorio
 {
     public class CalendarioPonto
     {
+        #region Propriedades
+
         public Funcionario Funcionario { get; set; }
 
         public DateTime PeriodoInicio { get; private set; }
 
         public DateTime PeriodoFim { get; private set; }
 
-        public List<DiaCalendario> Dias { get; private set; }
+        public List<DiaCalendario> Dias { get; private set; }        
 
-        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, List<DiaCalendario> todosDias)
+        #endregion
+
+        private JornadaTrabalho jornadaAtiva;
+
+        public CalendarioPonto(Funcionario funcionario, DateTime inicio, DateTime fim, JornadaTrabalho jornadaAtiva, List<DiaCalendario> todosDias)
         {
             this.Funcionario = funcionario;
             this.PeriodoInicio = inicio;
             this.PeriodoFim = fim;
+            this.jornadaAtiva = jornadaAtiva;
             this.Dias = todosDias;
 
             int difDias = (fim - inicio).Days + 1;
@@ -71,7 +79,7 @@ namespace ControlePonto.Domain.services.relatorio
                         .Select(x => x.PontoDia)
                         .Cast<DiaTrabalho>()
                         .Where(x => x.calcularValorHoraExtra() == valorHoraExtra)
-                        .Sum(x => x.calcularHorasExtras(null).Ticks)
+                        .Sum(x => x.calcularHorasExtras(jornadaAtiva).Ticks)
                 );
         }
 
@@ -82,7 +90,7 @@ namespace ControlePonto.Domain.services.relatorio
                     getDiasTrabalhados()
                         .Select(x => x.PontoDia)
                         .Cast<DiaTrabalho>()
-                        .Sum(x => x.calcularHorasExtras(null).Ticks)
+                        .Sum(x => x.calcularHorasExtras(jornadaAtiva).Ticks)
                 );
         }
     }

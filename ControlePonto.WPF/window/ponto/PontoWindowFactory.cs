@@ -16,7 +16,8 @@ namespace ControlePonto.WPF.window.ponto
         {
             return new RelatorioService(
                 RepositoryFactory.criarPontoRepository(),
-                new FeriadoService(RepositoryFactory.criarFeriadoRepository()));
+                new FeriadoService(RepositoryFactory.criarFeriadoRepository()),
+                RepositoryFactory.criarJornadaTrabalhoRepository());
         }
 
         public static PontoWindow criarPontoWindow(DiaTrabalho ponto, PontoService pontoService)

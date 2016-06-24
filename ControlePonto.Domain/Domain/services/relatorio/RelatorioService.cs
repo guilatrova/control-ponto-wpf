@@ -8,18 +8,21 @@ using System.Threading.Tasks;
 using ControlePonto.Domain.framework;
 using ControlePonto.Domain.feriado;
 using ControlePonto.Domain.ponto.trabalho;
+using ControlePonto.Domain.jornada;
 
 namespace ControlePonto.Domain.services.relatorio
 {
     public class RelatorioService
     {
         private IPontoDiaRepository pontoRepository;
+        private IJornadaTrabalhoRepository jornadaRepository;
         private FeriadoService feriadoService;
 
-        public RelatorioService(ponto.IPontoDiaRepository pontoRepository, FeriadoService feriadoService)
+        public RelatorioService(IPontoDiaRepository pontoRepository, FeriadoService feriadoService, IJornadaTrabalhoRepository jornadaRepository)
         {
             this.pontoRepository = pontoRepository;
             this.feriadoService = feriadoService;
+            this.jornadaRepository = jornadaRepository;
         }
 
         public CalendarioPonto gerarCalendario(Funcionario funcionario, DateTime inicio, DateTime fim)
@@ -45,7 +48,7 @@ namespace ControlePonto.Domain.services.relatorio
                 .OrderBy(x => x.Data)
                 .ToList();                        
 
-            return new CalendarioPonto(funcionario, inicio, fim, todosDias);
+            return new CalendarioPonto(funcionario, inicio, fim, jornadaRepository.findJornadaAtiva(), todosDias);
         }
 
         private DiaCalendario criarDia(DateTime date)

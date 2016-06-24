@@ -11,6 +11,7 @@ using ControlePonto.Domain.feriado;
 using ControlePonto.Infrastructure.utils;
 using ControlePonto.Domain.ponto.trabalho;
 using System.Collections.Generic;
+using ControlePonto.Domain.jornada;
 
 namespace ControlePonto.Tests
 {
@@ -51,7 +52,7 @@ namespace ControlePonto.Tests
             return feriado;
         }
 
-        private RelatorioService criarRelatorioService(IPontoDiaRepository pontoRepository = null, IFeriadoRepository feriadoRepository = null)
+        private RelatorioService criarRelatorioService(IPontoDiaRepository pontoRepository = null, IFeriadoRepository feriadoRepository = null, IJornadaTrabalhoRepository jornadaRepository = null)
         {
             if (pontoRepository == null)
                 pontoRepository = new PontoDiaMockRepository();
@@ -59,7 +60,10 @@ namespace ControlePonto.Tests
             if (feriadoRepository == null)
                 feriadoRepository = new FeriadoMockRepository();
 
-            return new RelatorioService(pontoRepository, new FeriadoService(feriadoRepository));
+            if (jornadaRepository == null)
+                jornadaRepository = new JornadaTrabalhoMockRepository();
+
+            return new RelatorioService(pontoRepository, new FeriadoService(feriadoRepository), jornadaRepository);
         }
 
         private DiaTrabalho criarPontoTrabalhoDoDia(IPontoDiaRepository pontoRepository, IFeriadoRepository feriadoRepository, int dia, int mes, int ano, int hora = 9, int minuto = 0)
@@ -79,6 +83,12 @@ namespace ControlePonto.Tests
         {
             return
                 FactoryHelper.criarPontoService(funcionario, dataHora, pontoRepository, false, feriadoRepository);
+        }
+
+        private JornadaTrabalho criarJornadaTrabalho(IJornadaTrabalhoRepository jornadaRepository)
+        {
+            return
+                new JornadaTrabalhoFactory(jornadaRepository).criarJornadaTrabalho();
         }
 
         #endregion
@@ -180,36 +190,51 @@ namespace ControlePonto.Tests
         [TestMethod]
         public void relatorioDeveContarHorasExtrasSeparandoPorValor()
         {
-            //Arranging: Feriado
+            #region Arranging: Feriado
+
             var feriadoRepository = new FeriadoMockRepository();
             var nomeFeriado = "Dia de festa";
             var feriado = criarFeriadoEm(feriadoRepository, nomeFeriado, 1, 6, 2016);
 
-            //Arranging: Dias de trabalho
+            #endregion
+
+            #region Arranging: Dias de trabalho
+
             var pontoRepository = new PontoDiaMockRepository();
             var horariosEntrada = new DataHoraMockListStrategy(
-                new DateTime(2016, 6, 1, 10, 0, 0), //É um feriado -> 100%
-                new DateTime(2016, 6, 2, 10, 0, 0), //Dia normal   -> 75%
-                new DateTime(2016, 6, 3, 10, 0, 0), //Dia normal   -> 75%
-                new DateTime(2016, 6, 4, 10, 0, 0), //Dia normal   -> 75%
-                new DateTime(2016, 6, 5, 10, 0, 0));//Domingo      -> 100%
-            var horariosSaida = new DataHoraMockListStrategy(
-                new DateTime(2016, 6, 1, 18, 0, 0), //É um feriado -> 100%
-                new DateTime(2016, 6, 2, 18, 0, 0), //Dia normal   -> 75%
-                new DateTime(2016, 6, 3, 18, 0, 0), //Dia normal   -> 75%
-                new DateTime(2016, 6, 4, 18, 0, 0), //Dia normal   -> 75%
-                new DateTime(2016, 6, 5, 18, 0, 0));//Domingo      -> 100%
+                new DateTime(2016, 6, 1, 10, 0, 0), //Feriado     -> 100%
+                new DateTime(2016, 6, 2, 10, 0, 0), //Quinta      -> 75%
+                new DateTime(2016, 6, 3, 10, 0, 0), //Sexta       -> 75%
+                new DateTime(2016, 6, 4, 10, 0, 0), //Sábado      -> 75%
+                new DateTime(2016, 6, 5, 10, 0, 0));//Domingo     -> 100%
+            var horariosSaida = new DataHoraMockListStrategy(true,
+                new DateTime(2016, 6, 1, 18, 0, 0), //Feriado     -> 100%
+                new DateTime(2016, 6, 2, 18, 0, 0), //Quinta      -> 75%
+                new DateTime(2016, 6, 3, 18, 0, 0), //Sexta       -> 75%
+                new DateTime(2016, 6, 4, 18, 0, 0), //Sábado      -> 75%
+                new DateTime(2016, 6, 5, 18, 0, 0));//Domingo     -> 100%
 
             var diasDeTrabalho = new List<DiaTrabalho>();            
             while(horariosEntrada.Count > 0)
             {
                 diasDeTrabalho.Add(
-                    iniciarEncerrarDia(pontoRepository, feriadoRepository, horariosEntrada.getDataHoraAtual(), horariosSaida)
-                );
+                    iniciarEncerrarDia(pontoRepository, feriadoRepository, horariosEntrada.getDataHoraAtual(), horariosSaida));
+                horariosSaida.dequeue();
             }
 
+            #endregion
+
+            #region Arranging: Jornada de trabalho
+
+            var jornadaRepository = new JornadaTrabalhoMockRepository();
+            var jornada = criarJornadaTrabalho(jornadaRepository);
+            jornada.cadastrarDia(DayOfWeek.Monday, DayOfWeek.Friday, new TimeSpan(10, 0, 0), new TimeSpan(15, 0, 0), new TimeSpan(0, 0, 0));
+            jornadaRepository.save(jornada);
+
+            #endregion
+
             //Arranging: Relatório Service
-            var relatorio = criarRelatorioService(pontoRepository, feriadoRepository);
+            var relatorio = criarRelatorioService(pontoRepository, feriadoRepository, jornadaRepository);
             var inicio = new DateTime(2016, 6, 1);
             var fim = new DateTime(2016, 6, 30);
 
@@ -225,10 +250,10 @@ namespace ControlePonto.Tests
             Assert.AreEqual(nomeFeriado, feriadosNoPeriodo[0].Nome);
             Assert.AreEqual(new DateTime(2016, 6, 1), feriadosNoPeriodo[0].Data);
 
-            Assert.AreEqual(5, diasTrabalhadosNoPeriodo.Count);
-            Assert.AreEqual(10, calendario.calcularHorasExtras());
-            Assert.AreEqual(6, calendario.calcularHorasExtras(75));
-            Assert.AreEqual(4, calendario.calcularHorasExtras(100));
+            Assert.AreEqual(5, diasTrabalhadosNoPeriodo.Count);            
+            Assert.AreEqual(new TimeSpan(25, 0, 0), calendario.calcularHorasExtras());
+            Assert.AreEqual(new TimeSpan(14, 0, 0), calendario.calcularHorasExtras(75));
+            Assert.AreEqual(new TimeSpan(11, 0, 0), calendario.calcularHorasExtras(100));
         }
 
         private DiaTrabalho iniciarEncerrarDia(IPontoDiaRepository pontoRepository, IFeriadoRepository feriadoRepository, DateTime entrada, IDataHoraStrategy dataHora)
