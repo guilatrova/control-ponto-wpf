@@ -10,12 +10,14 @@ namespace ControlePonto.Domain.ponto.trabalho
 {
     public class DiaTrabalhoComum : DiaTrabalho
     {
-        public DiaTrabalhoComum(DateTime data, TimeSpan inicio, Funcionario funcionario) 
-            : base(data, inicio, funcionario) { }
+        public override ETipoPonto Tipo { get; protected set; }
 
-        public override ETipoPonto Tipo
+        protected DiaTrabalhoComum() { }
+
+        public DiaTrabalhoComum(DateTime data, TimeSpan inicio, Funcionario funcionario) 
+            : base(data, inicio, funcionario) 
         {
-            get { return ETipoPonto.TRABALHO; }
+            Tipo = ETipoPonto.TRABALHO;
         }
 
         public override double calcularValorHoraExtra()

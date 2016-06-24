@@ -9,6 +9,7 @@ using ControlePonto.Domain.framework;
 using ControlePonto.Domain.feriado;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.jornada;
+using ControlePonto.Infrastructure.utils;
 
 namespace ControlePonto.Domain.services.relatorio
 {
@@ -17,17 +18,22 @@ namespace ControlePonto.Domain.services.relatorio
         private IPontoDiaRepository pontoRepository;
         private IJornadaTrabalhoRepository jornadaRepository;
         private FeriadoService feriadoService;
+        private JornadaTrabalho jornadaAtiva;
 
         public RelatorioService(IPontoDiaRepository pontoRepository, FeriadoService feriadoService, IJornadaTrabalhoRepository jornadaRepository)
         {
             this.pontoRepository = pontoRepository;
             this.feriadoService = feriadoService;
             this.jornadaRepository = jornadaRepository;
+            this.jornadaAtiva = jornadaRepository.findJornadaAtiva();
         }
 
-        public RelatorioPonto gerarCalendario(Funcionario funcionario, DateTime inicio, DateTime fim)
+        public RelatorioPonto gerarRelatorio(Funcionario funcionario, DateTime inicio, DateTime fim)
         {
-            var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, true, false);
+            Check.Require(fim >= inicio, "Período inválido. O início deve vir antes do fim!");
+            Check.Require(funcionario != null, "O funcionário deve ser válido");
+
+            var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, false, false);
             var diasFaltando = inicio.Range(fim).Except(todosPontos.Select(x => x.Data));
             var feriadosNaoTrabalhados = diasFaltando
                 .Where(x => feriadoService.isFeriado(x));
@@ -48,19 +54,19 @@ namespace ControlePonto.Domain.services.relatorio
                 .OrderBy(x => x.Data)
                 .ToList();                        
 
-            return new RelatorioPonto(funcionario, inicio, fim, jornadaRepository.findJornadaAtiva(), todosDias);
+            return new RelatorioPonto(funcionario, inicio, fim, jornadaAtiva, todosDias);
         }
 
         private DiaRelatorio criarDia(DateTime date)
         {
-            return new DiaFalta(date);
+            return new DiaFalta(date, jornadaAtiva);
         }
 
         private DiaRelatorio criarDia(PontoDia ponto)
         {
             if (ponto is DiaTrabalhoFeriado)
-                return new DiaFeriadoTrabalhado(ponto, (ponto as DiaTrabalhoFeriado).Feriado);
-            return new DiaPonto(ponto);
+                return new DiaFeriadoTrabalhado(ponto, (ponto as DiaTrabalhoFeriado).Feriado, jornadaAtiva);
+            return new DiaPonto(ponto, jornadaAtiva);
         }
 
         private DiaRelatorio criarDia(Feriado feriado)

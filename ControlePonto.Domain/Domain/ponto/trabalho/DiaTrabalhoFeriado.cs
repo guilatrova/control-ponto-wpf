@@ -10,16 +10,16 @@ namespace ControlePonto.Domain.ponto.trabalho
 {
     public class DiaTrabalhoFeriado : DiaTrabalho
     {
-        public Feriado Feriado { get; private set; }
+        public virtual Feriado Feriado { get; protected set; }
 
-        public override ETipoPonto Tipo
-        {
-            get { return ETipoPonto.FERIADO_TRABALHADO; }
-        }
+        public override ETipoPonto Tipo { get; protected set; }
+
+        protected DiaTrabalhoFeriado() { }
 
         public DiaTrabalhoFeriado(Feriado feriado, TimeSpan inicio, Funcionario funcionario) :
             base (feriado.getData(), inicio, funcionario) 
         {
+            this.Tipo = ETipoPonto.FERIADO_TRABALHADO;
             this.Feriado = feriado;
         }
 

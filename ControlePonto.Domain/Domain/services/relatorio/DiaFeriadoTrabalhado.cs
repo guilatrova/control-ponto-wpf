@@ -14,6 +14,7 @@ namespace ControlePonto.Domain.services.relatorio
     {
         public PontoDia PontoDia { get; private set; }
         public Feriado Feriado { get; private set; }
+        public JornadaTrabalho JornadaTrabalhoAtiva { get; private set; }
 
         public string Nome
         {
@@ -25,7 +26,7 @@ namespace ControlePonto.Domain.services.relatorio
             get { return ETipoDiaRelatorio.FERIADO_TRABALHADO; }
         }
 
-        public DiaFeriadoTrabalhado(PontoDia pontoDia, Feriado feriado)
+        public DiaFeriadoTrabalhado(PontoDia pontoDia, Feriado feriado, JornadaTrabalho jornadaAtiva)
             : base(pontoDia.Data)
         {
             Check.Require(pontoDia.Data == feriado.getData(), 
@@ -33,24 +34,31 @@ namespace ControlePonto.Domain.services.relatorio
             Check.Require(feriado != null, "O feriado deve ser válido");
             Check.Require(pontoDia != null, "O ponto deve ser válido");
 
-            PontoDia = pontoDia;
-            Feriado = feriado;
+            this.PontoDia = pontoDia;
+            this.Feriado = feriado;
+            this.JornadaTrabalhoAtiva = jornadaAtiva;
         }
 
-        public TimeSpan calcularHorasExtras(JornadaTrabalho jornadaAtiva)
+        public TimeSpan calcularHorasExtras()
         {
-            return PontoDia.calcularHorasExtras(jornadaAtiva);
+            return PontoDia.calcularHorasExtras(JornadaTrabalhoAtiva);
         }
 
-        public TimeSpan calcularHorasDevedoras(JornadaTrabalho jornadaAtiva)
+        public TimeSpan calcularHorasDevedoras()
         {
-            return PontoDia.calcularHorasDevedoras(jornadaAtiva);
+            return PontoDia.calcularHorasDevedoras(JornadaTrabalhoAtiva);
         }
 
 
         public double calcularValorHoraExtra()
         {
             return PontoDia.calcularValorHoraExtra();
+        }
+
+
+        public TimeSpan calcularHorasTrabalhadas()
+        {
+            return PontoDia.calcularHorasTrabalhadas();
         }
     }
 }

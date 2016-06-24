@@ -131,7 +131,7 @@ namespace ControlePonto.WPF.window.ponto.folga
             FuncionarioEmExibicao = FuncionarioEscolhido;
 
             DiasPeriodo = relatorioService
-                .gerarCalendario(FuncionarioEscolhido, PeriodoInicio, PeriodoFim).Dias
+                .gerarRelatorio(FuncionarioEscolhido, PeriodoInicio, PeriodoFim).Dias
                 .Select(x => new DiaFolgaDTO(x, FuncionarioEmExibicao))
                 .ToList();
                         

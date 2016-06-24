@@ -105,6 +105,12 @@
       <DependentUpon>ControleFolgaWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\ponto\folga\ControleFolgaViewModel.cs" />
+    <Compile Include="window\relatorio\DiaRelatorioDTO.cs" />
+    <Compile Include="window\relatorio\RelatorioViewModel.cs" />
+    <Compile Include="window\relatorio\RelatorioWindow.xaml.cs">
+      <DependentUpon>RelatorioWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="window\relatorio\RelatorioWindowFactory.cs" />
     <Compile Include="window\usuario\LoginViewModel.cs" />
     <Compile Include="window\usuario\LoginWindow.xaml.cs" />
     <Compile Include="window\usuario\UsuarioWindowFactory.cs" />
@@ -175,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="window\ponto\folga\ControleFolgaWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="window\relatorio\RelatorioWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

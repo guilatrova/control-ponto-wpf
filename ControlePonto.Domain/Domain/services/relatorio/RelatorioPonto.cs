@@ -79,7 +79,7 @@ namespace ControlePonto.Domain.services.relatorio
                     getDiasTrabalhados()
                         .Cast<ICalculoHoraExtra>()
                         .Where(x => x.calcularValorHoraExtra() == valorHoraExtra)
-                        .Sum(x => x.calcularHorasExtras(jornadaAtiva).Ticks)
+                        .Sum(x => x.calcularHorasExtras().Ticks)
                 );
         }
 
@@ -89,7 +89,7 @@ namespace ControlePonto.Domain.services.relatorio
                 new TimeSpan(
                     getDiasTrabalhados()
                         .Cast<ICalculoHoraExtra>()
-                        .Sum(x => x.calcularHorasExtras(jornadaAtiva).Ticks)
+                        .Sum(x => x.calcularHorasExtras().Ticks)
                 );
         }
     
@@ -101,7 +101,7 @@ namespace ControlePonto.Domain.services.relatorio
                         x.TipoDia != ETipoDiaRelatorio.FERIADO_TRABALHADO &&
                         x.TipoDia != ETipoDiaRelatorio.FERIADO)
                         .Cast<ICalculoHoraDevedora>()
-                        .Sum(x => x.calcularHorasDevedoras(jornadaAtiva).Ticks)
+                        .Sum(x => x.calcularHorasDevedoras().Ticks)
                 );
         }
     }

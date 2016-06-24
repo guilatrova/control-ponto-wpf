@@ -9,16 +9,21 @@ namespace ControlePonto.Domain.services.relatorio
 {
     public class DiaFalta : DiaRelatorio, ICalculoHoraDevedora
     {
+        public JornadaTrabalho JornadaTrabalhoAtiva { get; private set; }
+
         public override ETipoDiaRelatorio TipoDia
         {
             get { return ETipoDiaRelatorio.FALTOU; }
         }
 
-        public DiaFalta(DateTime date) : base(date) { }
-
-        public TimeSpan calcularHorasDevedoras(JornadaTrabalho jornadaAtiva)
+        public DiaFalta(DateTime date, JornadaTrabalho jornadaAtiva) : base(date) 
         {
-            return jornadaAtiva.getDia(Data.Date.DayOfWeek).calcularHorasTrabalhoEsperado();
+            this.JornadaTrabalhoAtiva = jornadaAtiva;
+        }
+
+        public TimeSpan calcularHorasDevedoras()
+        {
+            return JornadaTrabalhoAtiva.getDia(Data.Date.DayOfWeek).calcularHorasTrabalhoEsperado();
         }
     }
 }

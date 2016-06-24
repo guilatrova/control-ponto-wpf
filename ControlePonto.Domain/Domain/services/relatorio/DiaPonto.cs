@@ -11,7 +11,9 @@ namespace ControlePonto.Domain.services.relatorio
 {
     public class DiaPonto : DiaRelatorio, IDiaComPonto
     {
-        public PontoDia PontoDia { get; set; }
+        public PontoDia PontoDia { get; private set; }
+
+        public JornadaTrabalho JornadaTrabalhoAtiva { get; private set; }
 
         public override ETipoDiaRelatorio TipoDia
         {
@@ -24,7 +26,7 @@ namespace ControlePonto.Domain.services.relatorio
             }
         }
 
-        public DiaPonto(PontoDia pontoDia)
+        public DiaPonto(PontoDia pontoDia, JornadaTrabalho jornadaAtiva)
             : base(pontoDia.Data)
         {
             Check.Require(pontoDia.Tipo != ETipoPonto.FERIADO_TRABALHADO,
@@ -32,11 +34,12 @@ namespace ControlePonto.Domain.services.relatorio
             Check.Require(pontoDia != null, "O ponto deve ser válido");
 
             this.PontoDia = pontoDia;
+            this.JornadaTrabalhoAtiva = jornadaAtiva;
         }
 
-        public TimeSpan calcularHorasExtras(JornadaTrabalho jornadaAtiva)
+        public TimeSpan calcularHorasExtras()
         {
-            return PontoDia.calcularHorasExtras(jornadaAtiva);
+            return PontoDia.calcularHorasExtras(JornadaTrabalhoAtiva);
         }
 
         public double calcularValorHoraExtra()
@@ -44,9 +47,15 @@ namespace ControlePonto.Domain.services.relatorio
             return PontoDia.calcularValorHoraExtra();
         }
 
-        public TimeSpan calcularHorasDevedoras(JornadaTrabalho jornadaAtiva)
+        public TimeSpan calcularHorasDevedoras()
         {
-            return PontoDia.calcularHorasDevedoras(jornadaAtiva);
+            return PontoDia.calcularHorasDevedoras(JornadaTrabalhoAtiva);
+        }
+
+
+        public TimeSpan calcularHorasTrabalhadas()
+        {
+            return PontoDia.calcularHorasTrabalhadas();
         }
     }
 }

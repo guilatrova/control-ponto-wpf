@@ -9,7 +9,7 @@ namespace ControlePonto.Domain.services.relatorio
 {
     public interface ICalculoHoraExtra
     {
-        TimeSpan calcularHorasExtras(JornadaTrabalho jornadaAtiva);
+        TimeSpan calcularHorasExtras();
         
         double calcularValorHoraExtra();     
     }

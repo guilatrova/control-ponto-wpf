@@ -99,7 +99,7 @@ namespace ControlePonto.Tests
             var relatorio = criarRelatorioService();
             var inicio = new DateTime(2016, 6, 1);
             var fim = new DateTime(2016, 6, 30);
-            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
 
             Assert.AreEqual(funcionario, calendario.Funcionario);
             Assert.AreEqual(inicio, calendario.PeriodoInicio);
@@ -119,7 +119,7 @@ namespace ControlePonto.Tests
 
             var folga1 = criarFolgaEm(repository, dataFolga1);
             var folga2 = criarFolgaEm(repository, dataFolga2);
-            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
 
             var folgasNoPeriodo = calendario.getFolgas();                
 
@@ -140,7 +140,7 @@ namespace ControlePonto.Tests
             var fim = new DateTime(2016, 6, 30);   
 
             feriadoRepository.save(feriado);
-            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
 
             var feriadosNoPeriodo = calendario.getFeriados();
 
@@ -170,7 +170,7 @@ namespace ControlePonto.Tests
             var fim = new DateTime(2016, 6, 30);
 
             //Act            
-            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
             var feriadosNoPeriodo = calendario.getFeriados();
             var pontosNoPeriodo = calendario.getDiasTrabalhados();
 
@@ -239,7 +239,7 @@ namespace ControlePonto.Tests
             var fim = new DateTime(2016, 6, 30);
 
             //Act            
-            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
             var feriadosNoPeriodo = calendario.getFeriados();
             var diasTrabalhadosNoPeriodo = calendario.getDiasTrabalhados();
 
@@ -296,7 +296,7 @@ namespace ControlePonto.Tests
             var fim = new DateTime(2016, 6, 30);
 
             //Act            
-            var calendario = relatorio.gerarCalendario(funcionario, inicio, fim);
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
             var diasTrabalhadosNoPeriodo = calendario.getDiasTrabalhados();
 
             //Assert
@@ -318,6 +318,22 @@ namespace ControlePonto.Tests
             var diaTrab = criarPontoTrabalhoDoDia(pontoRepository, feriadoRepository, entrada.Day, entrada.Month, entrada.Year, entrada.Hour);
             criarPontoService(pontoRepository, feriadoRepository, dataHora).encerrarDia(diaTrab);
             return diaTrab;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PreconditionException))]
+        public void relatorioNaoDeveAceitarPeriodoInvalido()
+        {
+            var relatorio = criarRelatorioService();
+            relatorio.gerarRelatorio(funcionario, new DateTime(2016, 1, 1), new DateTime(2015, 1, 1));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PreconditionException))]
+        public void relatorioNaoDeveAceitarFuncionarioInvalido()
+        {
+            var relatorio = criarRelatorioService();
+            relatorio.gerarRelatorio(null, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
         }
     }
 }

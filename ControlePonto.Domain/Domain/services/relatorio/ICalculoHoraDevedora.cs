@@ -9,6 +9,6 @@ namespace ControlePonto.Domain.services.relatorio
 {
     public interface ICalculoHoraDevedora
     {
-        TimeSpan calcularHorasDevedoras(JornadaTrabalho jornadaAtiva);   
+        TimeSpan calcularHorasDevedoras();   
     }
 }

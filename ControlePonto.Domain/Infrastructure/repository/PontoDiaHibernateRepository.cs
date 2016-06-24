@@ -76,8 +76,9 @@ namespace ControlePonto.Infrastructure.repository
                 return
                     session
                         .CreateCriteria<PontoDia>()
-                        .SetFetchMode("DiaTrabalho", fetchDiaTrabalho)
-                        .SetFetchMode("DiaFolga", fetchDiaFolga)
+                        .SetFetchMode("DiaTrabalho", fetchDiaTrabalho)                        
+                        .SetFetchMode("Intervalos", fetchDiaTrabalho)
+                        .SetFetchMode("DiaFolga", fetchDiaFolga)                        
                         .Add(Restrictions.Eq("Funcionario", funcionario))
                         .Add(Restrictions.Between("Data", inicio, fim))
                         .List<PontoDia>().ToList();

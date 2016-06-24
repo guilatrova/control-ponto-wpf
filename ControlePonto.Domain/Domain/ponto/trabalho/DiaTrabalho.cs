@@ -42,6 +42,8 @@ namespace ControlePonto.Domain.ponto.trabalho
 
         #endregion        
 
+        protected DiaTrabalho() { }
+
         public DiaTrabalho(DateTime data, TimeSpan inicio, Funcionario funcionario)
         {
             base.checkPreConstructor();
