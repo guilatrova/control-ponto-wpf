@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.feriado;
+using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.usuario.funcionario;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,16 @@ namespace ControlePonto.Domain.ponto.trabalho
         public override double calcularValorHoraExtra()
         {
             return 100;
+        }
+
+        public override TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
+        {
+            return calcularHorasTrabalhadas();
+        }
+
+        public override TimeSpan calcularHorasDevedoras(JornadaTrabalho jornada)
+        {
+            return new TimeSpan();
         }
     }
 }

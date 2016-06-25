@@ -65,6 +65,15 @@ namespace ControlePonto.Domain.services.relatorio
                 .ToList();
         }
 
+        public List<IDiaComPonto> getFeriadosTrabalhados()
+        {
+            return
+                Dias
+                .Where(x => x.TipoDia == ETipoDiaRelatorio.FERIADO_TRABALHADO)
+                .Cast<IDiaComPonto>()
+                .ToList();
+        }
+
         public List<DiaPonto> getFolgas()
         {
             return Dias.Where(x => x.TipoDia == ETipoDiaRelatorio.FOLGA)
@@ -103,6 +112,14 @@ namespace ControlePonto.Domain.services.relatorio
                         .Cast<ICalculoHoraDevedora>()
                         .Sum(x => x.calcularHorasDevedoras().Ticks)
                 );
+        }
+
+        public TimeSpan calcularHorasTrabalhadas()
+        {
+            return
+                new TimeSpan(
+                    getDiasTrabalhados()
+                        .Sum(x => x.calcularHorasTrabalhadas().Ticks));
         }
     }
 }

@@ -26,5 +26,29 @@ namespace ControlePonto.Domain.ponto.trabalho
                 return 100;
             return 75;
         }
+
+        public override TimeSpan calcularHorasExtras(JornadaTrabalho jornada)
+        {
+            DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
+            var trabalhado = calcularHorasTrabalhadas();
+            var esperado = diaJornada.calcularHorasTrabalhoEsperado();
+
+            var resultado = trabalhado.Subtract(esperado);
+            if (resultado > new TimeSpan(0))
+                return resultado;
+            return new TimeSpan(0, 0, 0);
+        }
+
+        public override TimeSpan calcularHorasDevedoras(JornadaTrabalho jornada)
+        {
+            DiaJornada diaJornada = jornada.getDia(Data.DayOfWeek);
+            var trabalhado = calcularHorasTrabalhadas();
+            var esperado = diaJornada.calcularHorasTrabalhoEsperado();
+
+            var resultado = esperado.Subtract(trabalhado);
+            if (resultado > new TimeSpan(0))
+                return resultado;
+            return new TimeSpan(0, 0, 0);
+        }
     }
 }

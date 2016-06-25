@@ -14,8 +14,15 @@ namespace ControlePonto.WPF.window.relatorio
     {
         public DiaRelatorio DiaRelatorio { get; private set; }
 
-        public DateTime Data
-        { get { return DiaRelatorio.Data; } }
+        public string Data
+        { 
+            get 
+            { 
+                return string.Format("{0} ({1})",
+                    DiaRelatorio.Data.ToShortDateString(),
+                    DiaSemanaTradutor.traduzir(DiaRelatorio.Data.DayOfWeek));
+            } 
+        }
 
         public string Info
         {
@@ -31,10 +38,10 @@ namespace ControlePonto.WPF.window.relatorio
                         return "FERIADO: " + (DiaRelatorio as IDiaFeriado).Nome;
 
                     case ETipoDiaRelatorio.FOLGA:
-                        return "FOLGA: " + ((DiaRelatorio as DiaPonto).PontoDia as DiaFolga).Descricao;
+                        return "FOLGA: " + ((DiaRelatorio as DiaPonto).PontoDia as DiaFolga).Descricao;                    
 
                     default:
-                        return DiaSemanaTradutor.traduzir(Data.DayOfWeek);                        
+                        return "Dia trabalhado";
                 }                
             }
         }
@@ -43,9 +50,26 @@ namespace ControlePonto.WPF.window.relatorio
         {
             get
             {
-                if (DiaRelatorio.TipoDia == ETipoDiaRelatorio.FALTOU)
-                    return Brushes.Red;
-                return Brushes.Black;
+                switch (DiaRelatorio.TipoDia)
+                {
+                    case ETipoDiaRelatorio.FALTOU:
+                        return Brushes.Red;
+
+                    case ETipoDiaRelatorio.FERIADO:
+                    case ETipoDiaRelatorio.FERIADO_TRABALHADO:
+                        return Brushes.Blue;
+
+                    default:
+                        return Brushes.Black;
+                }
+            }
+        }
+
+        public bool IsFolga 
+        { 
+            get
+            {
+                return DiaRelatorio.TipoDia == ETipoDiaRelatorio.FOLGA;
             }
         }
 
@@ -54,9 +78,8 @@ namespace ControlePonto.WPF.window.relatorio
             get
             {                
                 if (DiaRelatorio is IDiaComPonto)
-                    return (DiaRelatorio as IDiaComPonto).calcularHorasTrabalhadas().ToString();
+                    return getHorasOuVazio((DiaRelatorio as IDiaComPonto).calcularHorasTrabalhadas());
                 return "";
-                //return new TimeSpan();
             }
         }
 
@@ -68,13 +91,11 @@ namespace ControlePonto.WPF.window.relatorio
                 if (DiaRelatorio is ICalculoHoraDevedora)
                     devedoras = (DiaRelatorio as ICalculoHoraDevedora).calcularHorasDevedoras();
 
-                if (devedoras == new TimeSpan())
-                    return "";
-                return devedoras.ToString();
+                return getHorasOuVazio(devedoras);
             }
         }
 
-        public string HorasExtras75
+        public string HorasExtras
         {
             get
             {
@@ -104,6 +125,13 @@ namespace ControlePonto.WPF.window.relatorio
                     return calculo.calcularHorasExtras().ToString();
             }
             return "";
+        }
+
+        private string getHorasOuVazio(TimeSpan horas)
+        {
+            if (horas == new TimeSpan())
+                return "";
+            return horas.ToString();
         }
     }
 }
