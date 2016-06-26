@@ -171,20 +171,23 @@ namespace ControlePonto.Tests
 
             //Act            
             var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
-            var feriadosNoPeriodo = calendario.getFeriados();
+            var feriadosNoPeriodo = calendario.getFeriados();            
             var pontosNoPeriodo = calendario.getDiasTrabalhados();
+            var feriadosTrabalhados = calendario.getFeriadosTrabalhados();
+            var diaTrabalhado = (pontosNoPeriodo[0].PontoDia as DiaTrabalho);
 
             //Assert
             Assert.AreEqual(30, calendario.Dias.Count);
+            Assert.AreEqual(1, feriadosTrabalhados.Count);
 
             Assert.AreEqual(1, feriadosNoPeriodo.Count);
             Assert.AreEqual(nomeFeriado, feriadosNoPeriodo[0].Nome);
-            Assert.AreEqual(new DateTime(2016, 6, 1), feriadosNoPeriodo[0].Data);            
+            Assert.AreEqual(new DateTime(2016, 6, 1), feriadosNoPeriodo[0].Data);
 
             Assert.AreEqual(1, pontosNoPeriodo.Count);
-            Assert.AreEqual(new TimeSpan(9, 0, 0), (pontosNoPeriodo[0].PontoDia as DiaTrabalho).Inicio);
-            Assert.AreEqual(new TimeSpan(18, 0, 0), (pontosNoPeriodo[0].PontoDia as DiaTrabalho).Fim);
-            Assert.AreEqual(new TimeSpan(9, 0, 0), pontosNoPeriodo[0].PontoDia.calcularHorasTrabalhadas());
+            Assert.AreEqual(new TimeSpan(9, 0, 0), diaTrabalhado.Inicio);
+            Assert.AreEqual(new TimeSpan(18, 0, 0), diaTrabalhado.Fim);
+            Assert.AreEqual(new TimeSpan(9, 0, 0), diaTrabalhado.calcularHorasTrabalhadas());            
         }
 
         [TestMethod]
@@ -250,10 +253,10 @@ namespace ControlePonto.Tests
             Assert.AreEqual(nomeFeriado, feriadosNoPeriodo[0].Nome);
             Assert.AreEqual(new DateTime(2016, 6, 1), feriadosNoPeriodo[0].Data);
 
-            Assert.AreEqual(5, diasTrabalhadosNoPeriodo.Count);            
-            Assert.AreEqual(new TimeSpan(25, 0, 0), calendario.calcularHorasExtras());
+            Assert.AreEqual(5, diasTrabalhadosNoPeriodo.Count);
             Assert.AreEqual(new TimeSpan(14, 0, 0), calendario.calcularHorasExtras(75));
-            Assert.AreEqual(new TimeSpan(11, 0, 0), calendario.calcularHorasExtras(100));
+            Assert.AreEqual(new TimeSpan(16, 0, 0), calendario.calcularHorasExtras(100));
+            Assert.AreEqual(new TimeSpan(30, 0, 0), calendario.calcularHorasExtras());
         }
 
         [TestMethod]
@@ -334,6 +337,59 @@ namespace ControlePonto.Tests
         {
             var relatorio = criarRelatorioService();
             relatorio.gerarRelatorio(null, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
+        }
+
+        [TestMethod]
+        public void relatorioDeveCalcularHorasTrabalhadas()
+        {
+            #region Arranging: Dias de trabalho
+
+            var pontoRepository = new PontoDiaMockRepository();
+            var horariosEntrada = new DataHoraMockListStrategy(
+                new DateTime(2016, 6, 2, 10, 0, 0),
+                new DateTime(2016, 6, 3, 10, 0, 0),
+                new DateTime(2016, 6, 4, 10, 0, 0));
+            var horariosSaida = new DataHoraMockListStrategy(true,
+                new DateTime(2016, 6, 2, 15, 0, 0),
+                new DateTime(2016, 6, 3, 15, 0, 0),
+                new DateTime(2016, 6, 4, 15, 0, 0));
+
+            var diasDeTrabalho = new List<DiaTrabalho>();            
+            while(horariosEntrada.Count > 0)
+            {
+                diasDeTrabalho.Add(
+                    iniciarEncerrarDia(pontoRepository, null, horariosEntrada.getDataHoraAtual(), horariosSaida));
+                horariosSaida.dequeue();
+            }
+
+            #endregion
+
+            #region Arranging: Jornada de trabalho
+
+            var jornadaRepository = new JornadaTrabalhoMockRepository();
+            var jornada = criarJornadaTrabalho(jornadaRepository);
+            jornada.cadastrarDia(DayOfWeek.Monday, DayOfWeek.Friday, new TimeSpan(10, 0, 0), new TimeSpan(15, 0, 0), new TimeSpan(0, 0, 0));
+            jornadaRepository.save(jornada);
+
+            #endregion
+
+            //Arranging: Relatório Service
+            var relatorio = criarRelatorioService(pontoRepository, null, jornadaRepository);
+            var inicio = new DateTime(2016, 6, 1);
+            var fim = new DateTime(2016, 6, 30);
+
+            //Act            
+            var calendario = relatorio.gerarRelatorio(funcionario, inicio, fim);
+            var diasTrabalhadosNoPeriodo = calendario.getDiasTrabalhados();
+
+            //Assert
+            Assert.AreEqual(30, calendario.Dias.Count);
+            
+            /*
+             * O funcionário só trabalhou 5 horas em 3 dias, logo: 3 * 5 = 15 horas trabalhadas
+             */
+            Assert.AreEqual(3, diasTrabalhadosNoPeriodo.Count);
+            Assert.AreEqual(new TimeSpan(15, 0, 0), calendario.calcularHorasTrabalhadas());
         }
     }
 }
