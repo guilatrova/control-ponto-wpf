@@ -13,9 +13,12 @@ namespace ControlePonto.WPF.window.relatorio
     {
         public static RelatorioWindow criarRelatorioWindow()
         {
+            var uow = UnitOfWorkFactory.criarUnitOfWork();
+
             return new RelatorioWindow(new RelatorioViewModel(
                 RepositoryFactory.criarUsuarioRepository(),
-                RelatorioServiceFactory.criarRelatorioService()
+                RelatorioServiceFactory.criarRelatorioService(uow),
+                uow
             ));
         }
     }

@@ -74,6 +74,7 @@
     <Compile Include="mocks\repository\PontoDiaMockRepository.cs" />
     <Compile Include="mocks\repository\TipoIntervaloMockRepository.cs" />
     <Compile Include="mocks\SessaoLoginMock.cs" />
+    <Compile Include="mocks\UnitOfWorkMock.cs" />
     <Compile Include="PontoTests.cs" />
     <Compile Include="LoginTests.cs" />
     <Compile Include="mocks\repository\UsuarioMockRepository.cs" />

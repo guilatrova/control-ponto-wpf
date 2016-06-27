@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ControlePonto.Domain.services.persistence
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         public NHibernate.ISession Session { get; private set; }
         private NHibernate.ISessionFactory sessionFactory;

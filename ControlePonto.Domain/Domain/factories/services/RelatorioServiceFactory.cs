@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.services.relatorio;
+﻿using ControlePonto.Domain.services.persistence;
+using ControlePonto.Domain.services.relatorio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,13 @@ namespace ControlePonto.Domain.factories.services
 {
     public static class RelatorioServiceFactory
     {
-        public static RelatorioService criarRelatorioService()
+        public static RelatorioService criarRelatorioService(UnitOfWork uow)
         {
             return new RelatorioService(
                 RepositoryFactory.criarPontoRepository(),
                 FeriadoServiceFactory.criarFeriadoService(),
                 RepositoryFactory.criarJornadaTrabalhoRepository(),
-                UnitOfWorkFactory.criarUnitOfWork()
+                uow
             );
         }
     }

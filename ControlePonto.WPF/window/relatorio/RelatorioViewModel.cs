@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.ponto.trabalho;
+using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
@@ -17,9 +18,9 @@ namespace ControlePonto.WPF.window.relatorio
         public const int VIEW_PONTO = 1;
 
         private IUsuarioRepositorio usuarioRepository;
-        private RelatorioService relatorioService;
+        private RelatorioService relatorioService;        
 
-        public RelatorioViewModel(IUsuarioRepositorio usuarioRepository, RelatorioService relatorioService)
+        public RelatorioViewModel(IUsuarioRepositorio usuarioRepository, RelatorioService relatorioService, IUnitOfWork unitOfWork)
         {
             this.usuarioRepository = usuarioRepository;
             this.relatorioService = relatorioService;
@@ -33,6 +34,9 @@ namespace ControlePonto.WPF.window.relatorio
 
             this.ExibirCommand = new RelayCommand(exibir);
             this.ExibirPontoCommand = new RelayCommand(exibirPonto);
+
+            this.unitOfWork = unitOfWork;
+            unitOfWork.openConnection();
         }
 
         #region Propriedades

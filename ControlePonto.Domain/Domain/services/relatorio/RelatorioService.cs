@@ -20,17 +20,15 @@ namespace ControlePonto.Domain.services.relatorio
         private IJornadaTrabalhoRepository jornadaRepository;
         private FeriadoService feriadoService;
         private JornadaTrabalho jornadaAtiva;
-        private UnitOfWork unitOfWork;
+        private IUnitOfWork unitOfWork;
 
-        public RelatorioService(IPontoDiaRepository pontoRepository, FeriadoService feriadoService, IJornadaTrabalhoRepository jornadaRepository, UnitOfWork unitOfWork)
+        public RelatorioService(IPontoDiaRepository pontoRepository, FeriadoService feriadoService, IJornadaTrabalhoRepository jornadaRepository, IUnitOfWork unitOfWork)
         {
             this.pontoRepository = pontoRepository;
             this.feriadoService = feriadoService;
             this.jornadaRepository = jornadaRepository;
             this.jornadaAtiva = jornadaRepository.findJornadaAtiva();
             this.unitOfWork = unitOfWork;
-
-            unitOfWork.openConnection();
         }
 
         public RelatorioPonto gerarRelatorio(Funcionario funcionario, DateTime inicio, DateTime fim)

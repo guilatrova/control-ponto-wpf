@@ -68,6 +68,7 @@
     <Compile Include="Domain\feriado\IFeriadoRepository.cs" />
     <Compile Include="Domain\ponto\trabalho\DiaTrabalhoComum.cs" />
     <Compile Include="Domain\ponto\trabalho\DiaTrabalhoFeriado.cs" />
+    <Compile Include="Domain\services\persistence\IUnitOfWork.cs" />
     <Compile Include="Domain\services\persistence\UnitOfWork.cs" />
     <Compile Include="Domain\services\relatorio\RelatorioPonto.cs" />
     <Compile Include="Domain\services\relatorio\DiaFalta.cs" />

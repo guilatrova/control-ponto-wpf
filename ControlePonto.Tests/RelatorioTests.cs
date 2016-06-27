@@ -63,7 +63,7 @@ namespace ControlePonto.Tests
             if (jornadaRepository == null)
                 jornadaRepository = new JornadaTrabalhoMockRepository();
 
-            return new RelatorioService(pontoRepository, new FeriadoService(feriadoRepository), jornadaRepository, null);
+            return new RelatorioService(pontoRepository, new FeriadoService(feriadoRepository), jornadaRepository, new UnitOfWorkMock());
         }
 
         private DiaTrabalho criarPontoTrabalhoDoDia(IPontoDiaRepository pontoRepository, IFeriadoRepository feriadoRepository, int dia, int mes, int ano, int hora = 9, int minuto = 0)
@@ -390,6 +390,6 @@ namespace ControlePonto.Tests
              */
             Assert.AreEqual(3, diasTrabalhadosNoPeriodo.Count);
             Assert.AreEqual(new TimeSpan(15, 0, 0), calendario.calcularHorasTrabalhadas());
-        }
+        }        
     }
 }

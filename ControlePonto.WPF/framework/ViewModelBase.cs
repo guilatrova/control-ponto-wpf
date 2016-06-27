@@ -19,7 +19,7 @@ namespace ControlePonto.WPF.framework
 
         public const int CLOSE = -1;
 
-        protected UnitOfWork unitOfWork;
+        protected IUnitOfWork unitOfWork;
 
         #region Evento para resetar o DataContext
         public event EventHandler<DataContextResetEventArgs> ResetDataContextRequest;
