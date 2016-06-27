@@ -19,33 +19,49 @@ namespace ControlePonto.WPF
     public partial class App : Application
     {
         private void Application_Startup(object sender, StartupEventArgs e)
-        {
-#if DEBUG
-            LoginServiceFactory.criarLoginService().Logar("gui", "123456");
-            new PainelControleWindow(new PainelControleViewModel()).Show();
-            //JornadaWindowFactory.criarJornadaWindow().Show();
-            return;
-#endif
-                        
+        {  
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
             tratarArgumentos(e.Args);
 
-            var loginWindow = UsuarioWindowFactory.criarLoginWindow();
-            var loginResult = loginWindow.ShowDialog();
-            if (loginResult.HasValue && loginResult.Value)
-            {                
-                try
+            bool loginAgain;
+
+            do
+            {
+                loginAgain = false;
+                var loginResult = UsuarioWindowFactory.criarLoginWindow().ShowDialog();
+                if (loginResult.HasValue && loginResult.Value)
                 {
-                    var pontoService = PontoServiceFactory.criarPontoService();
-                    var ponto = recuperarOuIniciarPonto(pontoService);
-                    PontoWindowFactory.criarPontoWindow(ponto, pontoService).ShowDialog();                    
+                    loginAgain = true;
+                    try
+                    {
+                        if (SessaoLogin.getSessao().UsuarioLogado is Funcionario)
+                        {
+                            var pontoService = PontoServiceFactory.criarPontoService();
+                            var ponto = recuperarOuIniciarPonto(pontoService);
+                            PontoWindowFactory.criarPontoWindow(ponto, pontoService).ShowDialog();
+                        }
+                        else
+                        {
+                            PainelControleWindowFactory.criarPainelControleWindow().ShowDialog();
+                        }
+                    }
+                    catch (PontoDiaJaExisteException ex)
+                    {
+                        MessageBox.Show(string.Format("O ponto do dia {0} já foi encerrado",
+                            ex.DataPonto.ToShortDateString()),
+                            "Não é possível iniciar",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Não foi possível completar a operação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
+
+                SessaoLogin.getSessao().encerrar();
+            } while (loginAgain);
+
             Current.Shutdown();
         }
 

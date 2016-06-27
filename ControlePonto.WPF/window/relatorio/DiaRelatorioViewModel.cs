@@ -1,18 +1,31 @@
 ﻿using ControlePonto.Domain.ponto.folga;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Infrastructure.utils;
+using ControlePonto.WPF.framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ControlePonto.WPF.window.relatorio
 {
-    public class DiaRelatorioDTO
+    public class DiaRelatorioViewModel : ViewModelBase
     {
+        public const int VIEW_PONTO = 100;
+
         public DiaRelatorio DiaRelatorio { get; private set; }
+
+        public DiaRelatorioViewModel(DiaRelatorio diaRelatorio)
+        {
+            this.DiaRelatorio = diaRelatorio;
+            this.TesteCommand = new RelayCommand(teste);
+        }
+
+        #region Propriedades
 
         public string Data
         { 
@@ -109,11 +122,16 @@ namespace ControlePonto.WPF.window.relatorio
             {
                 return getHoraExtrarPorValor(100);
             }
-        }
+        }        
 
-        public DiaRelatorioDTO(DiaRelatorio diaRelatorio)
+        #endregion
+
+        public ICommand TesteCommand { get; private set; }
+
+        private void teste()
         {
-            this.DiaRelatorio = diaRelatorio;
+            var a = "abc";
+            showMessageBox(a);
         }
 
         private string getHoraExtrarPorValor(double valor)
@@ -132,6 +150,11 @@ namespace ControlePonto.WPF.window.relatorio
             if (horas == new TimeSpan())
                 return "";
             return horas.ToString();
+        }
+
+        protected override string validar(string propertyName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

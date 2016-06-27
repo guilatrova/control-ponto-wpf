@@ -1,6 +1,7 @@
 ﻿using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.usuario.funcionario;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace ControlePonto.Tests.mocks.repository
                 listRep.Any(x => x.Data == date.Date && x.Funcionario == funcionario);
         }
 
-        public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
+        public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, ISession session, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
         {
             return
                 listRep

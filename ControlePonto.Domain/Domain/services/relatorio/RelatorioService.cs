@@ -10,6 +10,7 @@ using ControlePonto.Domain.feriado;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.jornada;
 using ControlePonto.Infrastructure.utils;
+using ControlePonto.Domain.services.persistence;
 
 namespace ControlePonto.Domain.services.relatorio
 {
@@ -19,13 +20,17 @@ namespace ControlePonto.Domain.services.relatorio
         private IJornadaTrabalhoRepository jornadaRepository;
         private FeriadoService feriadoService;
         private JornadaTrabalho jornadaAtiva;
+        private UnitOfWork unitOfWork;
 
-        public RelatorioService(IPontoDiaRepository pontoRepository, FeriadoService feriadoService, IJornadaTrabalhoRepository jornadaRepository)
+        public RelatorioService(IPontoDiaRepository pontoRepository, FeriadoService feriadoService, IJornadaTrabalhoRepository jornadaRepository, UnitOfWork unitOfWork)
         {
             this.pontoRepository = pontoRepository;
             this.feriadoService = feriadoService;
             this.jornadaRepository = jornadaRepository;
             this.jornadaAtiva = jornadaRepository.findJornadaAtiva();
+            this.unitOfWork = unitOfWork;
+
+            unitOfWork.openConnection();
         }
 
         public RelatorioPonto gerarRelatorio(Funcionario funcionario, DateTime inicio, DateTime fim)
@@ -33,7 +38,7 @@ namespace ControlePonto.Domain.services.relatorio
             Check.Require(fim >= inicio, "Período inválido. O início deve vir antes do fim!");
             Check.Require(funcionario != null, "O funcionário deve ser válido");
 
-            var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, false, false);
+            var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, unitOfWork.Session, false, false);
             var diasFaltando = inicio.Range(fim).Except(todosPontos.Select(x => x.Data));
             var feriadosNaoTrabalhados = diasFaltando
                 .Where(x => feriadoService.isFeriado(x));

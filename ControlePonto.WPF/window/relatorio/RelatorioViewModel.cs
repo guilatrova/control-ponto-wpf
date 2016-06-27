@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.services.relatorio;
+﻿using ControlePonto.Domain.ponto.trabalho;
+using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
@@ -13,6 +14,8 @@ namespace ControlePonto.WPF.window.relatorio
 {
     public class RelatorioViewModel : ViewModelBase
     {
+        public const int VIEW_PONTO = 1;
+
         private IUsuarioRepositorio usuarioRepository;
         private RelatorioService relatorioService;
 
@@ -29,6 +32,7 @@ namespace ControlePonto.WPF.window.relatorio
             this.PeriodoFim = PeriodoInicio.AddMonths(1).AddDays(-1);
 
             this.ExibirCommand = new RelayCommand(exibir);
+            this.ExibirPontoCommand = new RelayCommand(exibirPonto);
         }
 
         #region Propriedades
@@ -36,15 +40,41 @@ namespace ControlePonto.WPF.window.relatorio
         public List<Funcionario> Funcionarios { get; private set; }
 
         public Funcionario FuncionarioEscolhido { get; set; }
+        
+        private DateTime _periodoInicio;
+        public DateTime PeriodoInicio
+        {
+            get { return _periodoInicio; }
+            set 
+            { 
+                if (SetField(ref _periodoInicio, value))
+                {
+                    if (value > PeriodoFim)
+                        PeriodoFim = value;
+                    PeriodoFimMinimo = value;
+                }
+            }
+        }        
+        
+        private DateTime _periodoFim;
+        public DateTime PeriodoFim
+        {
+            get { return _periodoFim; }
+            set { SetField(ref _periodoFim, value); }
+        }
 
-        public DateTime PeriodoInicio { get; private set; }
-
-        public DateTime PeriodoFim { get; private set; }
+        private DateTime _periodoFimMinimo;
+        public DateTime PeriodoFimMinimo
+        {
+            get { return _periodoFimMinimo; }
+            set { SetField(ref _periodoFimMinimo, value); }
+        }
+        
 
         public ICommand ExibirCommand { get; private set; }
 
-        private List<DiaRelatorioDTO> _dias;
-        public List<DiaRelatorioDTO> Dias
+        private List<DiaRelatorioViewModel> _dias;
+        public List<DiaRelatorioViewModel> Dias
         {
             get { return _dias; }
             set 
@@ -52,6 +82,10 @@ namespace ControlePonto.WPF.window.relatorio
                 SetField(ref _dias, value);
             }
         }
+
+        public DiaRelatorioViewModel DiaSelecionado { get; private set; }
+
+        public ICommand ExibirPontoCommand { get; private set; }
 
         #region Rodapé
 
@@ -127,7 +161,7 @@ namespace ControlePonto.WPF.window.relatorio
         {
             var relatorio = relatorioService.gerarRelatorio(FuncionarioEscolhido, PeriodoInicio, PeriodoFim);
             Dias = relatorio.Dias
-                .Select(x => new DiaRelatorioDTO(x))
+                .Select(x => new DiaRelatorioViewModel(x))
                 .ToList();
 
             TotalDiasTrabalhados = relatorio.getDiasTrabalhados().Count;
@@ -150,6 +184,25 @@ namespace ControlePonto.WPF.window.relatorio
                 (hora.Days * 24) + hora.Hours, 
                 hora.Minutes,
                 hora.Seconds);
+        }
+
+        private void exibirPonto()
+        {            
+            if (isDiaTrabalho())
+                requestView(VIEW_PONTO);
+        }
+
+        private bool isDiaTrabalho()
+        {
+            if (DiaSelecionado != null)
+            {
+                if (DiaSelecionado.DiaRelatorio is IDiaComPonto)
+                {
+                    var dia = (DiaSelecionado.DiaRelatorio as IDiaComPonto);
+                    return (dia.PontoDia is DiaTrabalho);
+                }
+            }
+            return false;
         }
 
         protected override string validar(string propertyName)

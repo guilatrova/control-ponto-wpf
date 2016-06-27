@@ -14,7 +14,8 @@ namespace ControlePonto.Domain.factories.services
             return new RelatorioService(
                 RepositoryFactory.criarPontoRepository(),
                 FeriadoServiceFactory.criarFeriadoService(),
-                RepositoryFactory.criarJornadaTrabalhoRepository()
+                RepositoryFactory.criarJornadaTrabalhoRepository(),
+                UnitOfWorkFactory.criarUnitOfWork()
             );
         }
     }

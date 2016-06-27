@@ -12,7 +12,7 @@
         <Style TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
+        </Style>        
         
         <sys:String x:Key="strTitulo">Login</sys:String>
         <sys:String x:Key="strUsuario">Usuário:</sys:String>
@@ -20,7 +20,8 @@
         <sys:String x:Key="strLogar">Entrar</sys:String>
     </Window.Resources>
 
-    <Grid Margin="40, 10">
+    <Grid Margin="40, 10"
+          frmwrk:EnterKeyTraversal.IsEnabled="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="100" />

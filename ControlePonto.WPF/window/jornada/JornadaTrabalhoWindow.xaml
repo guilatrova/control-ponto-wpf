@@ -65,7 +65,8 @@
         </Style>
     </Window.Resources>
     
-    <Grid Margin="5">
+    <Grid Margin="5"
+          frmwrk:EnterKeyTraversal.IsEnabled="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />

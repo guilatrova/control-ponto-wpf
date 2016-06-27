@@ -84,6 +84,7 @@
     <Compile Include="window\administracao\PainelControleWindow.xaml.cs">
       <DependentUpon>PainelControleWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="window\administracao\PainelControleWindowFactory.cs" />
     <Compile Include="window\feriado\CadastrarFeriadoViewModel.cs" />
     <Compile Include="window\feriado\CadastrarFeriadoWindow.xaml.cs">
       <DependentUpon>CadastrarFeriadoWindow.xaml</DependentUpon>
@@ -100,12 +101,16 @@
       <DependentUpon>PontoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\ponto\folga\DiaFolgaDTO.cs" />
+    <Compile Include="window\ponto\funcionario\PontoFuncionarioViewModel.cs" />
+    <Compile Include="window\ponto\funcionario\PontoFuncionarioWindow.xaml.cs">
+      <DependentUpon>PontoFuncionarioWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="window\ponto\PontoWindowFactory.cs" />
     <Compile Include="window\ponto\folga\ControleFolgaWindow.xaml.cs">
       <DependentUpon>ControleFolgaWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\ponto\folga\ControleFolgaViewModel.cs" />
-    <Compile Include="window\relatorio\DiaRelatorioDTO.cs" />
+    <Compile Include="window\relatorio\DiaRelatorioViewModel.cs" />
     <Compile Include="window\relatorio\RelatorioViewModel.cs" />
     <Compile Include="window\relatorio\RelatorioWindow.xaml.cs">
       <DependentUpon>RelatorioWindow.xaml</DependentUpon>
@@ -181,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="window\ponto\folga\ControleFolgaWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="window\ponto\funcionario\PontoFuncionarioWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

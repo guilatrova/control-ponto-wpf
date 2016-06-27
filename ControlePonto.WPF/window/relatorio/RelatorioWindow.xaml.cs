@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ControlePonto.Domain.ponto.trabalho;
+using ControlePonto.Domain.services.relatorio;
+using ControlePonto.WPF.window.ponto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +27,28 @@ namespace ControlePonto.WPF.window.relatorio
         {
             InitializeComponent();
         }
+
+        protected override void viewRequested(object sender, framework.ViewRequestEventArgs e)
+        {
+            switch (e.RequestCode)
+            {
+                case RelatorioViewModel.VIEW_PONTO:
+                    var viewModel = ViewModel as RelatorioViewModel;
+                    var dia = (viewModel.DiaSelecionado.DiaRelatorio as IDiaComPonto).PontoDia as DiaTrabalho;
+                    PontoWindowFactory.criarPontoDoFuncionarioWindow(dia).ShowDialog();
+                    break;
+
+                default:
+                    base.viewRequested(sender, e);
+                    break;
+            }
+        }
+
+        private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            (ViewModel as RelatorioViewModel).ExibirPontoCommand.Execute(null);
+        }
+
+
     }
 }

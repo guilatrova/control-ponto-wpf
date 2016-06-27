@@ -57,6 +57,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontSize" Value="14" />
+            <EventSetter Event="MouseDoubleClick" Handler="listViewItem_MouseDoubleClick" />
         </Style>
 
     </Window.Resources>
@@ -86,7 +87,8 @@
             
             <TextBlock Text="{StaticResource strEntrePeriodo}" />
             
-            <toolkit:DateTimePicker Value="{Binding PeriodoFim}"/>
+            <toolkit:DateTimePicker Value="{Binding PeriodoFim}"
+                                    Minimum="{Binding PeriodoFimMinimo, UpdateSourceTrigger=PropertyChanged}"/>
             
         </StackPanel>
         
@@ -96,8 +98,9 @@
         
         <ListView Grid.Row="1"
                   Grid.ColumnSpan="4"
-                  ItemsSource="{Binding Dias, UpdateSourceTrigger=PropertyChanged}">
-            
+                  ItemsSource="{Binding Dias, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding DiaSelecionado}">
+                        
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="{StaticResource strData}"
@@ -118,11 +121,11 @@
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
-                                </TextBlock>                                           
+                                </TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
-                    </GridViewColumn>                                    
-                    
+                    </GridViewColumn>
+
                     <GridViewColumn Header="{StaticResource strTrabalhado}"
                                     DisplayMemberBinding="{Binding HorasTrabalhadas}" />
 
@@ -222,7 +225,7 @@
                        Grid.Column="3"
                        Text="{Binding TotalFolgas}" />
             
-        </Grid>            
+        </Grid>
         
     </Grid>
 </base:WindowBase>

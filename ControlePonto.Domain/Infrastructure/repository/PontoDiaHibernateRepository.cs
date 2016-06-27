@@ -66,24 +66,21 @@ namespace ControlePonto.Infrastructure.repository
         }
 
 
-        public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
+        public List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, ISession session, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true)
         {
             FetchMode fetchDiaTrabalho = lazyLoadTrabalho ? FetchMode.Lazy : FetchMode.Eager;
             FetchMode fetchDiaFolga = lazyLoadFolga ? FetchMode.Lazy : FetchMode.Eager;
 
-            using (ISession session = NHibernateHelper.openSession())
-            {
-                return
-                    session
-                        .CreateCriteria<PontoDia>()
-                        .SetFetchMode("DiaTrabalho", fetchDiaTrabalho)                        
-                        .SetFetchMode("Intervalos", fetchDiaTrabalho)
-                        .SetFetchMode("Feriado", fetchDiaTrabalho)
-                        .SetFetchMode("DiaFolga", fetchDiaFolga)
-                        .Add(Restrictions.Eq("Funcionario", funcionario))
-                        .Add(Restrictions.Between("Data", inicio, fim))
-                        .List<PontoDia>().ToList();
-            }
+            return
+                session
+                    .CreateCriteria<PontoDia>()
+                    .SetFetchMode("DiaTrabalho", fetchDiaTrabalho)                        
+                    .SetFetchMode("Intervalos", fetchDiaTrabalho)
+                    .SetFetchMode("Feriado", fetchDiaTrabalho)
+                    .SetFetchMode("DiaFolga", fetchDiaFolga)
+                    .Add(Restrictions.Eq("Funcionario", funcionario))
+                    .Add(Restrictions.Between("Data", inicio, fim))
+                    .List<PontoDia>().ToList();            
         }
     }
 }

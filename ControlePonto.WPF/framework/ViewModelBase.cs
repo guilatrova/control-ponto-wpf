@@ -1,4 +1,5 @@
-﻿using ControlePonto.WPF.framework;
+﻿using ControlePonto.Domain.services.persistence;
+using ControlePonto.WPF.framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,12 +12,14 @@ using System.Windows.Input;
 
 namespace ControlePonto.WPF.framework
 {
-    public abstract class ViewModelBase : NotifyPropertyChangedBase, IDataErrorInfo
+    public abstract class ViewModelBase : NotifyPropertyChangedBase, IDataErrorInfo, IDisposable
     {
         public const string FOCUS_START = "START";
         public const string FOCUS_MAIN = "MAIN";
 
         public const int CLOSE = -1;
+
+        protected UnitOfWork unitOfWork;
 
         #region Evento para resetar o DataContext
         public event EventHandler<DataContextResetEventArgs> ResetDataContextRequest;
@@ -131,5 +134,11 @@ namespace ControlePonto.WPF.framework
         }
 
         #endregion        
+    
+        public void Dispose()
+        {
+            if (unitOfWork != null)
+                unitOfWork.Dispose();
+        }
     }
 }

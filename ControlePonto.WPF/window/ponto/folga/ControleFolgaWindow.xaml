@@ -85,7 +85,8 @@
                        HorizontalAlignment="Center"/>
 
             <toolkit:DateTimePicker Grid.Column="2"
-                                    Value="{Binding PeriodoFim}"/>
+                                    Value="{Binding PeriodoFim}"
+                                    Minimum="{Binding PeriodoFimMinimo, UpdateSourceTrigger=PropertyChanged}"/>
             
             <Button Grid.Column="3"
                     Content="{StaticResource strExibir}"
@@ -99,6 +100,7 @@
                   Grid.ColumnSpan="2"
                   Content="{StaticResource strFiltrarFolga}"
                   IsChecked="{Binding ExibirSomenteFolgas}"
+                  HorizontalAlignment="Left"
                   Margin="10"/>
 
         <ListView Grid.Row="3"

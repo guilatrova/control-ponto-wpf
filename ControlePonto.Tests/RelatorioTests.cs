@@ -63,7 +63,7 @@ namespace ControlePonto.Tests
             if (jornadaRepository == null)
                 jornadaRepository = new JornadaTrabalhoMockRepository();
 
-            return new RelatorioService(pontoRepository, new FeriadoService(feriadoRepository), jornadaRepository);
+            return new RelatorioService(pontoRepository, new FeriadoService(feriadoRepository), jornadaRepository, null);
         }
 
         private DiaTrabalho criarPontoTrabalhoDoDia(IPontoDiaRepository pontoRepository, IFeriadoRepository feriadoRepository, int dia, int mes, int ano, int hora = 9, int minuto = 0)

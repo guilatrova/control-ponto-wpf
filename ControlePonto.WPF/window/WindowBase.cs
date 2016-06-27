@@ -15,7 +15,8 @@ namespace ControlePonto.WPF.window
         public WindowBase(ViewModelBase viewModel)
         {
             this.ViewModel = viewModel;
-            this.Loaded += WindowBase_Loaded;               
+            this.Loaded += WindowBase_Loaded;
+            this.Closed += WindowBase_Closed;
         }
 
         protected virtual void WindowBase_Loaded(object sender, RoutedEventArgs e)
@@ -60,6 +61,11 @@ namespace ControlePonto.WPF.window
             removeEvents();
             DataContext = ViewModel = e.DataContext;                        
             assignEvents();
+        }
+
+        protected virtual void WindowBase_Closed(object sender, EventArgs e)
+        {
+            ViewModel.Dispose();
         }
     }
 }

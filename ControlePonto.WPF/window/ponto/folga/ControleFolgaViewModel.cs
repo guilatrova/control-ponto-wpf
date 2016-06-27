@@ -54,7 +54,12 @@ namespace ControlePonto.WPF.window.ponto.folga
             get { return _periodoInicio; }
             set 
             {
-                SetField(ref _periodoInicio, value); 
+                if (SetField(ref _periodoInicio, value))
+                {
+                    if (value > PeriodoFim)
+                        PeriodoFim = value;
+                    PeriodoFimMinimo = value;
+                }
             }
         }
 
@@ -67,6 +72,14 @@ namespace ControlePonto.WPF.window.ponto.folga
                 SetField(ref _periodoFim, value);
             }
         }
+
+        private DateTime _periodoFimMinimo;  
+        public DateTime PeriodoFimMinimo
+        {
+            get { return _periodoFimMinimo; }
+            set { SetField(ref _periodoFimMinimo, value); }
+        }
+        
         
         private bool _exibirSomenteFolgas;
         public bool ExibirSomenteFolgas
