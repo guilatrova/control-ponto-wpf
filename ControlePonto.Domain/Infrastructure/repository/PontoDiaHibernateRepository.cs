@@ -82,5 +82,19 @@ namespace ControlePonto.Infrastructure.repository
                     .Add(Restrictions.Between("Data", inicio, fim))
                     .List<PontoDia>().ToList();            
         }
+
+
+        public DiaTrabalho findPontoTrabalho(Funcionario funcionario, DateTime date)
+        {
+            using (ISession session = NHibernateHelper.openSession())
+            {
+                return session.CreateCriteria<DiaTrabalho>()
+                    .Add(Restrictions.Eq("Funcionario", funcionario))
+                    .Add(Restrictions.Eq("Data", date))
+                    .SetFetchMode("Funcionario", FetchMode.Eager)
+                    .SetFetchMode("Intervalos", FetchMode.Eager)
+                    .UniqueResult<DiaTrabalho>();
+            }
+        }
     }
 }

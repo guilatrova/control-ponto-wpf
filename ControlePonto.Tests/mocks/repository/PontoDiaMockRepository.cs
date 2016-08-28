@@ -53,5 +53,14 @@ namespace ControlePonto.Tests.mocks.repository
         {
             throw new NotImplementedException();
         }
+
+
+        public DiaTrabalho findPontoTrabalho(Funcionario funcionario, DateTime date)
+        {
+            return (DiaTrabalho)
+                listRep
+                .Where(x => x.Funcionario.Nome.Equals(funcionario.Nome))
+                .Single(x => x.Data == date);
+        }
     }
 }

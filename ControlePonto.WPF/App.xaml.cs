@@ -88,7 +88,7 @@ namespace ControlePonto.WPF
             catch (Exception ex)
             {
                 string msg = string.Format("{0}\nDetails:\n{1}", ex.Message, ex.GetBaseException().Message);
-                MessageBox.Show(msg, "Não foi possível conectar-se ao banco de dados", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(msg, string.Format("Não foi possível conectar-se ao host {0}", host), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

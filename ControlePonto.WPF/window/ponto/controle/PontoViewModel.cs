@@ -15,25 +15,29 @@ namespace ControlePonto.WPF.window.ponto
 {
     public class PontoViewModel : ViewModelBase
     {
+        public const int CONSULTA_VIEW = 1;
+
         private Funcionario funcionario;
         private DiaTrabalho ponto;
         private PontoService pontoService;
         private ITipoIntervaloRepository tipoIntervaloRepository;
 
-        private ICommand _encerrarDiaCommand;
-        private ICommand _entrarIntervaloCommand;
-        private ICommand _sairIntervaloCommand;
+        public ICommand EncerrarDiaCommand { get; private set; }
+        public ICommand EntrarIntervaloCommand { get; private set; }
+        public ICommand SairIntervaloCommand { get; private set; }
+        public ICommand ConsultarPontoCommand { get; private set; }
 
         public PontoViewModel(Funcionario funcionario, DiaTrabalho ponto, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
         {
             this.funcionario = funcionario;
             this.ponto = ponto;
             this.pontoService = pontoService;
-            this.tipoIntervaloRepository = tipoRepository;            
+            this.tipoIntervaloRepository = tipoRepository;
 
-            _encerrarDiaCommand = new RelayCommand(confirmarEncerrarDia);
-            _entrarIntervaloCommand = new RelayParameterEvaluatorCommand<TipoIntervalo>(registrarIntervalo, podeEntrarIntervalo);
-            _sairIntervaloCommand = new RelayParameterEvaluatorCommand<TipoIntervalo>(registrarIntervalo, podeSairIntervalo);
+            EncerrarDiaCommand = new RelayCommand(confirmarEncerrarDia);
+            ConsultarPontoCommand = new RelayCommand(abrirConsulta);
+            EntrarIntervaloCommand = new RelayParameterEvaluatorCommand<TipoIntervalo>(registrarIntervalo, podeEntrarIntervalo);
+            SairIntervaloCommand = new RelayParameterEvaluatorCommand<TipoIntervalo>(registrarIntervalo, podeSairIntervalo);            
         }
 
         #region Propriedades
@@ -66,18 +70,13 @@ namespace ControlePonto.WPF.window.ponto
 
         public List<TipoIntervalo> Intervalos
         {
-            get 
+            get
             {
                 if (_intervalos == null)
                     _intervalos = tipoIntervaloRepository.findAll();
-                return _intervalos; 
-            }            
-        }
-
-        public ICommand EncerrarDiaCommand { get { return _encerrarDiaCommand; } }
-        public ICommand EntrarIntervaloCommand { get { return _entrarIntervaloCommand; } }
-        public ICommand SairIntervaloCommand { get { return _sairIntervaloCommand; } }
-        
+                return _intervalos;
+            }
+        }        
 
         #endregion
 
@@ -131,6 +130,11 @@ namespace ControlePonto.WPF.window.ponto
                     showMessageBox(e.Message, "Não foi possível encerrar", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        private void abrirConsulta()
+        {
+            requestView(CONSULTA_VIEW);
         }
 
         protected override string validar(string propertyName)

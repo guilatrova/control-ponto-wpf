@@ -12,24 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ControlePonto.WPF.window.ponto
+namespace ControlePonto.WPF.window.ponto.controle
 {
     /// <summary>
-    /// Interaction logic for PontoWindow.xaml
+    /// Interaction logic for SelecaoDataWindow.xaml
     /// </summary>
-    public partial class PontoWindow : WindowBase
+    public partial class SelecaoDataWindow : WindowBase
     {
-        public PontoWindow(PontoViewModel viewModel) : base(viewModel)
+        public SelecaoDataWindow(SelecaoDataViewModel viewModel) : base(viewModel)
         {
             InitializeComponent();
         }
 
         protected override void viewRequested(object sender, framework.ViewRequestEventArgs e)
-        {
+        {   
             switch (e.RequestCode)
             {
-                case PontoViewModel.CONSULTA_VIEW:
-                    PontoWindowFactory.criarSelecaoDataWindow().ShowDialog();
+                case SelecaoDataViewModel.PONTO_VIEW:                    
+                    var viewModel = ViewModel as SelecaoDataViewModel;
+                    PontoWindowFactory.criarPontoDoFuncionarioWindow(viewModel.DiaTrabalhoSelecionado).ShowDialog();
+                    Close();
                     break;
 
                 default:

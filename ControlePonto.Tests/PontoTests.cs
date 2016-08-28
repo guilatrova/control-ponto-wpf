@@ -411,5 +411,29 @@ namespace ControlePonto.Tests
 
             criarFactory(repo).criarDiaTrabalho(new DataHoraMockStrategy(DateTime.Today), sessaoLogin);            
         }
+
+        [TestMethod, TestCategory("Trabalho")]
+        public void pontoRepositoryDeveRecuperarDia()
+        {
+            var repo = new PontoDiaMockRepository();
+            var horarios = new DataHoraMockListStrategy(
+                new DateTime(2016, 8, 13, 9, 0, 0),
+                new DateTime(2016, 8, 13, 9, 0, 0),
+                new DateTime(2016, 8, 13, 10, 0, 0),
+                new DateTime(2016, 8, 13, 11, 0, 0),
+                new DateTime(2016, 8, 13, 13, 0, 0)
+            );
+            var service = criarService(horarios, repo);
+            
+            var dia = service.iniciarDia();            
+            service.registrarIntervalo(tipoAlmoco, dia);
+            service.registrarIntervalo(tipoAlmoco, dia);
+            service.encerrarDia(dia);
+
+            var diaRecuperado = repo.findPontoTrabalho(dia.Funcionario, dia.Data);            
+
+            Assert.AreEqual(dia.Data, diaRecuperado.Data);
+            Assert.AreEqual(dia.Funcionario.Nome, diaRecuperado.Funcionario.Nome);
+        }
     }
 }

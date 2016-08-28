@@ -48,7 +48,5 @@ namespace ControlePonto.WPF.window.relatorio
         {
             (ViewModel as RelatorioViewModel).ExibirPontoCommand.Execute(null);
         }
-
-
     }
 }

@@ -22,7 +22,6 @@ namespace ControlePonto.WPF.window.relatorio
         public DiaRelatorioViewModel(DiaRelatorio diaRelatorio)
         {
             this.DiaRelatorio = diaRelatorio;
-            this.TesteCommand = new RelayCommand(teste);
         }
 
         #region Propriedades
@@ -125,15 +124,7 @@ namespace ControlePonto.WPF.window.relatorio
         }        
 
         #endregion
-
-        public ICommand TesteCommand { get; private set; }
-
-        private void teste()
-        {
-            var a = "abc";
-            showMessageBox(a);
-        }
-
+        
         private string getHoraExtrarPorValor(double valor)
         {
             if (DiaRelatorio is ICalculoHoraExtra)

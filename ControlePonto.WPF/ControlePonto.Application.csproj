@@ -100,6 +100,9 @@
     <Compile Include="window\ponto\controle\PontoWindow.xaml.cs">
       <DependentUpon>PontoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="window\ponto\controle\SelecaoDataWindow.xaml.cs">
+      <DependentUpon>SelecaoDataWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="window\ponto\folga\DiaFolgaDTO.cs" />
     <Compile Include="window\ponto\funcionario\PontoFuncionarioViewModel.cs" />
     <Compile Include="window\ponto\funcionario\PontoFuncionarioWindow.xaml.cs">
@@ -110,6 +113,7 @@
       <DependentUpon>ControleFolgaWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\ponto\folga\ControleFolgaViewModel.cs" />
+    <Compile Include="window\ponto\controle\SelecaoDataViewModel.cs" />
     <Compile Include="window\relatorio\DiaRelatorioViewModel.cs" />
     <Compile Include="window\relatorio\RelatorioViewModel.cs" />
     <Compile Include="window\relatorio\RelatorioWindow.xaml.cs">
@@ -182,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="window\ponto\controle\PontoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="window\ponto\controle\SelecaoDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

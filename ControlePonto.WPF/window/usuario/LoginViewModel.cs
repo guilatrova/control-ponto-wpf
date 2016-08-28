@@ -56,7 +56,7 @@ namespace ControlePonto.WPF.window.usuario
             }
             catch (LoginInvalidoException)
             {
-                showMessageBox("Não foi possível efetuar login", "Login inválido", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                showMessageBox("Não foi possível efetuar login. Verifique seu usuário/senha.", "Login inválido", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 

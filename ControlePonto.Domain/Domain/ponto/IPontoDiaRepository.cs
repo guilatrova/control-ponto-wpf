@@ -13,6 +13,8 @@ namespace ControlePonto.Domain.ponto
     {
         ulong save(PontoDia ponto);
 
+        DiaTrabalho findPontoTrabalho(Funcionario funcionario, DateTime date); 
+
         List<DiaTrabalho> findPontosAbertos(Funcionario funcionario);
 
         DiaTrabalho findPontoAberto(Funcionario funcionario, DateTime date);

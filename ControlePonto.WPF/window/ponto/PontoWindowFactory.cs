@@ -7,6 +7,7 @@ using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario.funcionario;
+using ControlePonto.WPF.window.ponto.controle;
 using ControlePonto.WPF.window.ponto.folga;
 using ControlePonto.WPF.window.ponto.funcionario;
 
@@ -44,6 +45,13 @@ namespace ControlePonto.WPF.window.ponto
         public static PontoFuncionarioWindow criarPontoDoFuncionarioWindow(DiaTrabalho ponto)
         {
             return new PontoFuncionarioWindow(new PontoFuncionarioViewModel(ponto));
+        }
+
+        public static SelecaoDataWindow criarSelecaoDataWindow()
+        {
+            return new SelecaoDataWindow(new SelecaoDataViewModel(
+                RepositoryFactory.criarPontoRepository(), 
+                SessaoLogin.getSessao()));
         }
     }
 }
