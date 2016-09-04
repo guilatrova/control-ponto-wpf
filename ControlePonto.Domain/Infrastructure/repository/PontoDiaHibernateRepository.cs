@@ -93,6 +93,7 @@ namespace ControlePonto.Infrastructure.repository
                     .Add(Restrictions.Eq("Data", date))
                     .SetFetchMode("Funcionario", FetchMode.Eager)
                     .SetFetchMode("Intervalos", FetchMode.Eager)
+                    .SetFetchMode("Intervalos.TipoIntervalo", FetchMode.Eager)
                     .UniqueResult<DiaTrabalho>();
             }
         }
