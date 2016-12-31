@@ -435,5 +435,33 @@ namespace ControlePonto.Tests
             Assert.AreEqual(dia.Data, diaRecuperado.Data);
             Assert.AreEqual(dia.Funcionario.Nome, diaRecuperado.Funcionario.Nome);
         }
+
+        [TestMethod, TestCategory("Trabalho"), TestCategory("Administrador")]
+        public void administradorPodeCriarPontoParaFuncionarioNoDiaQueNãoExistir()
+        {
+            var repository = new PontoDiaMockRepository();
+            var service = criarService(repository: repository, logado: funcionario);
+            var date = DateTime.Today;
+
+            var novoDiaTrabalho = service.criarPontoParaFuncionarioEm(funcionario, date);
+
+            var ponto = repository.findPontoTrabalho(funcionario, date);
+
+            Assert.AreEqual(date, ponto.Data);
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Inicio);
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Fim);
+            Assert.AreEqual(novoDiaTrabalho.Data, ponto.Data);
+            Assert.AreEqual(novoDiaTrabalho.Inicio, ponto.Inicio);
+            Assert.AreEqual(novoDiaTrabalho.Fim, ponto.Fim);
+        }
+
+        [TestMethod, TestCategory("Trabalho"), TestCategory("Administrador")]
+        [ExpectedException()]
+        public void somenteAdministradorPodeCriarPontoParaFuncionarioEmDiaEspecifico()
+        {
+            
+        }
+
+        //TODO: Só pode ser criado por um ADM
     }
 }

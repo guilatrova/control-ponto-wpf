@@ -9,7 +9,7 @@ namespace ControlePonto.Tests
     [TestClass]
     public class HibernateTests
     {
-        [TestMethod]
+        [TestMethod, Ignore]
         [TestCategory("Hibernate")]
         public void criarBancoDados()
         {
@@ -20,7 +20,7 @@ namespace ControlePonto.Tests
                          .BuildConfiguration();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void hibernatePodeConfigurarHostDoBancoDados()
         {            
             Assert.AreEqual("localhost", NHibernateHelper.Host);
@@ -29,14 +29,14 @@ namespace ControlePonto.Tests
             Assert.AreEqual("127.0.0.1", NHibernateHelper.Host);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         [ExpectedException(typeof(InvalidHostException))]
         public void hibernateDeveValidarHost()
         {
             NHibernateHelper.Host = "192.168.0.5";            
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         [ExpectedException(typeof(InvalidOperationException))]
         public void hibernateNaoDevePermitirTrocaDeHost()
         {

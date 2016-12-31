@@ -75,5 +75,21 @@ namespace ControlePonto.Domain.ponto
 
             return folga;
         }
+
+        /// <summary>
+        /// Se o administrador, por alguma razão, desejar criar um ponto para o funcionário, este método será usado.
+        /// Somente o login do administrador pode ocasionar a invocação deste método.
+        /// </summary>
+        /// <param name="funcionario">Funcionário o qual terá um dia de trabalho criado</param>
+        /// <param name="date">Data do ponto que será adicionado</param>
+        /// <returns></returns>
+        public DiaTrabalho criarPontoParaFuncionarioEm(Funcionario funcionario, DateTime date)
+        {
+            var ponto = pontoFactory.criarDiaTrabalhoEmDiaEspecifico(funcionario, date);
+            ponto.Fim = new TimeSpan(0, 0, 0);
+
+            pontoRepository.save(ponto);
+            return ponto;
+        }
     }
 }
