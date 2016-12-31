@@ -4,6 +4,7 @@ using ControlePonto.Domain.ponto.folga;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.usuario.funcionario;
+using ControlePonto.Infrastructure.utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +86,8 @@ namespace ControlePonto.Domain.ponto
         /// <returns></returns>
         public DiaTrabalho criarPontoParaFuncionarioEm(Funcionario funcionario, DateTime date)
         {
+            Check.Require(!(sessaoLogin.UsuarioLogado is Funcionario));
+
             var ponto = pontoFactory.criarDiaTrabalhoEmDiaEspecifico(funcionario, date);
             ponto.Fim = new TimeSpan(0, 0, 0);
 

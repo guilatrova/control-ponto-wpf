@@ -3,6 +3,7 @@ using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
+using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.utils;
 using ControlePonto.Tests.mocks;
@@ -46,13 +47,21 @@ namespace ControlePonto.Tests
             return criarFactory().criarDiaTrabalho(dt, sessaoLogin);
         }
 
-        private PontoService criarService(IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository repository = null, Funcionario logado = null)
+        private PontoService criarService(IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository repository = null, Usuario logado = null)
         {            
             var sessao = sessaoLogin;
             if (logado != null)
                 sessao = new SessaoLoginMock(logado);
 
             return FactoryHelper.criarPontoService(sessao, dataHoraStrategy, repository);
+        }
+
+        private Usuario criarUsuarioAdministrador()
+        {
+            var repository = new UsuarioMockRepositorio();
+
+            return new UsuarioFactory(new LoginJaExisteSpecification(repository), new LoginValidoSpecification(), new SenhaValidaSpecification())
+                .criarUsuario("Administrador", "admin", "12345678");
         }
 
         private JornadaTrabalho criarJornada()
@@ -439,27 +448,32 @@ namespace ControlePonto.Tests
         [TestMethod, TestCategory("Trabalho"), TestCategory("Administrador")]
         public void administradorPodeCriarPontoParaFuncionarioNoDiaQueNãoExistir()
         {
-            var repository = new PontoDiaMockRepository();
-            var service = criarService(repository: repository, logado: funcionario);
+            var repository = new PontoDiaMockRepository();            
             var date = DateTime.Today;
+            var admLogado = criarUsuarioAdministrador();
+            var service = criarService(repository: repository, logado: admLogado);
 
             var novoDiaTrabalho = service.criarPontoParaFuncionarioEm(funcionario, date);
 
             var ponto = repository.findPontoTrabalho(funcionario, date);
 
-            Assert.AreEqual(date, ponto.Data);
+            Assert.AreEqual(date, ponto.Data);            
             Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Inicio);
             Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Fim);
             Assert.AreEqual(novoDiaTrabalho.Data, ponto.Data);
             Assert.AreEqual(novoDiaTrabalho.Inicio, ponto.Inicio);
             Assert.AreEqual(novoDiaTrabalho.Fim, ponto.Fim);
+            Assert.AreEqual(funcionario, novoDiaTrabalho.Funcionario);
         }
 
-        [TestMethod, TestCategory("Trabalho"), TestCategory("Administrador")]
-        [ExpectedException()]
+        [TestMethod, TestCategory("Trabalho"), TestCategory("Administrador"), TestCategory("Quebra de contrato")]
+        [ExpectedException(typeof(PreconditionException))]
         public void somenteAdministradorPodeCriarPontoParaFuncionarioEmDiaEspecifico()
         {
-            
+            var service = criarService(logado: funcionario);
+            var date = DateTime.Today;
+
+            var novoDiaTrabalho = service.criarPontoParaFuncionarioEm(funcionario, date);
         }
 
         //TODO: Só pode ser criado por um ADM
