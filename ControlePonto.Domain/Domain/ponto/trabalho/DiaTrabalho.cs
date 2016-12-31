@@ -25,7 +25,10 @@ namespace ControlePonto.Domain.ponto.trabalho
             }
             set
             {
-                Check.Require(!_Fim.HasValue, "O horário do ponto não pode ser alterado");
+                if (_Fim.HasValue && _Fim.Value != value)
+                {
+                    Check.Require(!_Fim.HasValue, "O horário do ponto não pode ser alterado");
+                }
                 _Fim = value;
             }
         }

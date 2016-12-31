@@ -1,4 +1,4 @@
-﻿using ControlePonto.WPF.window.ponto.funcionario;
+﻿using ControlePonto.WPF.window.consulta.funcionario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ControlePonto.WPF.window.ponto
+namespace ControlePonto.WPF.window.consulta
 {
     /// <summary>
     /// Interaction logic for PontoFuncionarioWindow.xaml

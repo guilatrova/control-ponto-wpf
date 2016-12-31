@@ -41,7 +41,11 @@ namespace ControlePonto.Infrastructure.nhibernate
 
         private static string ConnectionString
         {
+#if DEBUG
+            get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=root;Password=;", Host); }
+#else
             get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=artplas_app_adm;Password=_ARTplas_1976;", Host); }
+#endif
         }   
 
         public static FluentConfiguration getFluentConfiguration()

@@ -1,6 +1,6 @@
 ﻿using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.relatorio;
-using ControlePonto.WPF.window.ponto;
+using ControlePonto.WPF.window.consulta;
 using System;
 using System.Collections.Generic;
 using System.Linq;

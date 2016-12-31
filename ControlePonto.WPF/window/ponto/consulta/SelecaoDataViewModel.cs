@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ControlePonto.WPF.window.ponto
+namespace ControlePonto.WPF.window.consulta
 {
     public class SelecaoDataViewModel : ViewModelBase
     {

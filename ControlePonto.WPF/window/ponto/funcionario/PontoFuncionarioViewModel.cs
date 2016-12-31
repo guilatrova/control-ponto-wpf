@@ -10,20 +10,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ControlePonto.WPF.window.ponto.funcionario
+namespace ControlePonto.WPF.window.consulta.funcionario
 {
     public class PontoFuncionarioViewModel : ViewModelBase
     {
-        private DiaTrabalho ponto;        
+        private DiaTrabalho ponto;
 
-        public PontoFuncionarioViewModel(DiaTrabalho ponto)
+        public PontoFuncionarioViewModel(DiaTrabalho ponto, bool allowEdit = false)
         {
             this.ponto = ponto;            
 
             this.Data = ponto.Data.ToShortDateString();
             this.Funcionario = ponto.Funcionario.Nome;
-            this.Entrada = string.Format("Entrada às {0}", ponto.Inicio);
-            this.Saida = string.Format("Saída às {0}", ponto.Fim);
+            this.Entrada = ponto.Inicio;
+            this.Saida = ponto.Fim ?? new TimeSpan(0, 0, 0);
+            this.AllowEdit = allowEdit;
 
             Intervalos = ponto.Intervalos.ToList();
 
@@ -32,7 +33,8 @@ namespace ControlePonto.WPF.window.ponto.funcionario
 
         public string Data { get; private set; }
         public string Funcionario { get; private set; }
-        public string Entrada { get; private set; }
+        public TimeSpan Entrada { get; private set; }
+        public bool AllowEdit { get; private set; }
 
         private List<Intervalo> _intervalos;
         public List<Intervalo> Intervalos
@@ -41,12 +43,13 @@ namespace ControlePonto.WPF.window.ponto.funcionario
             set { _intervalos = value; }
         }
         
-        public string Saida { get; private set; }
+        public TimeSpan Saida { get; private set; }
         public ICommand FecharCommand { get; private set; }
 
 
         protected override string validar(string propertyName)
         {
+            return null;
             throw new NotImplementedException();
         }
     }

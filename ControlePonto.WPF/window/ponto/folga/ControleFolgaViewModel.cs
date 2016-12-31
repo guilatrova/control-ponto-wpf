@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows;
 using ControlePonto.Infrastructure.utils;
 
-namespace ControlePonto.WPF.window.ponto.folga
+namespace ControlePonto.WPF.window.consulta.folga
 {
     public class ControleFolgaViewModel : ViewModelBase
     {

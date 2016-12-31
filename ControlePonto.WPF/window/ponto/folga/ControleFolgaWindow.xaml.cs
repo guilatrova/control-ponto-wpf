@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ControlePonto.WPF.window.ponto.folga
+namespace ControlePonto.WPF.window.consulta.folga
 {
     /// <summary>
     /// Interaction logic for ControleFolgaWindow.xaml

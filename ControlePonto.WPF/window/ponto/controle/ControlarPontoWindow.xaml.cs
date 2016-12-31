@@ -11,27 +11,30 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ControlePonto.WPF.framework;
+using ControlePonto.WPF.window.ponto.controle.events;
+using ControlePonto.WPF.window.consulta;
+using ControlePonto.Domain.factories.services;
 
 namespace ControlePonto.WPF.window.ponto.controle
 {
     /// <summary>
-    /// Interaction logic for SelecaoDataWindow.xaml
+    /// Interaction logic for ControlarPontoWindow.xaml
     /// </summary>
-    public partial class SelecaoDataWindow : WindowBase
+    public partial class ControlarPontoWindow : WindowBase
     {
-        public SelecaoDataWindow(SelecaoDataViewModel viewModel) : base(viewModel)
+        public ControlarPontoWindow(ControlarPontoViewModel viewModel) : base(viewModel)
         {
             InitializeComponent();
         }
 
-        protected override void viewRequested(object sender, framework.ViewRequestEventArgs e)
-        {   
+        protected override void viewRequested(object sender, ViewRequestEventArgs e)
+        {
             switch (e.RequestCode)
             {
-                case SelecaoDataViewModel.PONTO_VIEW:                    
-                    var viewModel = ViewModel as SelecaoDataViewModel;
-                    PontoWindowFactory.criarPontoDoFuncionarioWindow(viewModel.DiaTrabalhoSelecionado).ShowDialog();
-                    Close();
+                case ControlarPontoViewModel.EDITAR_PONTO:
+                    var editEvent = e as EditarPontoEventArgs;
+                    PontoWindowFactory.criarPontoDoFuncionarioWindow(editEvent.DiaTrabalho).ShowDialog();
                     break;
 
                 default:

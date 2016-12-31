@@ -7,11 +7,12 @@ using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario.funcionario;
+using ControlePonto.WPF.window.consulta.controle;
+using ControlePonto.WPF.window.consulta.folga;
+using ControlePonto.WPF.window.consulta.funcionario;
 using ControlePonto.WPF.window.ponto.controle;
-using ControlePonto.WPF.window.ponto.folga;
-using ControlePonto.WPF.window.ponto.funcionario;
 
-namespace ControlePonto.WPF.window.ponto
+namespace ControlePonto.WPF.window.consulta
 {
     public class PontoWindowFactory
     {
@@ -26,7 +27,7 @@ namespace ControlePonto.WPF.window.ponto
 
         public static PontoWindow criarPontoWindow(DiaTrabalho ponto, PontoService pontoService)
         {
-            return new PontoWindow(new PontoViewModel(
+            return new PontoWindow(new ConsultarPontoViewModel(
                 (Funcionario)SessaoLogin.getSessao().UsuarioLogado,
                 ponto,
                 pontoService,
@@ -45,13 +46,28 @@ namespace ControlePonto.WPF.window.ponto
         public static PontoFuncionarioWindow criarPontoDoFuncionarioWindow(DiaTrabalho ponto)
         {
             return new PontoFuncionarioWindow(new PontoFuncionarioViewModel(ponto));
-        }
+        }        
 
         public static SelecaoDataWindow criarSelecaoDataWindow()
         {
             return new SelecaoDataWindow(new SelecaoDataViewModel(
                 RepositoryFactory.criarPontoRepository(), 
                 SessaoLogin.getSessao()));
+        }
+
+        public static ControlarPontoWindow criarControlarPontoWindow()
+        {
+            var unitOfWork = UnitOfWorkFactory.criarUnitOfWork();
+            var pontoService = PontoServiceFactory.criarPontoService();
+            var pontoRepository = RepositoryFactory.criarPontoRepository();
+
+            return new ControlarPontoWindow(new ControlarPontoViewModel(
+                unitOfWork,
+                RepositoryFactory.criarUsuarioRepository(),
+                pontoService,
+                pontoRepository,
+                criarRelatorioService(unitOfWork)
+            ));
         }
     }
 }

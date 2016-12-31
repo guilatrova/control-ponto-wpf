@@ -5,7 +5,7 @@ using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.nhibernate;
 using ControlePonto.WPF.window.administracao;
-using ControlePonto.WPF.window.ponto;
+using ControlePonto.WPF.window.consulta;
 using ControlePonto.WPF.window.usuario;
 using System;
 using System.Threading.Tasks;

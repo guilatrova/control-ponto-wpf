@@ -10,8 +10,9 @@
     <Window.Resources>
         <sys:String x:Key="strRelatorio">Gerar relatórios</sys:String>
         <sys:String x:Key="strFeriado">Cadastrar feriado</sys:String>
-        <sys:String x:Key="strJornada">Configurar jornada trab</sys:String>
+        <sys:String x:Key="strJornada">Configurar jornada de trabalho</sys:String>
         <sys:String x:Key="strFolga">Controlar folgas</sys:String>
+        <sys:String x:Key="strPonto">Gerenciar pontos</sys:String>
         
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10"/>
@@ -28,11 +29,12 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" /> <!--Contains user info-->
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -50,6 +52,12 @@
 
         <Button Grid.Row="1"
                 Grid.Column="1"
+                Command="{Binding PontoCommand}">
+            <TextBlock Text="{StaticResource strPonto}" />
+        </Button>
+
+        <Button Grid.Row="1"
+                Grid.Column="2"
                 Command="{Binding FolgaCommand}">
             <TextBlock Text="{StaticResource strFolga}" />
         </Button>            
@@ -61,6 +69,8 @@
         
         <Button Grid.Row="2"
                 Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Width="220"
                 Command="{Binding JornadaCommand}">
             <TextBlock Text="{StaticResource strJornada}" />
         </Button>

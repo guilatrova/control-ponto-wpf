@@ -9,7 +9,7 @@ namespace ControlePonto.Tests
     [TestClass]
     public class HibernateTests
     {
-        [TestMethod, Ignore]
+        [TestMethod]
         [TestCategory("Hibernate")]
         public void criarBancoDados()
         {

@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ControlePonto.WPF.window.ponto
+namespace ControlePonto.WPF.window.consulta
 {
-    public class PontoViewModel : ViewModelBase
+    public class ConsultarPontoViewModel : ViewModelBase
     {
         public const int CONSULTA_VIEW = 1;
 
@@ -27,7 +27,7 @@ namespace ControlePonto.WPF.window.ponto
         public ICommand SairIntervaloCommand { get; private set; }
         public ICommand ConsultarPontoCommand { get; private set; }
 
-        public PontoViewModel(Funcionario funcionario, DiaTrabalho ponto, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
+        public ConsultarPontoViewModel(Funcionario funcionario, DiaTrabalho ponto, PontoService pontoService, ITipoIntervaloRepository tipoRepository)
         {
             this.funcionario = funcionario;
             this.ponto = ponto;

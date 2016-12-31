@@ -98,13 +98,20 @@
       <DependentUpon>JornadaTrabalhoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\jornada\JornadaWindowFactory.cs" />
-    <Compile Include="window\ponto\controle\PontoViewModel.cs" />
-    <Compile Include="window\ponto\controle\PontoWindow.xaml.cs">
-      <DependentUpon>PontoWindow.xaml</DependentUpon>
+    <Compile Include="window\ponto\consulta\ConsultarPontoViewModel.cs" />
+    <Compile Include="window\ponto\consulta\ConsultarPontoWindow.xaml.cs">
+      <DependentUpon>ConsultarPontoWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="window\ponto\controle\SelecaoDataWindow.xaml.cs">
+    <Compile Include="window\ponto\consulta\SelecaoDataWindow.xaml.cs">
       <DependentUpon>SelecaoDataWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="window\ponto\controle\AcoesViewModel.cs" />
+    <Compile Include="window\ponto\controle\ControlarPontoViewModel.cs" />
+    <Compile Include="window\ponto\controle\ControlarPontoWindow.xaml.cs">
+      <DependentUpon>ControlarPontoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="window\ponto\controle\DiaControlePontoViewModel.cs" />
+    <Compile Include="window\ponto\controle\events\EditarPontoEventArgs.cs" />
     <Compile Include="window\ponto\folga\DiaFolgaDTO.cs" />
     <Compile Include="window\ponto\funcionario\PontoFuncionarioViewModel.cs" />
     <Compile Include="window\ponto\funcionario\PontoFuncionarioWindow.xaml.cs">
@@ -115,7 +122,7 @@
       <DependentUpon>ControleFolgaWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="window\ponto\folga\ControleFolgaViewModel.cs" />
-    <Compile Include="window\ponto\controle\SelecaoDataViewModel.cs" />
+    <Compile Include="window\ponto\consulta\SelecaoDataViewModel.cs" />
     <Compile Include="window\relatorio\DiaRelatorioViewModel.cs" />
     <Compile Include="window\relatorio\RelatorioViewModel.cs" />
     <Compile Include="window\relatorio\RelatorioWindow.xaml.cs">
@@ -187,11 +194,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="window\ponto\controle\PontoWindow.xaml">
+    <Page Include="window\ponto\consulta\ConsultarPontoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="window\ponto\controle\SelecaoDataWindow.xaml">
+    <Page Include="window\ponto\consulta\SelecaoDataWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="window\ponto\controle\ControlarPontoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

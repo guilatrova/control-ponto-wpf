@@ -64,6 +64,14 @@ namespace ControlePonto.WPF.framework
                 this.ViewRequest(this, new ViewRequestEventArgs(code));
             }
         }
+
+        protected void requestView(ViewRequestEventArgs args)
+        {
+            if (this.ViewRequest != null)
+            {
+                this.ViewRequest(this, args);
+            }
+        }
         
         #endregion
 

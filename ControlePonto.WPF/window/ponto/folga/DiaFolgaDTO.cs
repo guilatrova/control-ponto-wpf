@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControlePonto.WPF.window.ponto.folga
+namespace ControlePonto.WPF.window.consulta.folga
 {
     public class DiaFolgaDTO : NotifyPropertyChangedBase, IDataErrorInfo
     {

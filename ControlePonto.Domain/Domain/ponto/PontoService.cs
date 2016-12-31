@@ -90,8 +90,8 @@ namespace ControlePonto.Domain.ponto
 
             var ponto = pontoFactory.criarDiaTrabalhoEmDiaEspecifico(funcionario, date);
             ponto.Fim = new TimeSpan(0, 0, 0);
-
             pontoRepository.save(ponto);
+
             return ponto;
         }
     }
