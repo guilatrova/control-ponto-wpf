@@ -474,8 +474,6 @@ namespace ControlePonto.Tests
             var date = DateTime.Today;
 
             var novoDiaTrabalho = service.criarPontoParaFuncionarioEm(funcionario, date);
-        }
-
-        //TODO: Só pode ser criado por um ADM
+        }        
     }
 }
