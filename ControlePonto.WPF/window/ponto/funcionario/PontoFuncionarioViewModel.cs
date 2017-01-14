@@ -42,7 +42,7 @@ namespace ControlePonto.WPF.window.consulta.funcionario
 
             Intervalos = ponto.Intervalos.ToList();
 
-            SalvarCommand = new RelayCommand(confirmarSalvar);
+            SalvarCommand = new RelayCommand(confirmarSalvar, podeSalvar);
             FecharCommand = new RelayCommand(() => requestView(CLOSE));
         }
 
@@ -81,10 +81,19 @@ namespace ControlePonto.WPF.window.consulta.funcionario
             }
         }
 
-
-
         public ICommand FecharCommand { get; private set; }
         public ICommand SalvarCommand { get; private set; }
+
+        private bool podeSalvar()
+        {
+            foreach (var intervalo in ponto.Intervalos)
+            {
+                if (intervalo.Entrada > intervalo.Saida)
+                    return false;
+            }
+
+            return isModelValid();
+        }
 
         private void confirmarSalvar()
         {
@@ -106,7 +115,6 @@ namespace ControlePonto.WPF.window.consulta.funcionario
                 requestView(CLOSE);
             }
         }
-
 
         protected override string validar(string propertyName)
         {

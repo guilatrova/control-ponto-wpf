@@ -1,4 +1,5 @@
 ﻿using ControlePonto.Domain.feriado;
+using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
@@ -23,6 +24,9 @@ namespace ControlePonto.Tests
             if (pontoRepository == null)
                 pontoRepository = new PontoDiaMockRepository();
 
+            var tipoIntervaloRepository = new TipoIntervaloMockRepository();
+            tipoIntervaloRepository.save(new TipoIntervalo("Almoço"));
+
             if (mock)
             {
                 return new PontoServiceMock(criarPontoFactory(pontoRepository, feriadoRepository),
@@ -30,7 +34,8 @@ namespace ControlePonto.Tests
                     new FuncionarioPossuiPontoAbertoSpecification(pontoRepository),
                     new FuncionarioJaTrabalhouHojeSpecification(pontoRepository),
                     sessao,
-                    pontoRepository);
+                    pontoRepository,
+                    tipoIntervaloRepository);
             }
 
             return new PontoService(criarPontoFactory(pontoRepository, feriadoRepository),
@@ -38,7 +43,8 @@ namespace ControlePonto.Tests
                 new FuncionarioPossuiPontoAbertoSpecification(pontoRepository),
                 new FuncionarioJaTrabalhouHojeSpecification(pontoRepository),
                 sessao,
-                pontoRepository);
+                pontoRepository,
+                tipoIntervaloRepository);
         }
 
         public static PontoService criarPontoService(Funcionario logado, IDataHoraStrategy dataHoraStrategy = null, IPontoDiaRepository pontoRepository = null, bool mock = false, IFeriadoRepository feriadoRepository = null)

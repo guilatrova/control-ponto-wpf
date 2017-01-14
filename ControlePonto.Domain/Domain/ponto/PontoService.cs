@@ -19,10 +19,11 @@ namespace ControlePonto.Domain.ponto
         protected SessaoLogin sessaoLogin;
         protected IDataHoraStrategy dataHoraStrategy;
         protected IPontoDiaRepository pontoRepository;
+        protected ITipoIntervaloRepository tipoIntervaloRepository;
         protected FuncionarioPossuiPontoAbertoSpecification deixouPontoAberto;
         protected FuncionarioJaTrabalhouHojeSpecification jaTrabalhouHoje;
 
-        public PontoService(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec,  FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin, IPontoDiaRepository pontoRepository)
+        public PontoService(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec,  FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin, IPontoDiaRepository pontoRepository, ITipoIntervaloRepository tipoIntervaloRepository)
         {
             this.pontoFactory = pontoFactory;
             this.dataHoraStrategy = dataHoraStrategy;
@@ -31,6 +32,7 @@ namespace ControlePonto.Domain.ponto
             this.jaTrabalhouHoje.Data = dataHoraStrategy.getDataHoraAtual();
             this.sessaoLogin = sessaoLogin;
             this.pontoRepository = pontoRepository;
+            this.tipoIntervaloRepository = tipoIntervaloRepository;
         }
 
         public DiaTrabalho iniciarDia()
@@ -90,6 +92,14 @@ namespace ControlePonto.Domain.ponto
 
             var ponto = pontoFactory.criarDiaTrabalhoEmDiaEspecifico(funcionario, date);
             ponto.Fim = new TimeSpan(0, 0, 0);
+
+            foreach (var tipoIntervalo in tipoIntervaloRepository.findAll())
+            {
+                var novoIntervalo = new Intervalo(tipoIntervalo, new TimeSpan(0, 0, 0));
+                ponto.Intervalos.Add(novoIntervalo);
+                novoIntervalo.Saida = new TimeSpan(0, 0, 0);
+            }
+
             pontoRepository.save(ponto);
 
             return ponto;

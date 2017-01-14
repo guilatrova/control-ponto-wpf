@@ -254,28 +254,6 @@ namespace ControlePonto.Tests
         }
 
         [TestMethod, TestCategory("Trabalho")]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void saidaDoIntervaloNaoDeveSerAlterado()
-        {
-            var entradaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
-            var saidaAlmoco = new DateTime(2014, 8, 22, 12, 30, 0);
-            var horarios = new DataHoraMockListStrategy(
-                new DateTime(2014, 8, 22, 9, 0, 0), //Inicio do dia
-                entradaAlmoco,
-                saidaAlmoco,
-                new DateTime(2014, 8, 22, 17, 00, 0) //Horário de saída/erro
-            );
-            var service = criarService(horarios);
-
-            var ponto = service.iniciarDia();
-            ponto.registrarIntervalo(tipoAlmoco, horarios);
-            ponto.registrarIntervalo(tipoAlmoco, horarios);
-
-            var intervalo = ponto.getIntervalo(tipoAlmoco);
-            intervalo.Saida = entradaAlmoco.TimeOfDay;
-        }
-
-        [TestMethod, TestCategory("Trabalho")]
         public void pontoDeveCalcularHorasExtras()
         {
             var ponto = criarPontoTrabalhoDoDia(22, 8, 2014);                                           //09:00 - INÍCIO
@@ -474,6 +452,31 @@ namespace ControlePonto.Tests
             var date = DateTime.Today;
 
             var novoDiaTrabalho = service.criarPontoParaFuncionarioEm(funcionario, date);
-        }        
+        }
+
+        [TestMethod, TestCategory("Trabalho"), TestCategory("Administrador")]
+        public void quandoCriarPontoEmDiaEspecificoTodosOsIntervalosDevemSerIniciadosComZero()
+        {
+            var repository = new PontoDiaMockRepository();
+            var date = DateTime.Today;
+            var admLogado = criarUsuarioAdministrador();
+            var service = criarService(repository: repository, logado: admLogado);
+
+            var novoDiaTrabalho = service.criarPontoParaFuncionarioEm(funcionario, date);
+
+            var ponto = repository.findPontoTrabalho(funcionario, date);
+
+            Assert.AreEqual(date, ponto.Data);
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Inicio);
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Fim);
+            Assert.AreEqual(novoDiaTrabalho.Data, ponto.Data);
+            Assert.AreEqual(novoDiaTrabalho.Inicio, ponto.Inicio);
+            Assert.AreEqual(novoDiaTrabalho.Fim, ponto.Fim);
+            Assert.AreEqual(funcionario, novoDiaTrabalho.Funcionario);
+
+            Assert.AreEqual(1, ponto.Intervalos.Count);
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Intervalos.First().Entrada);
+            Assert.AreEqual(new TimeSpan(0, 0, 0), ponto.Intervalos.First().Saida);
+        }
     }
 }

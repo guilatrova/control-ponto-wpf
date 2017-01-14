@@ -36,7 +36,9 @@ namespace ControlePonto.Domain.services.relatorio
             Check.Require(fim >= inicio, "Período inválido. O início deve vir antes do fim!");
             Check.Require(funcionario != null, "O funcionário deve ser válido");
 
-            var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, unitOfWork.Session, false, false);
+            var todosPontos = pontoRepository.findPontosNoIntervalo(funcionario, inicio, fim, unitOfWork.Session, false, false)
+                .GroupBy(x => x.Data)
+                .Select(group => group.First());
             var diasFaltando = inicio.Range(fim).Except(todosPontos.Select(x => x.Data));
             var feriadosNaoTrabalhados = diasFaltando
                 .Where(x => feriadoService.isFeriado(x));

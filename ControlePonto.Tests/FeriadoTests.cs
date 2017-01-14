@@ -24,7 +24,7 @@ namespace ControlePonto.Tests
 
             feriado = factory.criarFeriadoRelativo("Dia dos pais", 2, DayOfWeek.Sunday, 8); //2º domingo de agosto            
             Assert.AreEqual(new DateTime(ano, 8, 14), feriado.getData());
-
+            
             feriado = factory.criarFeriadoRelativo("Primeira sexta-feira do mês", 1, DayOfWeek.Friday, 6);
             Assert.AreEqual(new DateTime(ano, 6, 3), feriado.getData());
         }

@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.ponto;
+﻿using ControlePonto.Domain.intervalo;
+using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.folga;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
@@ -13,8 +14,8 @@ namespace ControlePonto.Tests.mocks
 {
     public class PontoServiceMock : PontoService
     {
-        public PontoServiceMock(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec, FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin, IPontoDiaRepository pontoRepository) :
-            base(pontoFactory, dataHoraStrategy, pontoAbertoSpec, funcTrabSpec, sessaoLogin, pontoRepository)
+        public PontoServiceMock(PontoFactory pontoFactory, IDataHoraStrategy dataHoraStrategy, FuncionarioPossuiPontoAbertoSpecification pontoAbertoSpec, FuncionarioJaTrabalhouHojeSpecification funcTrabSpec, SessaoLogin sessaoLogin, IPontoDiaRepository pontoRepository, ITipoIntervaloRepository tipoIntervaloRepository) :
+            base(pontoFactory, dataHoraStrategy, pontoAbertoSpec, funcTrabSpec, sessaoLogin, pontoRepository, tipoIntervaloRepository)
         {
         }
 

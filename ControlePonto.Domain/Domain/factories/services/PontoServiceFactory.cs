@@ -14,15 +14,17 @@ namespace ControlePonto.Domain.factories.services
     {
         public static PontoService criarPontoService()
         {
-            var repo = RepositoryFactory.criarPontoRepository();
+            var pontoRepository = RepositoryFactory.criarPontoRepository();
+            var tipoIntervaloRepository = RepositoryFactory.criarTipoIntervaloRepository();
 
             return new PontoService(
-                criarPontoFactory(repo),
+                criarPontoFactory(pontoRepository),
                 new DataHoraServerStrategy(),
-                new FuncionarioPossuiPontoAbertoSpecification(repo),
-                new FuncionarioJaTrabalhouHojeSpecification(repo),
+                new FuncionarioPossuiPontoAbertoSpecification(pontoRepository),
+                new FuncionarioJaTrabalhouHojeSpecification(pontoRepository),
                 SessaoLogin.getSessao(),
-                repo);
+                pontoRepository,
+                tipoIntervaloRepository);
         }
 
         private static PontoFactory criarPontoFactory(IPontoDiaRepository repo)
