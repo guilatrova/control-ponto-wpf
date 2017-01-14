@@ -1,5 +1,6 @@
 ﻿using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.jornada;
+using ControlePonto.Domain.services.login;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.Infrastructure.utils;
 using System;
@@ -14,21 +15,23 @@ namespace ControlePonto.Domain.ponto.trabalho
     {
         #region Propriedades
 
-        public virtual TimeSpan Inicio { get; protected set; }
+        private TimeSpan _Inicio { get; set; }
+        public virtual TimeSpan Inicio
+        {
+            get { return _Inicio; }
+            set
+            {
+                _Inicio = value;
+            }
+        }
+
 
         private TimeSpan? _Fim;
         public virtual TimeSpan? Fim
         {
-            get
-            {
-                return _Fim;
-            }
+            get { return _Fim; }
             set
             {
-                if (_Fim.HasValue && _Fim.Value != value)
-                {
-                    Check.Require(!_Fim.HasValue, "O horário do ponto não pode ser alterado");
-                }
                 _Fim = value;
             }
         }

@@ -5,13 +5,14 @@
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:frmwrk="clr-namespace:ControlePonto.WPF.framework"
                  xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
-                 Title="Ver ponto" 
+                 Title="{Binding Titulo}" 
                  Height="300" 
                  Width="300">
     
     <Window.Resources>
         <sys:String x:Key="strSaida">Saída às </sys:String>
         <sys:String x:Key="strEntrada">Entrada às</sys:String>
+        <sys:String x:Key="strSalvar">Salvar alterações</sys:String>
         
         <Style TargetType="Button">
             <Setter Property="Padding" Value="10,5" />
@@ -29,7 +30,7 @@
                             <Grid DockPanel.Dock="Right"
                                       Width="12" 
                                       Height="12"
-                                      Margin="2,0"                                      >
+                                      Margin="2,0">
                                 <Ellipse Width="12" 
                                              Height="12" 
                                              Fill="Red" 
@@ -51,6 +52,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
     
     <Grid>
@@ -76,26 +79,26 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{StaticResource strEntrada}"/>
 
-                <toolkit:TimeSpanUpDown Value="{Binding Entrada}"
+                <toolkit:TimeSpanUpDown Value="{Binding Entrada, ValidatesOnDataErrors=True}"
                                         IsEnabled="{Binding AllowEdit}" />
             </StackPanel>
         </Label>
 
         <ItemsControl Grid.Row="3"
-                 ItemsSource="{Binding Intervalos}">
+                      ItemsSource="{Binding Intervalos}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding TipoIntervalo.Nome}" />
-                        <TextBlock> das </TextBlock>
+                        <TextBlock Margin="5,0,0,0"> das </TextBlock>
 
                         <toolkit:TimeSpanUpDown Value="{Binding Entrada, ValidatesOnDataErrors=True}"
-                                        IsEnabled="{Binding AllowEdit}" />
+                                        IsEnabled="{Binding DataContext.AllowEdit, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=OneTime}" />
 
                         <TextBlock> às </TextBlock>
 
                         <toolkit:TimeSpanUpDown Value="{Binding Saida, ValidatesOnDataErrors=True}"
-                                        IsEnabled="{Binding AllowEdit}" />
+                                        IsEnabled="{Binding DataContext.AllowEdit, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=OneTime}" />
 
                     </StackPanel>
                 </DataTemplate>
@@ -111,10 +114,21 @@
             </StackPanel>
         </Label>
 
-        <Button Grid.Row="5"
-                Content="OK"
-                Command="{Binding FecharCommand}"/>
-               
+        <!-- Commands -->
+        <StackPanel Grid.Row="5"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="5">
+            
+            <Button Content="{StaticResource strSalvar}"
+                    Margin="0,0,5,0"
+                    Visibility="{Binding AllowEdit, Converter={StaticResource BoolToVis}}"
+                    Command="{Binding SalvarCommand}" />
+            
+            <Button Content="OK"
+                    Command="{Binding FecharCommand}"/>
+        </StackPanel>
+
     </Grid>
     
 </base:WindowBase>

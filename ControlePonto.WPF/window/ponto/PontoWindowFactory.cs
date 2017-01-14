@@ -45,7 +45,7 @@ namespace ControlePonto.WPF.window.consulta
 
         public static PontoFuncionarioWindow criarPontoDoFuncionarioWindow(DiaTrabalho ponto)
         {
-            return new PontoFuncionarioWindow(new PontoFuncionarioViewModel(ponto));
+            return new PontoFuncionarioWindow(new PontoFuncionarioViewModel(ponto, SessaoLogin.getSessao(), RepositoryFactory.criarPontoRepository()));
         }        
 
         public static SelecaoDataWindow criarSelecaoDataWindow()
