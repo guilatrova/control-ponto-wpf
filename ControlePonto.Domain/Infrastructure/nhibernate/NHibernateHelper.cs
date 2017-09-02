@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NHibernate.Tool.hbm2ddl;
 using MySql.Data.MySqlClient;
+using NHibernate.Context;
 
 namespace ControlePonto.Infrastructure.nhibernate
 {
@@ -42,11 +43,11 @@ namespace ControlePonto.Infrastructure.nhibernate
         private static string ConnectionString
         {
 #if DEBUG
-            get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=root;Password=;", Host); }
+            get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=root;Password=root;", Host); }
 #else
             get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=artplas_app_adm;Password=_ARTplas_1976;", Host); }
 #endif
-        }   
+        }
 
         public static FluentConfiguration getFluentConfiguration()
         {
@@ -55,11 +56,24 @@ namespace ControlePonto.Infrastructure.nhibernate
                 _fluentConfiguration = Fluently.Configure()
                     .Database(MySQLConfiguration.Standard.ConnectionString(ConnectionString))
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ControlePonto.Infrastructure.nhibernate.mapping.UsuarioMap>())
-                    .ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true)); 
+                    .ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
                 //One caveat: SchemaUpdate does not do destructive updates (dropping tables, columns, etc.). It will only add them.
             }
             return _fluentConfiguration;
         }
+
+        //public static FluentConfiguration getFluentConfiguration()
+        //{
+        //    if (_fluentConfiguration == null)
+        //    {
+        //        _fluentConfiguration = Fluently.Configure()
+        //            .Database(SQLiteConfiguration.Standard.UsingFile("controle-ponto.db"))
+        //            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ControlePonto.Infrastructure.nhibernate.mapping.UsuarioMap>())
+        //            .ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true))
+        //            .CurrentSessionContext<ThreadStaticSessionContext>();
+        //    }
+        //    return _fluentConfiguration;
+        //}
 
         public static ISessionFactory getSessionFactory()
         {

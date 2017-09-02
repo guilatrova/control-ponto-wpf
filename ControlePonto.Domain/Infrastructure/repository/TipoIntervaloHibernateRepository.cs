@@ -1,6 +1,7 @@
 ﻿using ControlePonto.Domain.intervalo;
 using ControlePonto.Infrastructure.nhibernate;
 using NHibernate;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,13 @@ namespace ControlePonto.Infrastructure.repository
 
         public TipoIntervalo findByName(string nome)
         {
-            throw new NotImplementedException();
+            using (ISession session = NHibernateHelper.openSession())
+            {
+                return
+                    session.CreateCriteria<TipoIntervalo>()
+                    .Add(Restrictions.InsensitiveLike("Nome", nome))
+                    .UniqueResult<TipoIntervalo>();
+            }
         }
 
 

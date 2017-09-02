@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.ponto.trabalho;
+﻿using ControlePonto.Domain.intervalo;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario;
@@ -18,11 +19,13 @@ namespace ControlePonto.WPF.window.relatorio
         public const int VIEW_PONTO = 1;
 
         private IUsuarioRepositorio usuarioRepository;
-        private RelatorioService relatorioService;        
+        private ITipoIntervaloRepository tipoIntervaloRepository;
+        private RelatorioService relatorioService;
 
-        public RelatorioViewModel(IUsuarioRepositorio usuarioRepository, RelatorioService relatorioService, IUnitOfWork unitOfWork)
+        public RelatorioViewModel(IUsuarioRepositorio usuarioRepository, ITipoIntervaloRepository tipoIntervaloRepository, RelatorioService relatorioService, IUnitOfWork unitOfWork)
         {
             this.usuarioRepository = usuarioRepository;
+            this.tipoIntervaloRepository = tipoIntervaloRepository;
             this.relatorioService = relatorioService;
 
             this.Funcionarios = usuarioRepository.findFuncionarios();
@@ -179,6 +182,9 @@ namespace ControlePonto.WPF.window.relatorio
             TotalHorasExtras100 = formatarHora(relatorio.calcularHorasExtras(100));
             TotalFeriadosTrabalhados = relatorio.getFeriadosTrabalhados().Count;
             TotalFolgas = relatorio.getFolgas().Count;
+
+            var exporter = new ExportExcelService(relatorio, Dias, tipoIntervaloRepository);
+            exporter.ExportarSalvar(@"C:\Users\guilh\Desktop\test.xlsx");
         }
 
         private string formatarHora(TimeSpan hora)
