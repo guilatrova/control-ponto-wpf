@@ -27,39 +27,17 @@ namespace ControlePonto.WPF.window.relatorio
             this.tipoAlmoco = tipoIntervaloRepository.findByName("ALMOÇO");
         }
 
-        private string[] GetHeaders()
-        {
-            return new string[] {
-                "Data", "Descrição",
-                "Entrada", "Saída almoço", "Retorno almoço", "Saída",
-                "Horas trabalhadas", "Horas devedoras", "Extras", "Extras 100%"
-            };
-        }
-
-        private void WriterHeaders(ExcelWorksheet ws)
-        {
-            var cell = new Cell('A', 1);
-            foreach (string header in GetHeaders())
-            {
-                ws.Cells[cell.format()].Value = header;
-                cell.nextColumn();
-            }
-
-            var range = $"A1:{cell.format()}";
-            ws.Cells[range].Style.Font.Bold = true;
-            ws.Cells[range].Style.Font.Size = 14;
-        }
-
-        public ExcelPackage ExportarSalvar(string filename)
+        public ExcelPackage Exportar(string filename)
         {
             FileInfo newFile = new FileInfo(filename);
             var excel = new ExcelPackage(newFile);
             var ws = excel.Workbook.Worksheets.Add(relatorio.Funcionario.Nome);
 
+            WriteTitle(ws);
             WriterHeaders(ws);
 
-            var cell = new Cell('A', 2);
-            foreach(var dia in dias)
+            var cell = new Cell('A', 3);
+            foreach (var dia in dias)
             {
                 WriteRow(ws, dia, cell);
 
@@ -69,6 +47,39 @@ namespace ControlePonto.WPF.window.relatorio
 
             excel.Save();
             return excel;
+        }
+
+        private string[] GetHeaders()
+        {
+            return new string[] {
+                "Data", "Descrição",
+                "Entrada", "Saída almoço", "Retorno almoço", "Saída",
+                "Horas trabalhadas", "Horas devedoras", "Extras", "Extras 100%"
+            };
+        }
+
+        private void WriteTitle(ExcelWorksheet ws)
+        {
+            var range = "A1:J1";
+            ws.Cells["A1"].Value = $"{relatorio.Funcionario.Nome} ({relatorio.PeriodoInicio.ToShortDateString()} - {relatorio.PeriodoFim.ToShortDateString()})";
+
+            ws.Cells[range].Merge = true;
+            ws.Cells[range].Style.Font.Bold = true;
+            ws.Cells[range].Style.Font.Size = 21;
+        }
+
+        private void WriterHeaders(ExcelWorksheet ws)
+        {
+            var cell = new Cell('A', 2);
+            foreach (string header in GetHeaders())
+            {
+                ws.Cells[cell.format()].Value = header;
+                cell.nextColumn();
+            }
+
+            var range = $"A1:{cell.format()}";
+            ws.Cells[range].Style.Font.Bold = true;
+            ws.Cells[range].Style.Font.Size = 14;
         }
 
         public void WriteRow(ExcelWorksheet ws, DiaRelatorioViewModel dia, Cell cell)
