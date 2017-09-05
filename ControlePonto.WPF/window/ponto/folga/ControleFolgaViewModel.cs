@@ -9,22 +9,24 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows;
 using ControlePonto.Infrastructure.utils;
+using ControlePonto.Domain.services.persistence;
 
 namespace ControlePonto.WPF.window.consulta.folga
 {
     public class ControleFolgaViewModel : ViewModelBase
     {
-        private IUsuarioRepositorio usuarioRepository;        
+        private IUsuarioRepositorio usuarioRepository;
         private RelatorioService relatorioService;
         private PontoService pontoService;
 
         private List<DiaFolgaDTO> diasAlterados;
 
-        public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, RelatorioService relatorioService, PontoService pontoService)
+        public ControleFolgaViewModel(IUsuarioRepositorio usuarioRep, RelatorioService relatorioService, PontoService pontoService, IUnitOfWork unitOfWork)
         {
             this.usuarioRepository = usuarioRep;
             this.relatorioService = relatorioService;
             this.pontoService = pontoService;
+            base.unitOfWork = unitOfWork;
 
             var today = DateTime.Today;
             this.PeriodoInicio = new DateTime(today.Year, today.Month, 1);
@@ -38,6 +40,8 @@ namespace ControlePonto.WPF.window.consulta.folga
             ExibirCommand = new RelayCommand(validarExibicao);
             SalvarCommand = new RelayCommand(confirmarSalvar, podeSalvar);
             FecharCommand = new RelayCommand(() => requestView(CLOSE));
+
+            unitOfWork.openConnection();
         }
 
         #region Propriedades
