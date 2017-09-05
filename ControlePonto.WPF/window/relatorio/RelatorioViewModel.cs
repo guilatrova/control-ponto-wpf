@@ -1,4 +1,5 @@
-﻿using ControlePonto.Domain.ponto.trabalho;
+﻿using ControlePonto.Domain.intervalo;
+using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario;
@@ -18,11 +19,14 @@ namespace ControlePonto.WPF.window.relatorio
         public const int VIEW_PONTO = 1;
 
         private IUsuarioRepositorio usuarioRepository;
-        private RelatorioService relatorioService;        
+        private ITipoIntervaloRepository tipoIntervaloRepository;
+        private RelatorioService relatorioService;
+        private RelatorioPonto ultimoRelatorioGerado;
 
-        public RelatorioViewModel(IUsuarioRepositorio usuarioRepository, RelatorioService relatorioService, IUnitOfWork unitOfWork)
+        public RelatorioViewModel(IUsuarioRepositorio usuarioRepository, ITipoIntervaloRepository tipoIntervaloRepository, RelatorioService relatorioService, IUnitOfWork unitOfWork)
         {
             this.usuarioRepository = usuarioRepository;
+            this.tipoIntervaloRepository = tipoIntervaloRepository;
             this.relatorioService = relatorioService;
 
             this.Funcionarios = usuarioRepository.findFuncionarios();
@@ -33,6 +37,7 @@ namespace ControlePonto.WPF.window.relatorio
             this.PeriodoFim = PeriodoInicio.AddMonths(1).AddDays(-1);
 
             this.ExibirCommand = new RelayCommand(exibir);
+            this.ExportarCommand = new RelayParameterCommand<string>(exportarExcel);
             this.ExibirPontoCommand = new RelayCommand(exibirPonto);
 
             this.unitOfWork = unitOfWork;
@@ -76,6 +81,8 @@ namespace ControlePonto.WPF.window.relatorio
         
 
         public ICommand ExibirCommand { get; private set; }
+        public ICommand ExportarCommand { get; private set; }
+        public bool PodeExportar { get { return ultimoRelatorioGerado != null; } }
 
         private List<DiaRelatorioViewModel> _dias;
         public List<DiaRelatorioViewModel> Dias
@@ -89,7 +96,7 @@ namespace ControlePonto.WPF.window.relatorio
 
         public DiaRelatorioViewModel DiaSelecionado { get; private set; }
 
-        public ICommand ExibirPontoCommand { get; private set; }
+        public ICommand ExibirPontoCommand { get; private set; }        
 
         #region Rodapé
 
@@ -179,8 +186,17 @@ namespace ControlePonto.WPF.window.relatorio
             TotalHorasExtras100 = formatarHora(relatorio.calcularHorasExtras(100));
             TotalFeriadosTrabalhados = relatorio.getFeriadosTrabalhados().Count;
             TotalFolgas = relatorio.getFolgas().Count;
+
+            ultimoRelatorioGerado = relatorio;
+            RaisePropertyChanged("PodeExportar");
         }
 
+        private void exportarExcel(string path)
+        {
+            var exporter = new ExportExcelService(ultimoRelatorioGerado, Dias, tipoIntervaloRepository);
+            exporter.Exportar(path);
+        }
+        
         private string formatarHora(TimeSpan hora)
         {
             return
@@ -207,6 +223,13 @@ namespace ControlePonto.WPF.window.relatorio
                 }
             }
             return false;
+        }
+
+        public string getSugestaoFilename()
+        {
+            return $"{ultimoRelatorioGerado.Funcionario.Nome}_" +
+                $"{ultimoRelatorioGerado.PeriodoInicio.ToString("dd-MM-yyyy")}___" +
+                $"{ultimoRelatorioGerado.PeriodoFim.ToString("dd-MM-yyyy")}.xlsx";
         }
 
         protected override string validar(string propertyName)

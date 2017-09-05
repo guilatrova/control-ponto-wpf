@@ -17,6 +17,7 @@ namespace ControlePonto.WPF.window.relatorio
 
             return new RelatorioWindow(new RelatorioViewModel(
                 RepositoryFactory.criarUsuarioRepository(),
+                RepositoryFactory.criarTipoIntervaloRepository(),
                 RelatorioServiceFactory.criarRelatorioService(uow),
                 uow
             ));

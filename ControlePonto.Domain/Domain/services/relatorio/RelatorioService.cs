@@ -28,7 +28,7 @@ namespace ControlePonto.Domain.services.relatorio
             this.feriadoService = feriadoService;
             this.jornadaRepository = jornadaRepository;
             this.jornadaAtiva = jornadaRepository.findJornadaAtiva();
-            this.unitOfWork = unitOfWork;
+            this.unitOfWork = unitOfWork;            
         }
 
         public RelatorioPonto gerarRelatorio(Funcionario funcionario, DateTime inicio, DateTime fim)

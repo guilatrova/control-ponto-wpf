@@ -1,6 +1,7 @@
 ﻿using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.relatorio;
 using ControlePonto.WPF.window.consulta;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,20 @@ namespace ControlePonto.WPF.window.relatorio
         private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             (ViewModel as RelatorioViewModel).ExibirPontoCommand.Execute(null);
+        }
+
+        private void ExportarExcel_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (ViewModel as RelatorioViewModel);
+
+            var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Planilha Excel | *.xlsx";
+            saveDialog.FileName = viewModel.getSugestaoFilename();
+            saveDialog.AddExtension = true;
+            if (saveDialog.ShowDialog() == true)
+            {
+                viewModel.ExportarCommand.Execute(saveDialog.FileName);
+            }
         }
     }
 }

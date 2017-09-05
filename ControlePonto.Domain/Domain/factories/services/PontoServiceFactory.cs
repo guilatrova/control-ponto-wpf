@@ -1,6 +1,7 @@
 ﻿using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
+using ControlePonto.Infrastructure.misc;
 using ControlePonto.Infrastructure.nhibernate;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace ControlePonto.Domain.factories.services
 
             return new PontoService(
                 criarPontoFactory(pontoRepository),
-                new DataHoraServerStrategy(),
+                new DataHoraLocalStrategy(),
                 new FuncionarioPossuiPontoAbertoSpecification(pontoRepository),
                 new FuncionarioJaTrabalhouHojeSpecification(pontoRepository),
                 SessaoLogin.getSessao(),

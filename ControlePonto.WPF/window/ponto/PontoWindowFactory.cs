@@ -36,10 +36,12 @@ namespace ControlePonto.WPF.window.consulta
 
         public static ControleFolgaWindow criarFolgaWindow()
         {
+            var unitOfWork = UnitOfWorkFactory.criarUnitOfWork();
             return new ControleFolgaWindow(new ControleFolgaViewModel(
                 RepositoryFactory.criarUsuarioRepository(),
-                criarRelatorioService(UnitOfWorkFactory.criarUnitOfWork()),
-                PontoServiceFactory.criarPontoService()
+                criarRelatorioService(unitOfWork),
+                PontoServiceFactory.criarPontoService(),
+                unitOfWork
             ));
         }
 
