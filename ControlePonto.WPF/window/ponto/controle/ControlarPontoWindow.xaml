@@ -9,7 +9,7 @@
                  xmlns:local="clr-namespace:ControlePonto.WPF.window.ponto.controle"
                  xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
                  mc:Ignorable="d"
-                 Title="ControlarPontoWindow" Height="700" Width="600">
+                 Title="Controlar Ponto" Height="700" Width="600">
     <Window.Resources>
         <sys:String x:Key="strFuncionario">Funcionário</sys:String>
         <sys:String x:Key="strMes">Mês</sys:String>
