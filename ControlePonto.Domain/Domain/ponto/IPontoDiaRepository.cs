@@ -21,6 +21,6 @@ namespace ControlePonto.Domain.ponto
 
         bool existePontoDia(Funcionario funcionario, DateTime date);
 
-        List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, ISession session, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true);
+        List<PontoDia> findPontosNoIntervalo(Funcionario funcionario, DateTime inicio, DateTime fim, bool lazyLoadTrabalho = true, bool lazyLoadFolga = true);
     }
 }

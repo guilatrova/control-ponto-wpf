@@ -2,6 +2,7 @@
 using ControlePonto.Domain.ponto;
 using ControlePonto.Domain.ponto.trabalho;
 using ControlePonto.Domain.services.login;
+using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
 using System;
@@ -19,7 +20,7 @@ namespace ControlePonto.WPF.window.consulta.funcionario
         private DiaTrabalho ponto;
         private IPontoDiaRepository pontoRepository;
 
-        public PontoFuncionarioViewModel(DiaTrabalho ponto, SessaoLogin sessao, IPontoDiaRepository pontoRepository)
+        public PontoFuncionarioViewModel(DiaTrabalho ponto, SessaoLogin sessao, IPontoDiaRepository pontoRepository, IUnitOfWork unitOfWork)
         {
             this.ponto = ponto;            
 
@@ -28,7 +29,7 @@ namespace ControlePonto.WPF.window.consulta.funcionario
             this.Entrada = ponto.Inicio;
             this.Saida = ponto.Fim ?? new TimeSpan(0, 0, 0);
             this.pontoRepository = pontoRepository;
-
+            this.unitOfWork = unitOfWork;
             if (sessao.UsuarioLogado is Funcionario)
             {
                 this.AllowEdit = false;
@@ -131,6 +132,6 @@ namespace ControlePonto.WPF.window.consulta.funcionario
                 default:
                     return null;
             }
-        }
+        }        
     }
 }

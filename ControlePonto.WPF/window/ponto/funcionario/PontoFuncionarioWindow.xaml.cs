@@ -24,5 +24,10 @@ namespace ControlePonto.WPF.window.consulta
         {
             InitializeComponent();
         }
+
+        protected override void WindowBase_Closed(object sender, EventArgs e)
+        {
+            //ViewModel.Dispose();
+        }
     }
 }

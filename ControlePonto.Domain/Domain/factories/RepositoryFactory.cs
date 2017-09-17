@@ -2,6 +2,7 @@
 using ControlePonto.Domain.intervalo;
 using ControlePonto.Domain.jornada;
 using ControlePonto.Domain.ponto;
+using ControlePonto.Domain.services.persistence;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Infrastructure.repository;
 using System;
@@ -19,9 +20,9 @@ namespace ControlePonto.Domain.factories
             return new UsuarioHibernateRepository();
         }
 
-        public static IPontoDiaRepository criarPontoRepository()
+        public static IPontoDiaRepository criarPontoRepository(IUnitOfWork unitOfWork)
         {
-            return new PontoDiaHibernateRepository();
+            return new PontoDiaHibernateRepository(unitOfWork);
         }
 
         public static ITipoIntervaloRepository criarTipoIntervaloRepository()

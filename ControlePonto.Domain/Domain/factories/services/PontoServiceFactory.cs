@@ -15,7 +15,8 @@ namespace ControlePonto.Domain.factories.services
     {
         public static PontoService criarPontoService()
         {
-            var pontoRepository = RepositoryFactory.criarPontoRepository();
+            var uow = UnitOfWorkFactory.criarUnitOfWork();
+            var pontoRepository = RepositoryFactory.criarPontoRepository(uow);
             var tipoIntervaloRepository = RepositoryFactory.criarTipoIntervaloRepository();
 
             return new PontoService(

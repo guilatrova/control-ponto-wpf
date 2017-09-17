@@ -34,7 +34,7 @@ namespace ControlePonto.Domain.ponto.trabalho
             var esperado = diaJornada.calcularHorasTrabalhoEsperado();
 
             var resultado = trabalhado.Subtract(esperado);
-            if (resultado > new TimeSpan(0))
+            if (resultado > new TimeSpan(0, 10, 59))
                 return resultado;
             return new TimeSpan(0, 0, 0);
         }
@@ -46,7 +46,7 @@ namespace ControlePonto.Domain.ponto.trabalho
             var esperado = diaJornada.calcularHorasTrabalhoEsperado();
 
             var resultado = esperado.Subtract(trabalhado);
-            if (resultado > new TimeSpan(0))
+            if (resultado > new TimeSpan(0, 10, 59))
                 return resultado;
             return new TimeSpan(0, 0, 0);
         }

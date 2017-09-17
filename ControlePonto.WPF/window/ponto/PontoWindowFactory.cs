@@ -19,7 +19,7 @@ namespace ControlePonto.WPF.window.consulta
         private static RelatorioService criarRelatorioService(UnitOfWork unitOfWork)
         {
             return new RelatorioService(
-                RepositoryFactory.criarPontoRepository(),
+                RepositoryFactory.criarPontoRepository(unitOfWork),
                 new FeriadoService(RepositoryFactory.criarFeriadoRepository()),
                 RepositoryFactory.criarJornadaTrabalhoRepository(),
                 unitOfWork);
@@ -45,15 +45,16 @@ namespace ControlePonto.WPF.window.consulta
             ));
         }
 
-        public static PontoFuncionarioWindow criarPontoDoFuncionarioWindow(DiaTrabalho ponto)
+        public static PontoFuncionarioWindow criarPontoDoFuncionarioWindow(DiaTrabalho ponto, IUnitOfWork uow)
         {
-            return new PontoFuncionarioWindow(new PontoFuncionarioViewModel(ponto, SessaoLogin.getSessao(), RepositoryFactory.criarPontoRepository()));
+            return new PontoFuncionarioWindow(new PontoFuncionarioViewModel(ponto, SessaoLogin.getSessao(), RepositoryFactory.criarPontoRepository(uow), uow));
         }        
 
         public static SelecaoDataWindow criarSelecaoDataWindow()
         {
+            var uow = UnitOfWorkFactory.criarUnitOfWork();
             return new SelecaoDataWindow(new SelecaoDataViewModel(
-                RepositoryFactory.criarPontoRepository(), 
+                RepositoryFactory.criarPontoRepository(uow), 
                 SessaoLogin.getSessao()));
         }
 
@@ -61,7 +62,7 @@ namespace ControlePonto.WPF.window.consulta
         {
             var unitOfWork = UnitOfWorkFactory.criarUnitOfWork();
             var pontoService = PontoServiceFactory.criarPontoService();
-            var pontoRepository = RepositoryFactory.criarPontoRepository();
+            var pontoRepository = RepositoryFactory.criarPontoRepository(unitOfWork);
 
             return new ControlarPontoWindow(new ControlarPontoViewModel(
                 unitOfWork,

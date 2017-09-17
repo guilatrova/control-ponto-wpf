@@ -42,6 +42,9 @@ namespace ControlePonto.WPF.window.relatorio
             {
                 switch (DiaRelatorio.TipoDia)
                 {
+                    case ETipoDiaRelatorio.SEM_TRABALHO:
+                        return DiaSemanaTradutor.traduzir(DiaRelatorio.Data.DayOfWeek);
+
                     case ETipoDiaRelatorio.FALTOU:
                         return "Funcionário faltou";
 

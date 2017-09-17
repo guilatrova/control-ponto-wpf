@@ -36,7 +36,7 @@ namespace ControlePonto.WPF.window.relatorio
                 case RelatorioViewModel.VIEW_PONTO:
                     var viewModel = ViewModel as RelatorioViewModel;
                     var dia = (viewModel.DiaSelecionado.DiaRelatorio as IDiaComPonto).PontoDia as DiaTrabalho;
-                    PontoWindowFactory.criarPontoDoFuncionarioWindow(dia).ShowDialog();
+                    PontoWindowFactory.criarPontoDoFuncionarioWindow(dia, viewModel.unitOfWork).ShowDialog();
                     break;
 
                 default:

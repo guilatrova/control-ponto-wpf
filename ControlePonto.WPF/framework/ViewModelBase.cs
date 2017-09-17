@@ -19,7 +19,7 @@ namespace ControlePonto.WPF.framework
 
         public const int CLOSE = -1;
 
-        protected IUnitOfWork unitOfWork;
+        public IUnitOfWork unitOfWork { get; protected set; }
 
         #region Evento para resetar o DataContext
         public event EventHandler<DataContextResetEventArgs> ResetDataContextRequest;
@@ -129,10 +129,11 @@ namespace ControlePonto.WPF.framework
         protected bool algumCampoNulo()
         {
             PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var ignoreNames = new string[] { "DialogResult", "unitOfWork" };
 
             foreach (PropertyInfo p in properties)
             {
-                if (p.CanRead && p.GetIndexParameters().Length == 0 && p.Name != "DialogResult")
+                if (p.CanRead && p.GetIndexParameters().Length == 0 && !ignoreNames.Contains(p.Name))
                 {
                     if (p.GetValue(this) == null)
                         return true;

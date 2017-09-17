@@ -30,7 +30,7 @@ namespace ControlePonto.WPF.window.consulta.controle
             {
                 case SelecaoDataViewModel.PONTO_VIEW:                    
                     var viewModel = ViewModel as SelecaoDataViewModel;
-                    PontoWindowFactory.criarPontoDoFuncionarioWindow(viewModel.DiaTrabalhoSelecionado).ShowDialog();
+                    PontoWindowFactory.criarPontoDoFuncionarioWindow(viewModel.DiaTrabalhoSelecionado, viewModel.unitOfWork).ShowDialog();
                     Close();
                     break;
 

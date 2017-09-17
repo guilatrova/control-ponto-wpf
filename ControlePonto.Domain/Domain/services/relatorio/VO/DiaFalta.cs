@@ -13,7 +13,12 @@ namespace ControlePonto.Domain.services.relatorio
 
         public override ETipoDiaRelatorio TipoDia
         {
-            get { return ETipoDiaRelatorio.FALTOU; }
+            get
+            {
+                if (calcularHorasDevedoras() == new TimeSpan(0))
+                    return ETipoDiaRelatorio.SEM_TRABALHO;
+                return ETipoDiaRelatorio.FALTOU;
+            }
         }
 
         public DiaFalta(DateTime date, JornadaTrabalho jornadaAtiva) : base(date) 

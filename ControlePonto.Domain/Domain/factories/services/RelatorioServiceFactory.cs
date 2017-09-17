@@ -13,7 +13,7 @@ namespace ControlePonto.Domain.factories.services
         public static RelatorioService criarRelatorioService(UnitOfWork uow)
         {
             return new RelatorioService(
-                RepositoryFactory.criarPontoRepository(),
+                RepositoryFactory.criarPontoRepository(uow),
                 FeriadoServiceFactory.criarFeriadoService(),
                 RepositoryFactory.criarJornadaTrabalhoRepository(),
                 uow

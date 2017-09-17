@@ -34,7 +34,7 @@ namespace ControlePonto.WPF.window.ponto.controle
             {
                 case ControlarPontoViewModel.EDITAR_PONTO:
                     var editEvent = e as EditarPontoEventArgs;
-                    PontoWindowFactory.criarPontoDoFuncionarioWindow(editEvent.DiaTrabalho).ShowDialog();
+                    PontoWindowFactory.criarPontoDoFuncionarioWindow(editEvent.DiaTrabalho, ViewModel.unitOfWork).ShowDialog();
                     break;
 
                 default:

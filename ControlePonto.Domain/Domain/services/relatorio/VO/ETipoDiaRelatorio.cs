@@ -8,9 +8,10 @@ namespace ControlePonto.Domain.services.relatorio
 {
     public enum ETipoDiaRelatorio : int
     {
-        TRABALHO,        
+        TRABALHO,
         FERIADO,
         FERIADO_TRABALHADO,
+        SEM_TRABALHO,
         FOLGA,
         FALTOU
     }
