@@ -5,6 +5,7 @@ using ControlePonto.Domain.services.relatorio;
 using ControlePonto.Domain.usuario;
 using ControlePonto.Domain.usuario.funcionario;
 using ControlePonto.WPF.framework;
+using ControlePonto.WPF.window.consulta;
 using ControlePonto.WPF.window.ponto.controle.events;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using System.Windows.Input;
 namespace ControlePonto.WPF.window.ponto.controle
 {
     public class ControlarPontoViewModel : ViewModelBase
-    {
+    {        
         private RelatorioService relatorioService;
         private PontoService pontoService;
         private IPontoDiaRepository pontoRepository;

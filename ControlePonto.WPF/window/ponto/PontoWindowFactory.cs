@@ -59,17 +59,18 @@ namespace ControlePonto.WPF.window.consulta
         }
 
         public static ControlarPontoWindow criarControlarPontoWindow()
-        {
+        {            
             var unitOfWork = UnitOfWorkFactory.criarUnitOfWork();
-            var pontoService = PontoServiceFactory.criarPontoService();
+            var pontoService = PontoServiceFactory.criarPontoService(unitOfWork);
             var pontoRepository = RepositoryFactory.criarPontoRepository(unitOfWork);
+            var relatorio = criarRelatorioService(unitOfWork);
 
             return new ControlarPontoWindow(new ControlarPontoViewModel(
                 unitOfWork,
                 RepositoryFactory.criarUsuarioRepository(),
                 pontoService,
                 pontoRepository,
-                criarRelatorioService(unitOfWork)
+                relatorio
             ));
         }
     }
