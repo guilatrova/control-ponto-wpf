@@ -96,16 +96,16 @@ namespace ControlePonto.WPF.window.relatorio
             }
 
             cell.nextColumn();
-            ws.Cells[cell.format()].Value = dia.HorasTrabalhadas;
+            WriteTimeCell(ws, cell, dia.HorasTrabalhadas);
 
             cell.nextColumn();
-            ws.Cells[cell.format()].Value = dia.HorasDevedoras;
+            WriteTimeCell(ws, cell, dia.HorasDevedoras);
 
             cell.nextColumn();
-            ws.Cells[cell.format()].Value = dia.HorasExtras;
+            WriteTimeCell(ws, cell, dia.HorasExtras);
 
             cell.nextColumn();
-            ws.Cells[cell.format()].Value = dia.HorasExtras100;
+            WriteTimeCell(ws, cell, dia.HorasExtras100);
         }
 
         private bool WriteWorkDay(ExcelWorksheet ws, DiaRelatorioViewModel dia, Cell cell)
@@ -118,7 +118,7 @@ namespace ControlePonto.WPF.window.relatorio
                     var diaTrabalho = (diaComPonto.PontoDia as DiaTrabalho);
 
                     cell.nextColumn();
-                    ws.Cells[cell.format()].Value = diaTrabalho.Inicio.ToString();
+                    WriteTimeCell(ws, cell, diaTrabalho.Inicio.ToString());
 
                     if (! WriteInterval(ws, diaTrabalho, cell))
                     {
@@ -127,7 +127,7 @@ namespace ControlePonto.WPF.window.relatorio
                     }
 
                     cell.nextColumn();
-                    ws.Cells[cell.format()].Value = diaTrabalho.Fim.ToString();
+                    WriteTimeCell(ws, cell, diaTrabalho.Fim.ToString());
 
                     return true;
                 }
@@ -136,16 +136,23 @@ namespace ControlePonto.WPF.window.relatorio
             return false;
         }
 
+        private void WriteTimeCell(ExcelWorksheet ws, Cell cell, string time)
+        {
+            ws.Cells[cell.format()].Style.Numberformat.Format = "hh:mm:ss";
+            if (!string.IsNullOrEmpty(time))
+                ws.Cells[cell.format()].Value = TimeSpan.Parse(time);
+        }
+
         private bool WriteInterval(ExcelWorksheet ws, DiaTrabalho dia, Cell cell)
         {
             try
             {
                 var almoco = dia.getIntervalo(tipoAlmoco);
                 cell.nextColumn();
-                ws.Cells[cell.format()].Value = almoco.Entrada.ToString();
+                WriteTimeCell(ws, cell, almoco.Entrada.ToString());
 
                 cell.nextColumn();
-                ws.Cells[cell.format()].Value = almoco.Saida.ToString();
+                WriteTimeCell(ws, cell, almoco.Saida.ToString());
 
                 return true;
             }
