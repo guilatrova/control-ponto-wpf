@@ -40,7 +40,7 @@ namespace ControlePonto.WPF.window.consulta
             return new ControleFolgaWindow(new ControleFolgaViewModel(
                 RepositoryFactory.criarUsuarioRepository(),
                 criarRelatorioService(unitOfWork),
-                PontoServiceFactory.criarPontoService(),
+                PontoServiceFactory.criarPontoService(unitOfWork),
                 unitOfWork
             ));
         }
