@@ -45,7 +45,7 @@ namespace ControlePonto.Infrastructure.nhibernate
 #if DEBUG
             get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=root;Password=root;", Host); }
 #else
-            get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=artplas_app_adm;Password=_ARTplas_1976;", Host); }
+            get { return string.Format("Server={0};Database=db_ponto_artplas;User ID=artplas_app_adm;Password=PLACEHOLDER;", Host); }
 #endif
         }
 
